@@ -1,0 +1,19 @@
+<md-dialog>
+  <md-content class="sticky-container">
+    <md-subheader class="md-sticky-no-effect">Cambiar el Nombre del Evento</md-subheader>
+    <div class="dialog-content">
+      <md-input-container flex>
+	  	<label>Nombre del Evento</label>
+	  	<input ng-model="texto">
+	  </md-input-container>
+    </div>
+  </md-content>
+  <div class="md-actions" layout="row">
+    <md-button ng-click="cancel()">
+     Cancelar
+    </md-button>
+    <md-button ng-click="ok()" class="md-primary">
+      Guardar
+    </md-button>
+  </div>
+</md-dialog>

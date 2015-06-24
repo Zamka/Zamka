@@ -1,0 +1,46 @@
+<link rel="stylesheet" type="text/css" href="/css/admin/perfil.css?v=update">
+
+<div layout="row" layout-align="center start">
+<md-card flex="100" layout-align="start start" class="animated zoomInDown">
+<div class="card hovercard">
+    <div class="cardheader">
+
+    </div>
+    <div class="avatar">
+        <img alt="" src="/img/zamkac.jpg">
+    </div>
+    <div class="info">
+        <div>
+            <h1 class="title">Zamka</h1>
+        </div>
+        <div class="desc">Voluntariados</div>
+    </div>
+</div>
+<md-card-content class="fullwidth">
+<h2>Descripción</h2>
+<hr>
+<p>Somos la primera red de soñadores. Queremos fomentar la solidaridad dando fácil acceso a la amplia gama de organizaciones que luchan por el país.</p>
+<h2>Eventos</h2>
+<hr>
+<md-grid-list
+      md-cols-sm="2" md-cols-md="2" md-cols-gt-md="6"
+        md-row-height-gt-md="1:1" md-row-height="2:2"
+        md-gutter="12px" md-gutter-gt-sm="8px" >
+  <md-grid-tile ng-repeat="evento in eventos" class="animated zoomInDown stagger-{{$index}}"
+  md-rowspan="2" md-colspan="2">
+  <md-button class="floating1 md-fab md-primary md-hue-9" href="{{evento.href}}">
+  <md-tooltip md-direction="right">
+    Ver Evento
+  </md-tooltip>
+  <md-icon md-font-icon="fa-eye" class="fa"></md-icon>
+  </md-button>
+      <img class="tiledImg" src="{{evento.img}}">
+       <md-grid-tile-footer>
+      <h3>{{evento.nombre}}</h3>
+    </md-grid-tile-footer>
+  </md-grid-tile>
+  
+</md-grid-list>
+</md-card-content>
+</md-card>
+</div>

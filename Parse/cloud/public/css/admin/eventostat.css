@@ -1,0 +1,25 @@
+.tiledImg{
+	height:100%
+}
+.floating1{
+	position:absolute;
+	top:5px;
+	left:5px;
+}
+.floating2{
+	position:absolute;
+	top:65px;
+	left:5px;
+}
+.floating3{
+	position:absolute;
+	top:125px;
+	left:5px;
+}
+.md-green{
+	color: rgb(255,255,255)!important;
+  	background-color: #42bd41!important;
+}
+.md-green:hover{
+  	background-color: #259b24!important;
+}

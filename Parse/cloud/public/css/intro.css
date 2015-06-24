@@ -1,0 +1,320 @@
+@media screen and (min-width: 320px) {
+     @-webkit-keyframes rotation {
+    from {-webkit-transform: rotate(0deg);}
+    to   {-webkit-transform: rotate(359deg);}
+}
+@-webkit-keyframes rotation2 {
+    from {-webkit-transform: rotate(0deg);}
+    to   {-webkit-transform: rotate(-359deg);}
+}
+.mee{
+-webkit-animation: rotation 3s infinite linear;
+top: 76px;
+position: absolute;
+width: 16%;
+left: 118px;
+}
+.meee{
+-webkit-animation: rotation2 3s infinite linear;
+top: 93px;
+position: absolute;
+width: 13.5%;
+left: 167px;
+}
+.meeee{
+-webkit-animation: rotation 3s infinite linear;
+top: 65px;
+position: absolute;
+width: 21%;
+left: 206px;
+}
+.meeeee{
+-webkit-animation: rotation2 3s infinite linear;
+top: 19px;
+position: absolute;
+width: 20%;
+left: 137px;
+}
+.nube{
+width: 70%;
+top: 9px;
+left: 60px;
+position: absolute;
+}
+.persona{
+width: 13%;
+top: 71px;
+left: 78px;
+position: absolute;
+}      
+}
+
+
+@media screen and (min-width: 480px) {
+   @-webkit-keyframes rotation {
+    from {-webkit-transform: rotate(0deg);}
+    to   {-webkit-transform: rotate(359deg);}
+}
+@-webkit-keyframes rotation2 {
+    from {-webkit-transform: rotate(0deg);}
+    to   {-webkit-transform: rotate(-359deg);}
+}
+.mee{
+-webkit-animation: rotation 3s infinite linear;
+top: 118px;
+position: absolute;
+width: 16%;
+left: 150px;
+}
+.meee{
+-webkit-animation: rotation2 3s infinite linear;
+top: 131px;
+position: absolute;
+width: 13.5%;
+left: 223px;
+}
+.meeee{
+-webkit-animation: rotation 3s infinite linear;
+top: 92px;
+position: absolute;
+width: 21%;
+left: 279px;
+}
+.meeeee{
+-webkit-animation: rotation2 3s infinite linear;
+top: 33px;
+position: absolute;
+width: 20%;
+left: 166px;
+}
+.nube{
+width: 70%;
+top: 9px;
+left: 60px;
+position: absolute;
+}
+.persona{
+width: 13%;
+top: 107px;
+left: 96px;
+position: absolute;
+}      
+}
+
+
+
+@media screen and (min-width: 620px) {
+   @-webkit-keyframes rotation {
+    from {-webkit-transform: rotate(0deg);}
+    to   {-webkit-transform: rotate(359deg);}
+}
+@-webkit-keyframes rotation2 {
+    from {-webkit-transform: rotate(0deg);}
+    to   {-webkit-transform: rotate(-359deg);}
+}
+.mee{
+-webkit-animation: rotation 3s infinite linear;
+top: 139px;
+position: absolute;
+width: 16%;
+left: 208px;
+}
+.meee{
+-webkit-animation: rotation2 3s infinite linear;
+top: 168px;
+position: absolute;
+width: 13.5%;
+left: 298px;
+}
+.meeee{
+-webkit-animation: rotation 3s infinite linear;
+top: 115px;
+position: absolute;
+width: 21%;
+left: 370px;
+}
+.meeeee{
+-webkit-animation: rotation2 3s infinite linear;
+top: 35px;
+position: absolute;
+width: 20%;
+left: 243px;
+}
+.nube{
+width: 70%;
+top: 9px;
+left: 96px;
+position: absolute;
+}
+.persona{
+width: 13%;
+top: 133px;
+left: 137px;
+position: absolute;
+}      
+}
+
+
+
+   
+@media screen and (min-width: 768px) {
+ @-webkit-keyframes rotation {
+    from {-webkit-transform: rotate(0deg);}
+    to   {-webkit-transform: rotate(359deg);}
+}
+@-webkit-keyframes rotation2 {
+    from {-webkit-transform: rotate(0deg);}
+    to   {-webkit-transform: rotate(-359deg);}
+}
+.mee{
+-webkit-animation: rotation 3s infinite linear;
+top: 161px;
+position: absolute;
+width: 16%;
+left: 293px;
+}
+.meee{
+-webkit-animation: rotation2 3s infinite linear;
+top: 206px;
+position: absolute;
+width: 13.5%;
+left: 409px;
+}
+.meeee{
+-webkit-animation: rotation 3s infinite linear;
+top: 140px;
+position: absolute;
+width: 21%;
+left: 504px;
+}
+.meeeee{
+-webkit-animation: rotation2 3s infinite linear;
+top: 32px;
+position: absolute;
+width: 20%;
+left: 351px;
+}
+.nube{
+width: 70%;
+top: 9px;
+left: 164px;
+position: absolute;
+}
+.persona{
+width: 13%;
+top: 150px;
+left: 205px;
+position: absolute
+}    
+}
+
+
+
+
+
+
+
+@media screen and (min-width: 992px) {
+    @-webkit-keyframes rotation {
+    from {-webkit-transform: rotate(0deg);}
+    to   {-webkit-transform: rotate(359deg);}
+}
+@-webkit-keyframes rotation2 {
+    from {-webkit-transform: rotate(0deg);}
+    to   {-webkit-transform: rotate(-359deg);}
+}
+.mee{
+-webkit-animation: rotation 3s infinite linear;
+top: 210px;
+position: absolute;
+width: 16%;
+left: 331px;
+}
+.meee{
+-webkit-animation: rotation2 3s infinite linear;
+top: 251px;
+position: absolute;
+width: 13.5%;
+left: 482px;
+}
+.meeee{
+-webkit-animation: rotation 3s infinite linear;
+top: 178px;
+position: absolute;
+width: 21%;
+left: 605px;
+}
+.meeeee{
+-webkit-animation: rotation2 3s infinite linear;
+top: 42px;
+position: absolute;
+width: 20%;
+left: 396px;
+}
+.nube{
+width: 70%;
+top: 9px;
+left: 164px;
+position: absolute;
+}
+.persona{
+width: 13%;
+top: 195px;
+left: 218px;
+position: absolute;
+}
+}
+
+@media screen and (min-width: 1200px) {
+@-webkit-keyframes rotation {
+    from {-webkit-transform: rotate(0deg);}
+    to   {-webkit-transform: rotate(359deg);}
+}
+@-webkit-keyframes rotation2 {
+    from {-webkit-transform: rotate(0deg);}
+    to   {-webkit-transform: rotate(-359deg);}
+}
+.mee{
+-webkit-animation: rotation 3s infinite linear;
+top: 254px;
+position: absolute;
+width: 16%;
+left: 381px;
+}
+.meee{
+-webkit-animation: rotation2 3s infinite linear;
+top: 323px;
+position: absolute;
+width: 13.5%;
+left: 567px;
+}
+.meeee{
+-webkit-animation: rotation 3s infinite linear;
+top: 225px;
+position: absolute;
+width: 21%;
+left: 718px;
+}
+.meeeee{
+-webkit-animation: rotation2 3s infinite linear;
+top: 60px;
+position: absolute;
+width: 19%;
+left: 464px;
+}
+.nube{
+width: 70%;
+top: 9px;
+left: 164px;
+position: absolute;
+}
+.persona{
+width: 13%;
+top: 225px;
+left: 235px;
+position: absolute;
+}
+}
+
+
+

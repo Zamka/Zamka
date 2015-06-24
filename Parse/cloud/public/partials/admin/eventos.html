@@ -1,0 +1,16 @@
+<link rel="stylesheet" type="text/css" href="/css/admin/eventos.css">
+<md-grid-list
+      md-cols-sm="2" md-cols-md="2" md-cols-gt-md="6"
+      md-row-height-gt-md="2:2" md-row-height="2:2"
+      md-gutter="12px" md-gutter-gt-sm="8px" >
+  <a ng-repeat="evento in eventos" href="{{evento.href}}">
+  <md-grid-tile class="animated zoomInDown green stagger-{{$index}}"
+      md-rowspan="{{evento.size}}" md-colspan="{{evento.size}}"
+      >
+      
+    <md-grid-tile-footer>
+      <h3>{{evento.nombre}}</h3>
+    </md-grid-tile-footer>
+  </md-grid-tile>
+  </a>  
+</md-grid-list>

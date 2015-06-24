@@ -1,0 +1,14 @@
+ @import url("//cdnjs.cloudflare.com/ajax/libs/animate.css/3.2.6/animate.min.css");
+ md-grid-list {
+  margin: 8px; }
+
+md-grid-tile {
+ 	transition: all 400ms ease-out 50ms; 
+}	
+
+md-grid-tile-footer{
+	transition: all 400ms ease-out 50ms; 
+}
+figure:hover > md-grid-tile-footer{
+	height:60px!important;
+};

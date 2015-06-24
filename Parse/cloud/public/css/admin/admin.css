@@ -1,0 +1,102 @@
+
+md-toolbar.md-default-theme {
+  background-color: rgb(120,1,64);
+}
+.fa{
+  font-size: 1.4em;
+}
+md-sidenav>a>.fa{
+font-size:1em;
+}
+.menuBtn {
+  background-color: transparent;
+  border: none;
+  height: 38px;
+  margin: 16px 0 0 16px;
+  width: 36px;
+} 
+md-toolbar h1 {
+  font-weight: normal;
+}
+md-list .md-button {
+  color: inherit;
+  font-weight: 500;
+  text-align: left;
+  width: 100%;
+}
+
+/* Using Data-URI converted from svg until <md-icon> becomes available 
+https://github.com/google/material-design-icons
+*/
+.menuBtn {
+  background: transparent url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2ZXJzaW9uPSIxLjEiIHg9IjBweCIgeT0iMHB4IiB3aWR0aD0iMjRweCIgaGVpZ2h0PSIyNHB4IiB2aWV3Qm94PSIwIDAgMjQgMjQiIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDI0IDI0IiB4bWw6c3BhY2U9InByZXNlcnZlIj4KPGcgaWQ9IkhlYWRlciI+CiAgICA8Zz4KICAgICAgICA8cmVjdCB4PSItNjE4IiB5PSItMjIzMiIgZmlsbD0ibm9uZSIgd2lkdGg9IjE0MDAiIGhlaWdodD0iMzYwMCIvPgogICAgPC9nPgo8L2c+CjxnIGlkPSJMYWJlbCI+CjwvZz4KPGcgaWQ9Ikljb24iPgogICAgPGc+CiAgICAgICAgPHJlY3QgZmlsbD0ibm9uZSIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ii8+CiAgICAgICAgPHBhdGggZD0iTTMsMThoMTh2LTJIM1YxOHogTTMsMTNoMTh2LTJIM1YxM3ogTTMsNnYyaDE4VjZIM3oiIHN0eWxlPSJmaWxsOiNmM2YzZjM7Ii8+CiAgICA8L2c+CjwvZz4KPGcgaWQ9IkdyaWQiIGRpc3BsYXk9Im5vbmUiPgogICAgPGcgZGlzcGxheT0iaW5saW5lIj4KICAgIDwvZz4KPC9nPgo8L3N2Zz4=) no-repeat  center center;
+}
+.right{
+    float: right;
+}
+
+/*
+/ Utility
+*/
+
+.gray {
+  background: #f5f5f5; }
+.green {
+  background: #b9f6ca; }
+.yellow {
+  background: #ffff8d; }
+.blue {
+  background: #84ffff; }
+.purple {
+  background: #b388ff; }
+.red {
+  background: #ff8a80; }
+
+.stagger-0 {
+  -webkit-animation-delay: 0s;
+  animation-delay: 0s;
+}
+.stagger-1 {
+  -webkit-animation-delay: 0.05s;
+  animation-delay: 0.05s;
+}
+.stagger-2 {
+  -webkit-animation-delay: 0.1s;
+  animation-delay: 0.1s;
+}
+.stagger-3 {
+  -webkit-animation-delay: 0.15s;
+  animation-delay: 0.15s;
+}
+.stagger-4 {
+  -webkit-animation-delay: 0.2s;
+  animation-delay: 0.2s;
+}
+.stagger-5 {
+  -webkit-animation-delay: 0.25s;
+  animation-delay: 0.25s;
+}
+.stagger-6 {
+  -webkit-animation-delay: 0.3s;
+  animation-delay: 0.3s;
+}
+.stagger-7 {
+  -webkit-animation-delay: 0.35s;
+  animation-delay: 0.35s;
+}
+.stagger-8 {
+  -webkit-animation-delay: 0.4s;
+  animation-delay: 0.4s;
+}
+.stagger-9 {
+  -webkit-animation-delay: 0.45s;
+  animation-delay: 0.45s;
+}
+.stagger-10 {
+  -webkit-animation-delay: 0.5s;
+  animation-delay: 0.5s;
+}
+.stagger-11 {
+  -webkit-animation-delay: 0.55s;
+  animation-delay: 0.55s;
+}
