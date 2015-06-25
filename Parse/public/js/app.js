@@ -1,27 +1,27 @@
 angular.module('ZamkaAdmin', ['ngMaterial','ngRoute'])
-.config(function($mdThemingProvider,$routeProvider,$interpolateProvider) {
+.config(function($mdThemingProvider,$routeProvider,$interpolateProvider,$locationProvider) {
   $routeProvider
-      .when('/', {
+      .when('/App', {
       templateUrl: '/partials/app/index.html',
       controller: 'indexCtrl'
       })
-      .when('/Login', {
+      .when('/App/Login', {
         templateUrl: '/partials/app/login.html',
         controller: 'indexCtrl'
       })
-      .when('/Eventos', {
+      .when('/App/Eventos', {
         templateUrl: '/partials/app/eventos.html',
         controller: 'indexCtrl'
       })
-      .when('/Evento/:id', {
+      .when('/App/Evento/:id', {
         templateUrl: '/partials/app/evento.html',
         controller: 'indexCtrl'
       })
-      .when('/Perfil/:id', {
+      .when('/App/Perfil/:id', {
         templateUrl: '/partials/app/perfil.html',
         controller: 'indexCtrl'
       })
-      .when('/ONG/:id', {
+      .when('/App/ONG/:id', {
         templateUrl: '/partials/app/ong.html',
         controller: 'indexCtrl'
       });
@@ -30,11 +30,15 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute'])
     .accentPalette('grey');
   $interpolateProvider.startSymbol('[[');
   $interpolateProvider.endSymbol(']]');
+      $locationProvider.html5Mode(true);
 })
 .controller('AppCtrl', function($scope, $mdSidenav){
   $scope.toggleSidenav = function(menuId) {
     $mdSidenav(menuId).toggle();
   };
+      $scope.timestamp = function(){
+        return Date.now();
+      }
 })
 .controller('indexCtrl',function($scope){
 
