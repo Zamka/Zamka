@@ -100,7 +100,6 @@ body{
 }
 
 .btn-xl {
-    padding: 8px 40px 6px;
     border-radius: 500px;
     text-transform: uppercase;
     font-size: 14px;
@@ -112,6 +111,14 @@ body{
     margin-left: auto;
     margin-right: auto;
     display: block;
+    width: 50%;
+    min-width: 250px;
+    text-align: center;
+}
+.btn-xl:hover{
+    color: #bebebe;
+    background-color: #2c4473;
+
 }
 
 .logincondiciones {
@@ -136,11 +143,50 @@ body{
     margin-left: auto;
     margin-right: auto;
     display: block;
+    text-align: center;
 }
 .loginLogo{
-    height: 240px;
+    max-width: 300px;
+    width: 90%;
     margin-left: auto;
     margin-right: auto;
     display: block;
 }
-.loginBtn
+.hrOr{
+    background-color: #cdcdcd;
+    height: 1px;
+    margin-top: 0px !important;
+    margin-bottom: 0px !important;
+}
+.spanOr {
+    display: block;
+    position: absolute;
+    left: 50%;
+    top: -0.1em;
+    margin-left: -1.5em;
+    background-color: #E2F7FF;
+    width: 3em;
+    text-align: center;
+}
+.Or{
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    font-size: 1.5em;
+    color: #aaa;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+}
+.contenedorPrincipal{
+    width: 100%;
+}
+.loginForm{
+    width:50%;
+    min-width: 300px;
+    margin-right: auto;
+    margin-left: auto;
+
+}

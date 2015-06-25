@@ -1,4 +1,21 @@
-        <img src="/img/zamka.png" class="loginLogo">
-        <button type="submit" class="btn btn-xl">Iniciar via Facebook</button>
-        <hr class="tosLogin">
-        <p class="tosLogin">Si haces clic en "Acceder con Facebook" y no eres usuario de Zamka, quedarás registrado y aceptarás los Términos y Condiciones y la Política de Privacidad de Zamka.</p>
+<div class="contenedor">
+        <br>
+        <img src="/img/zamka.png" class="loginLogo wow zoomInUp">
+        <button type="submit" ng-click="login()" class="btn btn-xl wow zoomInUp" data-wow-delay="200ms" >Iniciar via Facebook</button>
+        <div class="Or wow zoomInUp" data-wow-delay="400ms" ><hr class="hrOr"><span class="spanOr">O</span></div>
+        <div class="loginForm wow zoomInUp" data-wow-delay="600ms" >
+            <form action="" autocomplete="off" method="POST">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                    <input type="text" class="form-control" name="username" placeholder="email address">
+                </div>
+                <span class="help-block"></span>
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                    <input  type="password" class="form-control" name="password" placeholder="Password">
+                </div>
+            </form>
+            <button type="submit" ng-click="login()" class="btn btn-xl">Iniciar por correo</button>
+        </div>
+        <p class="tosLogin wow zoomInUp" data-wow-delay="800ms" >Si haces clic en "Acceder con Facebook" y no eres usuario de Zamka, quedarás registrado y aceptarás los Términos y Condiciones y la Política de Privacidad de Zamka.</p>
+</div>
