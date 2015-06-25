@@ -1,7 +1,51 @@
-.logo{
-    height:300px;
-    width: auto;
+@-webkit-keyframes rotation {
+    from {-webkit-transform: rotate(0deg);}
+    to   {-webkit-transform: rotate(359deg);}
 }
-.logo > div{
+@-webkit-keyframes rotation2 {
+    from {-webkit-transform: rotate(0deg);}
+    to   {-webkit-transform: rotate(-359deg);}
+}
+.mee{
+    -webkit-animation: rotation 3s infinite linear;
+    margin-top: 20.8%;
+    position: absolute;
+    width: 16%;
+    left: 27%;
+}
+.meee{
+    -webkit-animation: rotation2 3s infinite linear;
+    margin-top: 26%;
+    position: absolute;
+    width: 13.5%;
+    left: 41%;
+}
+.meeee{
+    -webkit-animation: rotation 3s infinite linear;
+    margin-top: 17.8%;
+    position: absolute;
+    width: 21%;
+    left: 53%;
+}
+.meeeee{
+    -webkit-animation: rotation2 3s infinite linear;
+    margin-top: 3%;
+    position: absolute;
+    width: 21%;
+    left: 33%;
+}
+.nube{
+    width: 70%;
+    margin-top: 0%;
+    left: 10%;
     position: absolute;
 }
+.persona{
+    width: 13%;
+    margin-top: 19%;
+    left: 15.1%;
+    position: absolute;
+}
+
+
+
