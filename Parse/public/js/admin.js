@@ -1,27 +1,27 @@
 angular.module('ZamkaAdmin', ['ngMaterial','ngRoute'])
 .config(function($mdThemingProvider,$routeProvider) {
   $routeProvider
-	.when('/', {
+	.when('/Admin', {
     templateUrl: '/partials/admin/index.html',
     controller: 'indexCtrl'
   	})
-  	.when('/estadisticas', {
+  	.when('/Admin/estadisticas', {
     templateUrl: '/partials/admin/estadisticas.html',
     controller: 'estaCtrl'
   	})
-  	.when('/eventos', {
+  	.when('/Admin/eventos', {
     templateUrl: '/partials/admin/eventos.html',
     controller: 'eventosCtrl'
   	})
-    .when('/perfil', {
+    .when('/Admin/perfil', {
     templateUrl: '/partials/admin/perfil.html',
     controller: 'perfilCtrl'
     })
-  	.when('/evento/:id', {
+  	.when('/Admin/evento/:id', {
     templateUrl: '/partials/admin/evento.html',
     controller: 'eventoCtrl'
   	})
-    .when('/eventoStat/:id', {
+    .when('/Admin/eventoStat/:id', {
     templateUrl: '/partials/admin/eventostat.html',
     controller: 'eventoStatCtrl'
     });	
