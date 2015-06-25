@@ -7,7 +7,7 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute'])
       })
       .when('/App/Login', {
         templateUrl: '/partials/app/login.html',
-        controller: 'indexCtrl'
+        controller: 'loginCtrl'
       })
       .when('/App/Eventos', {
         templateUrl: '/partials/app/eventos.html',
@@ -40,6 +40,25 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute'])
         return Date.now();
       }
 })
-.controller('indexCtrl',function($scope){
+.controller('indexCtrl',function($scope,$timeout,$location){
+        $(".logo").hide();
+        $timeout(function(){
+            new WOW().init();
+            $(".logo").show();
+        },500,false);
 
-});
+        $timeout(function(){
+            $(".logo").addClass("animated");
+            $(".logo").addClass("fadeOutLeft");
+
+            $location.path("/App/Login");
+            $scope.$apply();
+
+        },3000,false);
+})
+    .controller('loginCtrl',function($scope,$timeout,$location){
+        $timeout(function(){
+            new WOW().init();
+        },500,false);
+
+    });
