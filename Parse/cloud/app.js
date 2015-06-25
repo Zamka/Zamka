@@ -10,7 +10,7 @@ app.use(express.bodyParser());    // Middleware for reading request body
 
 
 app.get('/App', function(req, res) {
-  res.render('app');
+  res.render('user');
 });
 app.get('/Admin', function(req, res) {
   res.render('admin');
