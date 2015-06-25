@@ -6,7 +6,7 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute'])
     controller: 'indexCtrl'
   	});
   $mdThemingProvider.theme('default')
-    .primaryPalette('lightblue')
+    .primaryPalette('light-blue')
     .accentPalette('grey');
 })
 .controller('AppCtrl', ['$scope', '$mdSidenav', function($scope, $mdSidenav){
