@@ -51,9 +51,10 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute'])
             $(".logo").addClass("animated");
             $(".logo").addClass("fadeOutLeft");
 
-            $location.path("/App/Login");
-            $scope.$apply();
-
+            $timeout(function(){
+                $location.path("/App/Login");
+                $scope.$apply();
+            },1000,false);
         },3000,false);
 })
     .controller('loginCtrl',function($scope,$timeout,$location){
