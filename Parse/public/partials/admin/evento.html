@@ -12,14 +12,14 @@
 <img src="/img/evento.jpg" class="md-card-image animated fadeInDown stagger-0 absolute" alt="Washed Out">
 
   <md-card-content>
-    <h2 class="md-title animated fadeInDown stagger-5">{{nombre}} <i class="fa fa-pencil-square-o editarIcono" ng-click="tituloDialog($event)"></i></h2>
+    <h2 class="md-title animated fadeInDown stagger-5">[[nombre]] <i class="fa fa-pencil-square-o editarIcono" ng-click="tituloDialog($event)"></i></h2>
     <hr class="animated fadeInDown stagger-6">
     <h3 class="animated fadeInDown stagger-7">Descripcion Corta <i class="fa fa-pencil-square-o editarIcono" ng-click="descDialog($event)"></i></h3>
     <p class="animated fadeInDown stagger-8">
-      {{desc}}
+      [[desc]]
     </p>
     <h3 class="animated fadeInDown stagger-9">Contenido <i class="fa fa-pencil-square-o editarIcono" ng-click="conDialog($evento)" ></i></h3>
-    <p class="animated fadeInDown stagger-10">{{contenido}}</p>
+    <p class="animated fadeInDown stagger-10">[[contenido]]</p>
   </md-card-content>
 </md-card>
 </div>

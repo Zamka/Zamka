@@ -4,7 +4,7 @@
       md-cols-sm="2" md-cols-md="2" md-cols-gt-md="6"
         md-row-height-gt-md="1:1" md-row-height="2:2"
         md-gutter="12px" md-gutter-gt-sm="8px" >
-  <md-grid-tile ng-repeat="persona in usuarios" class="animated zoomInDown stagger-{{$index}}"
+  <md-grid-tile ng-repeat="persona in usuarios" class="animated zoomInDown stagger-[[$index]]"
   md-rowspan="2" md-colspan="2">
   <md-button class="floating1 md-fab md-primary">
   <md-tooltip md-direction="right">
@@ -24,9 +24,9 @@
   </md-tooltip>
   <md-icon md-font-icon="fa-times" class="fa"></md-icon>
   </md-button>
-      <img class="tiledImg" src="{{persona.user.picture.large}}">
+      <img class="tiledImg" src="[[persona.user.picture.large]]">
        <md-grid-tile-footer>
-      <h3>{{persona.user.name.first + ' ' + persona.user.name.last}}</h3>
+      <h3>[[persona.user.name.first + ' ' + persona.user.name.last]]</h3>
     </md-grid-tile-footer>
   </md-grid-tile>
   

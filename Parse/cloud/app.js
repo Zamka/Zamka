@@ -9,10 +9,10 @@ app.set('view engine', 'ejs');    // Set the template engine
 app.use(express.bodyParser());    // Middleware for reading request body
 
 
-app.get('/App', function(req, res) {
+app.get('/App*', function(req, res) {
   res.render('user');
 });
-app.get('/Admin', function(req, res) {
+app.get('/Admin*', function(req, res) {
   res.render('admin');
 });
 app.get('/', function(req, res) {

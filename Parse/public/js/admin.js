@@ -1,5 +1,5 @@
 angular.module('ZamkaAdmin', ['ngMaterial','ngRoute'])
-.config(function($mdThemingProvider,$routeProvider) {
+.config(function($mdThemingProvider,$routeProvider,$interpolateProvider,$locationProvider) {
   $routeProvider
 	.when('/Admin', {
     templateUrl: '/partials/admin/index.html',
@@ -28,6 +28,9 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute'])
   $mdThemingProvider.theme('default')
     .primaryPalette('pink')
     .accentPalette('grey');
+  $interpolateProvider.startSymbol('[[');
+  $interpolateProvider.endSymbol(']]');
+  $locationProvider.html5Mode(true);
 })
 .controller('AppCtrl', ['$scope', '$mdSidenav', function($scope, $mdSidenav){
   $scope.toggleSidenav = function(menuId) {
