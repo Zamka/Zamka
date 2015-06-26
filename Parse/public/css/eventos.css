@@ -1,0 +1,29 @@
+.tiledImg{
+    height: 100%;
+}
+.footer{
+background-color: rgba(0, 0, 0, 0.35);
+    transition: 500ms all;
+}
+.wrapper{
+    padding: 5px;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    opacity: 0;
+    transition: 500ms all;
+    background-color: #86cdea;
+
+}
+.evento>figure:hover > .wrapper{
+    opacity: 1;
+}
+.evento>figure:hover > .footer{
+    height: 0px;
+}
+.descripcion{
+    color: white;
+}
+.titulo{
+    color: white;
+}

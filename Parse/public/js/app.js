@@ -65,12 +65,25 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute'])
     },500,false);
 
     $scope.login = function(){
-        $location.path("/App/Eventos");
-        $scope.$apply();
+
+        $(".contenedor").addClass("animated");
+        $(".contenedor").addClass("fadeOutLeft");
+
+        $timeout(function(){
+            $location.path("/App/Eventos");
+            $scope.$apply();
+        },1000,false);
     }
 
 })
 .controller('eventosCtrl',function($scope,$timeout,$location){
+        $scope.eventos = [
+            {nombre:"Evento 5",img:"/img/Picture5.jpg",href:"/admin/#/evento/5",descripcion:"Este es un evento y aca una descripcion corta de lo que se trata"},
+            {nombre:"Evento 4",img:"/img/Picture4.jpg",href:"/admin/#/evento/4",descripcion:"Este es un evento y aca una descripcion corta de lo que se trata"},
+            {nombre:"Evento 3",img:"/img/Picture3.jpg",href:"/admin/#/evento/3",descripcion:"Este es un evento y aca una descripcion corta de lo que se trata"},
+            {nombre:"Evento 2",img:"/img/Picture2.jpg",href:"/admin/#/evento/2",descripcion:"Este es un evento y aca una descripcion corta de lo que se trata"},
+            {nombre:"Evento 1",img:"/img/Picture1.jpg",href:"/admin/#/evento/1",descripcion:"Este es un evento y aca una descripcion corta de lo que se trata"}];
+
     $(".contenedor").hide();
     $timeout(function(){
         new WOW().init();
