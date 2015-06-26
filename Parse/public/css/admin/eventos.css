@@ -10,7 +10,8 @@ figure:hover > md-grid-tile-footer{
 	height:60px!important;
 }
  .tiledImg{
-     height:100%
+     height:100%;
+    width: auto;
  }
  .fullwidth{
      width: 100%;

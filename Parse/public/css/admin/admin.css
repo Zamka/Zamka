@@ -8,6 +8,11 @@ md-toolbar.md-default-theme {
 md-sidenav>a>.fa{
 font-size:1em;
 }
+md-sidenav>a{
+  width: 100%;
+  margin: 0px!important;
+  border-radius: 0px!important;
+}
 .menuBtn {
   background-color: transparent;
   border: none;

@@ -1,8 +1,8 @@
 <link rel="stylesheet" type="text/css" href="/css/admin/perfil.css?v=[[timestamp()]]">
 
 <div layout="row" layout-align="center start">
-<md-card flex="100" layout-align="start start" class="animated zoomInDown">
-<div class="card hovercard">
+<md-card flex="100" layout="row" layout-wrap layout-align="start center" class="animated zoomInDown">
+<div flex="100" class="card hovercard">
     <div class="cardheader">
 
     </div>
@@ -16,14 +16,14 @@
         <div class="desc">Voluntariados</div>
     </div>
 </div>
-<md-card-content class="fullwidth">
+<md-card-content flex="100">
 <h2>Descripción</h2>
 <hr>
 <p>Somos la primera red de soñadores. Queremos fomentar la solidaridad dando fácil acceso a la amplia gama de organizaciones que luchan por el país.</p>
 <h2>Eventos</h2>
 <hr>
 <md-grid-list
-      md-cols-sm="2" md-cols-md="2" md-cols-gt-md="6"
+      md-cols-sm="2" md-cols-md="6" md-cols-gt-md="8"
         md-row-height-gt-md="1:1" md-row-height="2:2"
         md-gutter="12px" md-gutter-gt-sm="8px" >
   <md-grid-tile ng-repeat="evento in eventos" class="animated zoomInDown stagger-[[$index]]"
