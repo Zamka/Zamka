@@ -1,16 +1,20 @@
-<link rel="stylesheet" type="text/css" href="/css/admin/eventos.css">
+<link rel="stylesheet" type="text/css" href="/css/admin/eventos.css?v=[[timestamp()]]">
 <md-grid-list
-      md-cols-sm="2" md-cols-md="2" md-cols-gt-md="6"
-      md-row-height-gt-md="2:2" md-row-height="2:2"
-      md-gutter="12px" md-gutter-gt-sm="8px" >
-  <a ng-repeat="evento in eventos" href="[[evento.href]]">
-  <md-grid-tile class="animated zoomInDown green stagger-[[$index]]"
-      md-rowspan="[[evento.size]]" md-colspan="[[evento.size]]"
-      >
-      
-    <md-grid-tile-footer>
-      <h3>[[evento.nombre]]</h3>
-    </md-grid-tile-footer>
-  </md-grid-tile>
-  </a>  
+        md-cols-sm="2" md-cols-md="2" md-cols-gt-md="6"
+        md-row-height-gt-md="1:1" md-row-height="2:2"
+        md-gutter="12px" md-gutter-gt-sm="8px" >
+    <md-grid-tile ng-repeat="evento in eventos" class="animated zoomInDown stagger-[[$index]]"
+                  md-rowspan="2" md-colspan="2">
+        <md-button class="floating1 md-fab md-primary md-hue-9" href="[[evento.href]]">
+            <md-tooltip md-direction="right">
+                Ver Evento
+            </md-tooltip>
+            <md-icon md-font-icon="fa-eye" class="fa"></md-icon>
+        </md-button>
+        <img class="tiledImg" src="[[evento.img]]">
+        <md-grid-tile-footer>
+            <h3>[[evento.nombre]]</h3>
+        </md-grid-tile-footer>
+    </md-grid-tile>
+
 </md-grid-list>

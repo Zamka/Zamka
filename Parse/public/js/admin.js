@@ -36,6 +36,9 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute'])
   $scope.toggleSidenav = function(menuId) {
     $mdSidenav(menuId).toggle();
   };
+      $scope.timestamp = function(){
+        return Date.now();
+      }
 }])
 .controller('indexCtrl', ['$scope','$mdToast','$timeout', function($scope,$mdToast,$timeout){
 	$scope.lala = "lala";
@@ -86,18 +89,12 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute'])
    
 }])
 .controller('eventosCtrl', ['$scope','$timeout','$log', function($scope,$timeout,$log){
-$scope.eventos = [
-{nombre:"Evento 10",size:2,href:"/admin/#/evento/10"},
-{nombre:"Evento 9",size:2,href:"/admin/#/evento/9"},
-{nombre:"Evento 8",size:2,href:"/admin/#/evento/8"},
-{nombre:"Evento 7",size:2,href:"/admin/#/evento/7"},
-{nombre:"Evento 6",size:2,href:"/admin/#/evento/6"},
-{nombre:"Evento 5",size:1,href:"/admin/#/evento/5"},
-{nombre:"Evento 4",size:1,href:"/admin/#/evento/4"},
-{nombre:"Evento 3",size:1,href:"/admin/#/evento/3"},
-{nombre:"Evento 2",size:1,href:"/admin/#/evento/2"},
-{nombre:"Evento 1",size:1,href:"/admin/#/evento/1"},
-{nombre:"Evento x",size:1,href:"/admin/#/evento/x"}];
+      $scope.eventos = [
+        {nombre:"Evento 5",img:"/img/Picture5.jpg",href:"/Admin/evento/5"},
+        {nombre:"Evento 4",img:"/img/Picture4.jpg",href:"/Admin/evento/4"},
+        {nombre:"Evento 3",img:"/img/Picture3.jpg",href:"/Admin/evento/3"},
+        {nombre:"Evento 2",img:"/img/Picture2.jpg",href:"/Admin/evento/2"},
+        {nombre:"Evento 1",img:"/img/Picture1.jpg",href:"/Admin/evento/1"}];
 }])
 .controller('eventoCtrl', ['$scope', '$routeParams','$log','$mdDialog', function($scope, $routeParams,$log,$mdDialog){
 $scope.eventoID = $routeParams.id;
@@ -159,11 +156,11 @@ $scope.conDialog = function(ev) {
 }])
 .controller('perfilCtrl', ['$scope', function($scope){
   $scope.eventos = [
-{nombre:"Evento 5",img:"/img/Picture5.jpg",href:"/admin/#/evento/5"},
-{nombre:"Evento 4",img:"/img/Picture4.jpg",href:"/admin/#/evento/4"},
-{nombre:"Evento 3",img:"/img/Picture3.jpg",href:"/admin/#/evento/3"},
-{nombre:"Evento 2",img:"/img/Picture2.jpg",href:"/admin/#/evento/2"},
-{nombre:"Evento 1",img:"/img/Picture1.jpg",href:"/admin/#/evento/1"}];
+{nombre:"Evento 5",img:"/img/Picture5.jpg",href:"/Admin/evento/5"},
+{nombre:"Evento 4",img:"/img/Picture4.jpg",href:"/Admin/evento/4"},
+{nombre:"Evento 3",img:"/img/Picture3.jpg",href:"/Admin/evento/3"},
+{nombre:"Evento 2",img:"/img/Picture2.jpg",href:"/Admin/evento/2"},
+{nombre:"Evento 1",img:"/img/Picture1.jpg",href:"/Admin/evento/1"}];
 
 }])
 .controller('eventoStatCtrl', ['$scope','$http','$log', function($scope,$http,$log){

@@ -11,4 +11,18 @@ md-grid-tile-footer{
 }
 figure:hover > md-grid-tile-footer{
 	height:60px!important;
-};
+}
+ .floating1{
+     position:absolute;
+     top:5px;
+     left:5px;
+ }
+ .tiledImg{
+     height:100%
+ }
+ .fullwidth{
+     width: 100%;
+ }
+ .fa{
+     margin-top: 9px!important;
+ }
