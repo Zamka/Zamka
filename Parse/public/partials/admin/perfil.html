@@ -1,4 +1,4 @@
-<link rel="stylesheet" type="text/css" href="/css/admin/perfil.css?v=update">
+<link rel="stylesheet" type="text/css" href="/css/admin/perfil.css?v=[[timestamp()]]">
 
 <div layout="row" layout-align="center start">
 <md-card flex="100" layout-align="start start" class="animated zoomInDown">
@@ -29,9 +29,6 @@
   <md-grid-tile ng-repeat="evento in eventos" class="animated zoomInDown stagger-[[$index]]"
   md-rowspan="2" md-colspan="2">
   <md-button class="floating1 md-fab md-primary md-hue-9" href="[[evento.href]]">
-  <md-tooltip md-direction="right">
-    Ver Evento
-  </md-tooltip>
   <md-icon md-font-icon="fa-eye" class="fa"></md-icon>
   </md-button>
       <img class="tiledImg" src="[[evento.img]]">

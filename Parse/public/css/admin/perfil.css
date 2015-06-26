@@ -247,3 +247,7 @@
 .fa{
 margin-top: 9px!important;
 }
+.floating1 > md-icon{
+    margin-top: 13px!important;
+    font-size: 2em;
+}

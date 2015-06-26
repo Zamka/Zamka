@@ -1,7 +1,4 @@
  @import url("//cdnjs.cloudflare.com/ajax/libs/animate.css/3.2.6/animate.min.css");
- md-grid-list {
-  margin: 8px; }
-
 md-grid-tile {
  	transition: all 400ms ease-out 50ms; 
 }	
@@ -12,17 +9,37 @@ md-grid-tile-footer{
 figure:hover > md-grid-tile-footer{
 	height:60px!important;
 }
- .floating1{
-     position:absolute;
-     top:5px;
-     left:5px;
- }
  .tiledImg{
      height:100%
  }
  .fullwidth{
      width: 100%;
  }
- .fa{
-     margin-top: 9px!important;
+ .floating1 > md-icon,.floating2 > md-icon,.floating3 > md-icon{
+     margin-top: -3px!important;
+     font-size: 2em;
+ }
+ .floating1{
+     position:absolute;
+     top:5px;
+     left:5px;
+ }
+ .floating2{
+     position:absolute;
+     top:65px;
+     left:5px;
+ }
+ .floating3{
+     position:absolute;
+     top:125px;
+     left:5px;
+ }
+ .md-green{
+     background-color: #770140 !important;
+ }
+ .md-green:hover{
+     background-color: #600134 !important;
+ }
+ .md-green>md-icon {
+     color: white!important;
  }

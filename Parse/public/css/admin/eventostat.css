@@ -6,6 +6,10 @@
 	top:5px;
 	left:5px;
 }
+.floating1 > md-icon,.floating2 > md-icon,.floating3 > md-icon{
+	margin-top: -3px!important;
+	font-size: 2em;
+}
 .floating2{
 	position:absolute;
 	top:65px;
