@@ -1,3 +1,4 @@
+var timenow=Date.now();
 angular.module('ZamkaAdmin', ['ngMaterial','ngRoute'])
 .config(function($mdThemingProvider,$routeProvider,$interpolateProvider,$locationProvider) {
   $routeProvider
@@ -37,7 +38,7 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute'])
     $mdSidenav(menuId).toggle();
   };
       $scope.timestamp = function(){
-        return Date.now();
+        return timenow;
       }
 })
 .controller('indexCtrl',function($scope,$timeout,$location){
