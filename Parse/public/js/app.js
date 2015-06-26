@@ -15,7 +15,7 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute'])
       })
       .when('/App/Evento/:id', {
         templateUrl: '/partials/app/evento.html',
-        controller: 'indexCtrl'
+        controller: 'eventoCtrl'
       })
       .when('/App/Perfil/:id', {
         templateUrl: '/partials/app/perfil.html',
@@ -65,10 +65,8 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute'])
     },500,false);
 
     $scope.login = function(){
-
         $(".contenedor").addClass("animated");
         $(".contenedor").addClass("fadeOutLeft");
-
         $timeout(function(){
             $location.path("/App/Eventos");
             $scope.$apply();
@@ -90,6 +88,28 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute'])
         $(".contenedor").show();
     },500,false);
 
+    $scope.irEvento = function(id){
+        $(".main").addClass("animated");
+        $(".main").addClass("fadeOutLeft");
+        $timeout(function(){
+            $location.path("/App/Evento/"+id);
+            $scope.$apply();
+        },1000,false);
+    }
+})
+.controller('eventoCtrl',function($scope,$timeout,$location){
+        $scope.evento=
+            {nombre:"Techo",
+            descripcionC: "Techo es una organización no gubernamental (ONG) latinoamericana, sin inclinaciones políticas ni religiosas, orientada a superar la extrema pobreza, a través del trabajo de jóvenes voluntarios y pobladores de asentamientos precarios, quienes en un trabajo conjunto, buscan soluciones concretas para obtener una vivienda digna y así combatir la desigualdad social.",
+            fotoP:"img/techo.png",
+            ong:"ONG1",
+            ubicacion:"lurin",
+            fecha:"12/10/15",
+            fotoS:"img/techo.png"};
 
-
+    $(".contenedor").hide();
+    $timeout(function(){
+        new WOW().init();
+        $(".contenedor").show();
+    },500,false);
 });

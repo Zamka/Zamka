@@ -1,6 +1,6 @@
 <link rel="stylesheet" type="text/css" href="/css/eventos.css?v=[[timestamp()]]">
 <div class="contenedor" layout="row">
-    <div flex="80">
+    <div flex="80" class="wow fadeInDown" data-wow-duration="1.5s">
         <md-card>
         <md-card-content>
         <Legend>Eventos</Legend>
@@ -8,12 +8,12 @@
                     md-cols-sm="2" md-cols-md="2" md-cols-gt-md="6"
                     md-row-height-gt-md="1:1" md-row-height="2:2"
                     md-gutter="12px" md-gutter-gt-sm="8px" >
-                <md-grid-tile ng-repeat="evento in eventos" class="evento animated zoomInDown stagger-[[$index]]"
+                <md-grid-tile ng-repeat="evento in eventos" class="evento wow zoomInDown" data-wow-delay="[[($index*100)+200]]ms"
                               md-rowspan="2" md-colspan="2">
                     <div class="wrapper">
                         <h2 class="titulo">[[evento.nombre]]</h2>
                         <p class="descripcion">[[evento.descripcion]]</p>
-                        <md-button class="md-raised"><i class="fa fa-eye"></i> Ver Mas</md-button>
+                        <md-button class="md-raised" ng-click="irEvento(123456789)"><i class="fa fa-eye"></i> Ver Mas</md-button>
                         <md-button class="md-raised"><i class="fa fa-check-square-o"></i> Participar</md-button>
                     </div>
                     <img class="tiledImg" src="[[evento.img]]">
@@ -27,7 +27,7 @@
         </md-card-content>
         </md-card>
     </div>
-    <div flex="20">
+    <div flex="20" class="wow fadeInDown" data-wow-duration="1.5s">
         <md-card>
         <md-card-content layout="column">
             <Legend>Categoria</Legend>
