@@ -9,7 +9,7 @@ var eventos = require('cloud/routes/eventos');
 // Global app configuration section
 app.set('views', 'cloud/views');  // Specify the folder to find templates
 app.set('view engine', 'ejs');    // Set the template engine
-app.use(expressLayouts);
+//app.use(expressLayouts);
 app.use(express.bodyParser());    // Middleware for reading request body
 
 app.locals.parseApplicationId = 'YOUR_APP_ID';
