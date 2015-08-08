@@ -1,7 +1,8 @@
 <div layout="column" layout-align="start center" flex="90">
     <img src="/img/logo.png" class="animated zoomInDown">
-    <div layout="row" layout-align="space-around start" layout-wrap>
-        <md-card flex="30">
+    <div layout="row" layout-align="space-between start">
+        <div layout="row" layout-align="space-around start" layout-wrap flex="80">
+        <md-card flex="30" class="evento-card" ng-click="irEvento()">
             <img src="/img/Picture1.jpg" class="md-card-image" alt="Washed Out">
             <md-card-content>
                 <div layout="row" layout-align="start center">
@@ -15,7 +16,7 @@
                 </p>
             </md-card-content>
         </md-card>
-        <md-card flex="30">
+        <md-card flex="30" class="evento-card">
             <img src="/img/Picture1.jpg" class="md-card-image" alt="Washed Out">
             <md-card-content>
                 <div layout="row" layout-align="start center">
@@ -29,7 +30,7 @@
                 </p>
             </md-card-content>
         </md-card>
-        <md-card flex="30">
+        <md-card flex="30" class="evento-card">
             <img src="/img/Picture1.jpg" class="md-card-image" alt="Washed Out">
             <md-card-content>
                 <div layout="row" layout-align="start center">
@@ -43,7 +44,7 @@
                 </p>
             </md-card-content>
         </md-card>
-        <md-card flex="30">
+        <md-card flex="30" class="evento-card">
             <img src="/img/Picture1.jpg" class="md-card-image" alt="Washed Out">
             <md-card-content>
                 <div layout="row" layout-align="start center">
@@ -57,5 +58,34 @@
                 </p>
             </md-card-content>
         </md-card>
+        </div>
+        <div flex="20">
+            <md-toolbar md-scroll-shrink>
+                <div class="md-toolbar-tools">
+                    <h3>
+                        <span>Categorias</span>
+                    </h3>
+                </div>
+            </md-toolbar>
+            <md-list class="md-whiteframe-z1">
+                <md-list-item  ng-click="searchCategoria()">
+                    <i class="fa fa-graduation-cap cat-icon"></i>
+                    <p> Categoria 1</p>
+                </md-list-item>
+                <md-list-item  ng-click="searchCategoria()">
+                    <i class="fa fa-graduation-cap cat-icon"></i>
+                    <p> Categoria 1</p>
+                </md-list-item>
+                <md-list-item  ng-click="searchCategoria()">
+                    <i class="fa fa-graduation-cap cat-icon"></i>
+                    <p> Categoria 1</p>
+                </md-list-item>
+                <md-list-item  ng-click="searchCategoria()">
+                    <i class="fa fa-graduation-cap cat-icon"></i>
+                    <p>  Categoria 1</p>
+                </md-list-item>
+
+            </md-list>
+        </div>
     </div>
 </div>

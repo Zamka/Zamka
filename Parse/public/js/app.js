@@ -54,7 +54,12 @@ $timeout(function(){
 
 })
 .controller('eventosCtrl',function($scope,$timeout,$location){
+    $scope.searchCategoria = function(){
 
+    };
+    $scope.irEvento = function(id){
+        $location.url("/App/Evento/1");
+    };
 })
 .controller('eventoCtrl',function($scope,$timeout,$location){
 
