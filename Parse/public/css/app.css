@@ -86,3 +86,26 @@ md-list {
     color: white;
     margin: 0;
 }
+.orgLbl{
+    font-weight: bold;
+    color: #a660e1;
+}
+.orgHr{
+    width:100px;
+}
+.nombreLbl{
+    font-weight: bold;
+}
+.width-80{
+    width: 80%;
+}
+.social-fab{
+    font-size: 1.6em;
+    color: #AAA!important;
+    background-color: white!important;
+}
+.circlePhoto{
+    width: 150px;
+    height: 150px;
+    border-radius: 150px;
+}

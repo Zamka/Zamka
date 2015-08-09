@@ -10,9 +10,22 @@
         <div flex="70" layout="row" layout-align="space-around start" layout-wrap>
             <div flex="30">
                 <div layout="column" layout-align="space-around center">
-                    <label>Organizacion</label>
+                    <label class="orgLbl">ORGANIZACION</label>
+                    <hr class="orgHr center">
                     <img class="fullWidth" src="/img/zamka.png">
-                    <label>Nombre</label>
+                    <label class="nombreLbl">NOMBRE</label>
+                    <hr class="center width-80">
+                    <div layout="row" layout-align="space-around center">
+                        <md-button class="md-fab social-fab" aria-label="Use Android">
+                            <i class="fa fa-facebook"></i>
+                        </md-button>
+                        <md-button class="md-fab social-fab" aria-label="Use Android">
+                            <i class="fa fa-twitter"></i>
+                        </md-button>
+                        <md-button class="md-fab social-fab" aria-label="Use Android">
+                            <i class="fa fa-google-plus"></i>
+                        </md-button>
+                    </div>
                 </div>
 
             </div>
@@ -46,5 +59,59 @@
             <time-date-picker class="md-whiteframe-z1 center" ng-model="dateValue" orientation="true" ></time-date-picker>
             <md-button class="md-raised participar center">Participar</md-button>
         </div>
+    </div>
+<br>
+
+    <div layout="column" layout-align="start center" class="width-80">
+    <div class="fullwidth">
+        <label>COMENTARIOS</label>
+        <hr>
+    </div>
+        <div layout="row" layout-align="space-around center" class="fullwidth" layout-wrap>
+            <div flex="30" layout="row" layout-align="center center">
+                <img class="circlePhoto md-whiteframe-z1" src="/img/zamka.jpg">
+            </div>
+            <div flex="70" layout="column" layout-align="start start">
+                <p><label>NOMBRE</label> Hace 5 dias</p>
+                <div>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat</p>
+                </div>
+            </div>
+            <div flex="100">
+                <br>
+            </div>
+        </div>
+
+        <div layout="row" layout-align="space-around center" class="fullwidth" layout-wrap>
+            <div flex="30" layout="row" layout-align="center center">
+                <img class="circlePhoto md-whiteframe-z1" src="/img/zamka.jpg">
+            </div>
+            <div flex="70" layout="column" layout-align="start start">
+                <p><label>NOMBRE</label> Hace 5 dias</p>
+                <div>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat</p>
+                </div>
+            </div>
+            <div flex="100">
+                <br>
+            </div>
+        </div>
+
+        <div layout="row" layout-align="space-around center" class="fullwidth" layout-wrap>
+            <div flex="30" layout="row" layout-align="center center">
+                <img class="circlePhoto md-whiteframe-z1" src="/img/zamka.jpg">
+            </div>
+            <div flex="70" layout="column" layout-align="start start">
+                <p><label>NOMBRE</label> Hace 5 dias</p>
+                <div>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat</p>
+                </div>
+            </div>
+            <div flex="100">
+                <br>
+            </div>
+        </div>
+
+
     </div>
 </div>
