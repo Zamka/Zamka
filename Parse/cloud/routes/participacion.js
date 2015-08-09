@@ -35,10 +35,24 @@ exports.getParticipaciones = function (req, res) {
     var query = new Parse.Query(Participacion);
     query.limit(100);
     query.equalTo("Usuario", usuario);
+    query.select("Evento", "Estado", "Asistencia");
+    query.include(["Evento.Organizacion"]);
+    //query.include("Usuario");
+    //query.include("Evento");
     query.descending('createdAt');
-    query.include("Evento");
     query.find().then(function (participaciones) {
+        var respuesta = [];
+        var numero = 0;
+        participaciones.forEach(function (partic) {
+            var temp = {};
+            temp.evento = partic.get("Evento");
+            temp.asistencia = partic.get("Asistencia");
+            temp.estado = partic.get("Estado");
+            respuesta[numero++] = temp;
+        });
 
-        res.json(participaciones);
+        res.send(respuesta);
+    }, function (error) {
+        res.send(error);
     });
 };
