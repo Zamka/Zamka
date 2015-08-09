@@ -42,10 +42,23 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','mdDateTime'])
             requireBase: false
         });
 })
-.controller('AppCtrl', function($scope,$timeout,$location){
+.controller('AppCtrl', function($scope,$timeout,$location,$http,$log){
     $scope.irEvento = function(id){
         $location.url("/App/Evento/1");
     };
+
+    $scope.login = function(correo,password,fbid){
+        $http.post("/API/Login",{
+            correo:correo,
+            password:password,
+            fbid:fbid
+        }).success(function(data){
+            $log.log(data);
+        });
+    };
+
+
+
 
 })
 .controller('indexCtrl',function($scope,$timeout,$location){

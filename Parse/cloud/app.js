@@ -22,29 +22,29 @@ app.locals._ = require('underscore');
 
 
 //Login
-app.post("/Login", user.login);
-app.post("/Login", user.registro);
+app.post("/API/Login", user.login);
+app.post("/API/Registrar", user.registro);
 
 //Categorias
-app.get("/Categorias", categorias.fetch);
+app.get("/API/Categorias", categorias.fetch);
 
 //Eventos
-app.get("/Buscar", eventos.buscar);
-app.get("/EventosCat", eventos.porCategoria);
-app.get("/Evento", eventos.evento);
+app.get("/API/Buscar", eventos.buscar);
+app.get("/API/EventosCat", eventos.porCategoria);
+app.get("/API/Evento", eventos.evento);
 
 //de Usuario
-app.get("/Usuario", user.getUser);
-app.post("/Participar", participacion.participar);
-app.get("/SolicitudesUsuario", participacion.getParticipaciones);
+app.get("/API/Usuario", user.getUser);
+app.post("/API/Participar", participacion.participar);
+app.get("/API/SolicitudesUsuario", participacion.getParticipaciones);
 
 //Organizacion
-app.post("/Admin/Login", user.loginOrganizacion);
-app.get("/Admin/Eventos", eventos.eventosONG);
-app.post("/Admin/CrearEvento", eventos.crearEvento);
-app.put("/Admin/Evento", eventos.editarEvento);
+app.post("/API/Admin/Login", user.loginOrganizacion);
+app.get("/API/Admin/Eventos", eventos.eventosONG);
+app.post("/API/Admin/CrearEvento", eventos.crearEvento);
+app.put("/API/Admin/Evento", eventos.editarEvento);
 
-app.get("/Admin/ONG", organizacion.getONG);
+app.get("/API/Admin/ONG", organizacion.getONG);
 
 
 app.get('/App*', function (req, res) {
