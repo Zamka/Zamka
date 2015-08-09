@@ -39,6 +39,9 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','mdDateTime'])
         });
 })
 .controller('AppCtrl', function($scope){
+    $scope.irEvento = function(id){
+        $location.url("/App/Evento/1");
+    };
 
 })
 .controller('indexCtrl',function($scope,$timeout,$location){
@@ -57,9 +60,7 @@ $timeout(function(){
     $scope.searchCategoria = function(){
 
     };
-    $scope.irEvento = function(id){
-        $location.url("/App/Evento/1");
-    };
+
 })
 .controller('eventoCtrl',function($scope,$timeout,$location){
 

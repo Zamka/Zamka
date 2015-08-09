@@ -39,9 +39,7 @@ md-list {
 .fullWidth{
     width: 100%;
 }
-.contenedorDescripcion{
-    width: 90%;
-}
+
 .center{
     margin-left: auto;
     margin-right: auto;
@@ -96,6 +94,12 @@ md-list {
 .nombreLbl{
     font-weight: bold;
 }
+.width-95{
+    width: 95%;
+}
+.width-90{
+    width: 90%;
+}
 .width-80{
     width: 80%;
 }
@@ -105,7 +109,16 @@ md-list {
     background-color: white!important;
 }
 .circlePhoto{
-    width: 150px;
-    height: 150px;
-    border-radius: 150px;
+    width: 100px;
+    height: 100px;
+    border-radius: 100px;
+}
+hr .width-80{
+    opacity: 0.5;
+}
+.heightFull{
+    height: 100%;
+}
+.evento-desc{
+    color:white!important;
 }
