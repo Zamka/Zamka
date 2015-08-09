@@ -29,6 +29,10 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','mdDateTime'])
       .when('/App/ONG/:id', {
         templateUrl: '/partials/app/ong.html',
         controller: 'ongCtrl'
+      })
+      .when('/App/MiCuenta', {
+          templateUrl: '/partials/app/mispeticiones.html',
+          controller: 'perfilCtrl'
       });
   $mdThemingProvider.theme('default');
   $interpolateProvider.startSymbol('[[');
@@ -38,7 +42,7 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','mdDateTime'])
             requireBase: false
         });
 })
-.controller('AppCtrl', function($scope){
+.controller('AppCtrl', function($scope,$timeout,$location){
     $scope.irEvento = function(id){
         $location.url("/App/Evento/1");
     };

@@ -122,3 +122,12 @@ hr .width-80{
 .evento-desc{
     color:white!important;
 }
+.circlePhotoPerfil{
+    width: 200px;
+    height: 200px;
+    border-radius: 200px;
+    background-color: white;
+}
+.estado-aprobado{color:#009688;font-size: 2em;}
+.estado-pendiente{color: #dfb700;font-size: 2em;}
+.estado-rechazado{color: #e64807;font-size: 2em;}
