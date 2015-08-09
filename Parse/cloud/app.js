@@ -18,15 +18,6 @@ app.locals.facebookApplicationId = 'YOUR_FB_APP_ID';
 
 app.locals._ = require('underscore');
 
-app.get('/App*', function (req, res) {
-    res.render('user');
-});
-app.get('/Admin*', function (req, res) {
-    res.render('admin');
-});
-app.get('/', function (req, res) {
-    res.redirect('https://www.facebook.com/pages/Zamka/705880659483641');
-});
 
 //Login
 app.post("/Login", user.login);
@@ -40,5 +31,21 @@ app.get("/Buscar", eventos.buscar);
 app.get("/EventosCat", eventos.porCategoria);
 app.get("/Evento", eventos.evento);
 
+//Organizacion
+app.post("/Admin/Login", user.loginOrganizacion);
+app.get("/Admin/Eventos", eventos.eventosONG);
+app.post("/Admin/CrearEvento", eventos.crearEvento);
+app.put("/Admin/Evento", eventos.editarEvento);
+
+
+app.get('/App*', function (req, res) {
+    res.render('user');
+});
+app.get('/Admin*', function (req, res) {
+    res.render('admin');
+});
+app.get('/', function (req, res) {
+    res.redirect('https://www.facebook.com/pages/Zamka/705880659483641');
+});
 
 app.listen();

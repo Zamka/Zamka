@@ -27,7 +27,29 @@ exports.login = function (req, res) {
 
 // Shows a list of popular memes based on view count
 exports.registro = function (req, res) {
-
     var user = new Parse.User();
+};
 
+exports.loginOrganizacion = function (req, res) {
+    var usuario = req.body.usuario;
+    var password = req.body.password;
+
+    Parse.User.logIn(usuario, password, {
+        success: function (user) {
+            if (user.get("organizacion") === undefined) {
+                res.send("Usuario no posee ninguna organizacion");
+            } else {
+                var organizacion = user.get("organizacion");
+                organizacion.fetch({
+                    success: function (organizacion) {
+                        res.json(organizacion);
+                    }
+                });
+
+            }
+        },
+        error: function (user, error) {
+            res.json(error);
+        }
+    });
 };
