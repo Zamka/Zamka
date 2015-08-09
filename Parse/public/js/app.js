@@ -1,5 +1,5 @@
 var timenow=Date.now();
-angular.module('ZamkaAdmin', ['ngMaterial','ngRoute'])
+angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','mdDateTime'])
 .config(function($mdThemingProvider,$routeProvider,$interpolateProvider,$locationProvider) {
   $routeProvider
       .when('/App', {

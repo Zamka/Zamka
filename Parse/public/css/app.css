@@ -36,6 +36,40 @@ md-list {
     margin: 3px;
 
 }
-.orgImg{
+.fullWidth{
     width: 100%;
+}
+.contenedorDescripcion{
+    width: 90%;
+}
+.center{
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/*-DESHABILITAR  CALENDARIO-*/
+.switch-control{
+    display:none;
+}
+.date-control{
+    margin-left: 1rem;
+}
+.time-date > .buttons{
+    display: none;
+}
+.date-control > .title > button{
+    display:none;
+}
+.time-date{
+    pointer-events: none;
+}
+/*-DESHABILITAR CALEDNARIO-*/
+
+.fotosCard{
+    height:180px;
+    overflow: hidden;
+}
+.green{
+    background-color: #009688!important;
+    color: white!important;
 }
