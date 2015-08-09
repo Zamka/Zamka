@@ -13,16 +13,19 @@ exports.login = function (req, res) {
         query.find().then(function (user) {
             res.json(user);
         });
+    } else {
+        Parse.User.logIn(correo, password, {
+            success: function (user) {
+                return (user);
+            },
+            error: function (user, error) {
+                res.json(error);
+            }
+        });
     }
     var email = req.body.email;
     res.send(email);
     query.descending('createdAt');
-    query.find().then(function (memes) {
-        res.render('meme/index', {
-            title: "Popular Memes",
-            memes: memes
-        });
-    });
 };
 
 // Shows a list of popular memes based on view count
@@ -51,5 +54,13 @@ exports.loginOrganizacion = function (req, res) {
         error: function (user, error) {
             res.json(error);
         }
+    });
+};
+
+exports.getUser = function (req, res) {
+    var id = req.query.idUsuario;
+    var query = new Parse.Query(User);
+    query.get(id, function (usuario) {
+        res.json(usuario);
     });
 };

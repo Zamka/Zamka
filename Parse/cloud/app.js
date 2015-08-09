@@ -5,6 +5,8 @@ app = express();
 var user = require('cloud/routes/user');
 var categorias = require('cloud/routes/categorias');
 var eventos = require('cloud/routes/eventos');
+var participacion = require('cloud/routes/participacion');
+var organizacion = require('cloud/routes/organizacion');
 
 // Global app configuration section
 app.set('views', 'cloud/views');  // Specify the folder to find templates
@@ -31,11 +33,18 @@ app.get("/Buscar", eventos.buscar);
 app.get("/EventosCat", eventos.porCategoria);
 app.get("/Evento", eventos.evento);
 
+//de Usuario
+app.get("/Usuario", user.getUser);
+app.post("/Participar", participacion.participar);
+app.get("/SolicitudesUsuario", participacion.getParticipaciones);
+
 //Organizacion
 app.post("/Admin/Login", user.loginOrganizacion);
 app.get("/Admin/Eventos", eventos.eventosONG);
 app.post("/Admin/CrearEvento", eventos.crearEvento);
 app.put("/Admin/Evento", eventos.editarEvento);
+
+app.get("/Admin/ONG", organizacion.getONG);
 
 
 app.get('/App*', function (req, res) {
