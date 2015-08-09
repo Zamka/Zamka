@@ -1,8 +1,11 @@
 <div layout="column" layout-align="start center" flex="100">
-    <div>
-        <label>CATEGORIA</label>
-        <h1>Titulo del Evento</h1>
+    <div class="evento-header" layout="column" layout-align="center center">
+            <div layout="column" layout-align="center start">
+                <label class="categoria">CATEGORIA</label>
+                <h1 class="evento-titulo">Titulo del Evento</h1>
+            </div>
     </div>
+    <br>
     <div layout="row" layout-align="space-around start">
         <div flex="70" layout="row" layout-align="space-around start" layout-wrap>
             <div flex="30">
@@ -41,7 +44,7 @@
         <div flex="30">
 
             <time-date-picker class="md-whiteframe-z1 center" ng-model="dateValue" orientation="true" ></time-date-picker>
-            <md-button class="md-raised green fullWidth">Participar</md-button>
+            <md-button class="md-raised participar center">Participar</md-button>
         </div>
     </div>
 </div>

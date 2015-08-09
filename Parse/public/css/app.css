@@ -20,7 +20,7 @@ md-list {
 }
 .categoria{
     font-weight: bold;
-    color: royalblue;
+    color: #629ae1;
 }
 .evento-card{
     margin-top: 0px;
@@ -69,7 +69,20 @@ md-list {
     height:180px;
     overflow: hidden;
 }
-.green{
+.participar{
+    display: block;
     background-color: #009688!important;
     color: white!important;
+    width: 23.1rem;
+}
+.evento-header{
+    height: 250px;
+    width: 100%;
+    background-size:cover;
+    background-image: url(http://desktopbackgroundshq.com/backgrounds/tree-wallpaper-desktop-desktop-backgrounds-nature-backgrounds-30047.jpg);
+}
+.evento-titulo{
+    font-size: 4.5em;
+    color: white;
+    margin: 0;
 }
