@@ -53,7 +53,11 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','mdDateTime'])
             password:password,
             fbid:fbid
         }).success(function(data){
-            $log.log(data);
+            $log.log("--SUCCESS--");
+            $log.log("data:",data);
+        }).error(function(data){
+            $log.log("--Error--");
+            $log.log("data:",data);
         });
     };
 
