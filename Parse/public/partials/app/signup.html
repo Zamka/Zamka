@@ -1,0 +1,35 @@
+<div layout="column" layout-align="center center" flex="80">
+    <img src="/img/logo.png" class="animated zoomInDown">
+    <div layout="row" layout-align="space-around center" layout-wrap layout-padding>
+        <md-input-container flex="50">
+            <label>NOMBRE</label>
+            <input ng-model="user.nombre">
+        </md-input-container>
+        <md-input-container flex="50">
+            <label>E-MAIL</label>
+            <input ng-model="user.email">
+        </md-input-container>
+        <md-input-container flex="50">
+            <label>PASSWORD</label>
+            <input type="password" ng-model="user.password">
+        </md-input-container>
+        <md-input-container flex="50">
+            <label>REPETIR PASSWORD</label>
+            <input type="password" ng-model="user.password2">
+        </md-input-container>
+        <div flex="50">
+            <md-checkbox ng-model="data.cb1" aria-label="Checkbox 1">
+                Acepto los <a href="/App">Terminos y Condiciones</a>
+            </md-checkbox>
+        </div>
+        <div layout="row" layout-align="space-around center" flex="50">
+            <md-button class="md-raised md-primary" href="/App/Eventos" flex>Ingresar</md-button>
+        </div>
+        <div layout="row" layout-align="space-around center" flex="100">
+            <hr flex="33">
+            <p flex="33" style="text-align: center"> o Crea tu cuenta con </p>
+            <hr flex="33">
+        </div>
+        <md-button class="md-raised md-primary" href="/App/Eventos" flex="100">Facebook</md-button>
+    </div>
+</div>
