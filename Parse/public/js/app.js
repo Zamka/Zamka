@@ -19,6 +19,10 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','mdDateTime'])
         templateUrl: '/partials/app/eventos.html',
         controller: 'eventosCtrl'
       })
+      .when('/App/Categoria/:cat', {
+          templateUrl: '/partials/app/eventos.html',
+          controller: 'categoriaCtrl'
+      })
       .when('/App/Evento/:id', {
         templateUrl: '/partials/app/evento.html',
         controller: 'eventoCtrl'
@@ -132,6 +136,26 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','mdDateTime'])
             $log.log("Eventos:",$scope.eventos);
         });
     };
+    ///EVENTOS CATEGORTIA
+    $scope.getEventosCat = function(cat){
+        $scope.cargando = true;
+        $scope.eventos = [];
+        $http.get("/API/EventosCat?categoria="+cat).success(function(data){
+            for (key in data){
+                var evento = data[key];
+                $scope.eventos.push({
+                    categoria:evento.Categorias[0],
+                    descripcion:evento.Descripcion,
+                    fecha:evento.Fecha.iso,
+                    nombre:evento.Nombre,
+                    foto:evento.Imagen.url,
+                    id:evento.objectId
+                });
+            }
+            $scope.cargando = false;
+            $log.log("Eventos:",$scope.eventos);
+        });
+    };
     //EVENTO
     $scope.getEvento = function(id){
         $scope.cargando = true;
@@ -221,6 +245,9 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','mdDateTime'])
                 .hideDelay(3000)
         );
     };
+    $scope.searchCategoria = function(cat){
+        $location.url("/App/Categoria/"+cat);
+    };
 
 
 
@@ -245,8 +272,10 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','mdDateTime'])
 .controller('eventosCtrl',function($scope,$timeout,$location){
     $scope.getCategorias();
     $scope.getEventos();
-
-
+})
+.controller('categoriaCtrl',function($scope,$timeout,$location,$routeParams){
+    $scope.getCategorias();
+    $scope.getEventosCat($routeParams.cat);
 })
 .controller('eventoCtrl',function($scope,$timeout,$location,$routeParams){
         $scope.getEvento($routeParams.id);
