@@ -135,6 +135,7 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','mdDateTime'])
     //EVENTO
     $scope.getEvento = function(id){
         $scope.cargando = true;
+        $scope.evento={};
         $http.get("/API/Evento?idEvento="+id).success(function(data){
 
             $log.log("data:",data);
@@ -226,9 +227,13 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','mdDateTime'])
 
 })
 .controller('indexCtrl',function($scope,$timeout,$location){
-$timeout(function(){
-    $location.url("/App/Login");
-},2000,true);
+    $timeout(function(){
+        if($scope.usuario){
+            $location.url("/App/Eventos");
+        }else{
+            $location.url("/App/Login");
+        }
+    },300,true);
 
 })
 .controller('loginCtrl',function($scope,$timeout,$location){
@@ -244,7 +249,6 @@ $timeout(function(){
 
 })
 .controller('eventoCtrl',function($scope,$timeout,$location,$routeParams){
-        $scope.evento = {};
         $scope.getEvento($routeParams.id);
         $scope.confirmarParticipacion = function(){
             swal({
