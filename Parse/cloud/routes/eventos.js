@@ -42,6 +42,7 @@ exports.evento = function (req, res) {
                 comentariosrespuesta[i].Nombre = comentario.get("Usuario").get("name");
                 comentariosrespuesta[i].Foto = comentario.get("Usuario").get("image");
                 comentariosrespuesta[i++].Comentario = comentario.get("Comentario");
+                comentariosrespuesta[i++].Fecha = comentario.createdAt;
             });
             respuesta.Comentarios = comentariosrespuesta;
             respuesta.Nombre = evento.get("Nombre");
