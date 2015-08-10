@@ -37,7 +37,7 @@
             <div flex="100">
                 <br>
                 <div layout="row" layout-align="space-around center">
-                    <md-card class="fotosCard" ng-repeat="foto in evento.">
+                    <md-card class="fotosCard" ng-repeat="foto in evento.fotos">
                         <img ng-src="[[foto]]">
                     </md-card>
                 </div>
@@ -45,8 +45,7 @@
         </div>
 
         <div flex="30">
-
-            <time-date-picker class="md-whiteframe-z1 center" ng-model="fechafecha" orientation="true" ></time-date-picker>
+            <time-date-picker class="md-whiteframe-z1 center" ng-model="evento.fecha" orientation="true" ></time-date-picker>
             <md-button class="md-raised participar center">Participar</md-button>
         </div>
     </div>

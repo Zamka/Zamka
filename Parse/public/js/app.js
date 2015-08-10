@@ -178,6 +178,7 @@ $timeout(function(){
 
 })
 .controller('eventosCtrl',function($scope,$timeout,$location){
+        $scope.evento = {};
     $scope.searchCategoria = function(){
 
     };
