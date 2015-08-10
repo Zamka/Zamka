@@ -50,6 +50,7 @@ exports.evento = function (req, res) {
             respuesta.Categorias = evento.get("Categorias");
             respuesta.Fecha = evento.get("Categorias");
             respuesta.Organizacion = evento.get("Organizacion");
+            respuesta.Imagen = evento.get("Imagen");
             //respuesta.Evento = evento;
             respuesta.Fotos = evento.get("Fotos");
             var relation = evento.relation("Fotos");
