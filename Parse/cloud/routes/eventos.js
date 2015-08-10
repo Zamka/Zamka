@@ -1,5 +1,6 @@
 var Evento = Parse.Object.extend("Evento");
-    var ONG = Parse.Object.extend("Organizacion");
+var ONG = Parse.Object.extend("Organizacion");
+var ComentarioEvento = Parse.Object.extend("ComentarioEvento");
 
 exports.buscar = function (req, res) {
     var busqueda = req.query.busqueda;
@@ -25,8 +26,35 @@ exports.porCategoria = function (req, res) {
 exports.evento = function (req, res) {
     var id = req.query.idEvento;
     var query = new Parse.Query(Evento);
+    var query2 = new Parse.Query(ComentarioEvento);
+    query.include("Organizacion");
+    query2.select("Comentario", "Usuario");
+    query2.include("Usuario");
+    var respuesta = {};
+    var comentariosrespuesta = [];
     query.get(id, function (evento) {
-        res.json(evento);
+        query2.equalTo("Evento", evento);
+        query2.find().then(function (comentarios) {
+            var i = 0;
+            comentarios.forEach(function (comentario) {
+                comentariosrespuesta[i] = {};
+                comentariosrespuesta[i].idUsuario = comentario.get("Usuario").id;
+                comentariosrespuesta[i].Nombre = comentario.get("Usuario").get("name");
+                comentariosrespuesta[i].Foto = comentario.get("Usuario").get("image");
+                comentariosrespuesta[i++].Comentario = comentario.get("Comentario");
+            });
+            respuesta.Comentarios = comentariosrespuesta;
+            respuesta.Nombre = evento.get("Nombre");
+            respuesta.Descripcion = evento.get("Descripcion");
+            respuesta.Contenido = evento.get("Contenido");
+            respuesta.Categorias = evento.get("Categorias");
+            respuesta.Fecha = evento.get("Categorias");
+            respuesta.Organizacion= evento.get("Organizacion");
+            //respuesta.Evento = evento;
+            res.json(respuesta);
+        }, function (error) {
+            res.json(error);
+        });
     });
 };
 
@@ -97,7 +125,7 @@ exports.editarEvento = function (req, res) {
             //evento.set("fotos", fotos);
 
             evento.save(null, {
-                success: function(evento) {
+                success: function (evento) {
                     res.json(evento);
                 }
             });

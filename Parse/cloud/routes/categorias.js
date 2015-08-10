@@ -4,7 +4,7 @@ var Categoria = Parse.Object.extend("Categorias");
 exports.fetch = function (req, res) {
     var query = new Parse.Query(Categoria);
     query.limit(100);
-    query.descending('createdAt');
+    query.ascending('Nombre');
     query.find().then(function (categorias) {
         res.json(categorias);
     });
