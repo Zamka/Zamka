@@ -10,10 +10,10 @@ exports.login = function (req, res) {
 
     var query = new Parse.Query(User);
     console.log(password);
-    if (password === undefined) {
+    if (password === null || password === undefined) {
         query.equalTo("username", correo);
         query.equalTo("fbId", fbId);
-        query.find().then(function (user) {
+        query.first().then(function (user) {
             res.json(user);
         }, function (error) {
             res.json(error);

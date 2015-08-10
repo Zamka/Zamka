@@ -1,5 +1,5 @@
 var Evento = Parse.Object.extend("Evento");
-var ONG = Parse.Object.extend("Organizacion");
+    var ONG = Parse.Object.extend("Organizacion");
 
 exports.buscar = function (req, res) {
     var busqueda = req.query.busqueda;
