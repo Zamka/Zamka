@@ -46,7 +46,18 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','mdDateTime'])
     $scope.irEvento = function(id){
         $location.url("/App/Evento/1");
     };
-
+    ///FB LOGIN
+    $scope.loginFB = function(){
+        $http.post("/API/Login",{
+            correo:"test@zamka.org",
+            password:null,
+            fbid:511882046
+        }).success(function(data){
+            $log.log("--SUCCESS--");
+            $log.log("data:",data);
+        });
+    };
+    // LOGIN
     $scope.login = function(correo,password,fbid){
         $http.post("/API/Login",{
             correo:correo,
@@ -55,11 +66,31 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','mdDateTime'])
         }).success(function(data){
             $log.log("--SUCCESS--");
             $log.log("data:",data);
+            $scope.usuario = {
+                email:data.email,
+                fbid:data.facebookID,
+                foto:data.image.url,
+                nombre:data.name
+            };
+            if (data.objectId){
+                $location.url("/App/Eventos");
+            }
         }).error(function(data){
             $log.log("--Error--");
             $log.log("data:",data);
         });
     };
+    //CATEGORIAS
+    $scope.getCategorias = function(){
+        $http.get("/API/Categorias").success(function(data){
+            $scope.categorias = [];
+            for (key in data){
+                $scope.categorias.push(data[key].Nombre);
+            }
+            $log.log("Categorias:",$scope.categorias);
+
+        });
+    }
 
 
 
@@ -81,6 +112,7 @@ $timeout(function(){
     $scope.searchCategoria = function(){
 
     };
+    $scope.getCategorias();
 
 })
 .controller('eventoCtrl',function($scope,$timeout,$location){

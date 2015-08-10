@@ -68,22 +68,11 @@
                 </div>
             </md-toolbar>
             <md-list class="md-whiteframe-z1">
-                <md-list-item  ng-click="searchCategoria()">
-                    <i class="fa fa-graduation-cap cat-icon"></i>
-                    <p> Categoria 1</p>
+                <md-list-item ng-repeat="categoria in categorias"  ng-click="searchCategoria()">
+                    <i class="fa fa-square-o"></i>
+                    <p> [[categoria]]</p>
                 </md-list-item>
-                <md-list-item  ng-click="searchCategoria()">
-                    <i class="fa fa-graduation-cap cat-icon"></i>
-                    <p> Categoria 1</p>
-                </md-list-item>
-                <md-list-item  ng-click="searchCategoria()">
-                    <i class="fa fa-graduation-cap cat-icon"></i>
-                    <p> Categoria 1</p>
-                </md-list-item>
-                <md-list-item  ng-click="searchCategoria()">
-                    <i class="fa fa-graduation-cap cat-icon"></i>
-                    <p>  Categoria 1</p>
-                </md-list-item>
+
 
             </md-list>
         </div>
