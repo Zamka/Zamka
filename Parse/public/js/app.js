@@ -109,6 +109,26 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','mdDateTime'])
             $log.log("Eventos:",$scope.eventos);
         });
     };
+    //EVENTO
+        $scope.getEvento = function(id){
+            $http.get("/API/Evento?idEvento="+id).success(function(data){
+
+                /*
+                Falta fotos, comentarios y datos de organizacion
+                */
+
+                $scope.evento={
+                    categoria:data.Categorias[0],
+                    contenido:data.Contenido,
+                    descripcion:data.Descripcion,
+                    fecha:data.Fecha.iso,
+                    nombre:data.Nombre,
+                    foto:data.Imagen.url,
+                    id:data.objectId
+                };
+                $log.log("Evento:",$scope.evento);
+            });
+        };
 
     //UTIL
 
