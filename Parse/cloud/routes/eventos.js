@@ -18,6 +18,7 @@ exports.porCategoria = function (req, res) {
     var query = new Parse.Query(Evento);
     query.limit(100);
     query.descending('createdAt');
+    query.equalTo("Categorias", categoria);
     query.find().then(function (eventos) {
         res.json(eventos);
     });
