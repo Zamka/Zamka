@@ -44,6 +44,7 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','mdDateTime'])
         });
 })
 .controller('AppCtrl', function($scope,$timeout,$location,$http,$log,$mdToast){
+    $scope.cargando = false;
     //CheckLogin
     if(localStorage.usuario){
         $scope.usuario = JSON.parse(localStorage.usuario);
@@ -54,22 +55,26 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','mdDateTime'])
     };
     ///FB LOGIN
     $scope.loginFB = function(){
+        $scope.cargando = true;
         $http.post("/API/Login",{
             correo:"test@zamka.org",
             password:null,
             fbid:511882046
         }).success(function(data){
+            $scope.cargando = false;
             $log.log("--SUCCESS--");
             $log.log("data:",data);
         });
     };
     // LOGIN
     $scope.login = function(correo,password,fbid){
+        $scope.cargando = true;
         $http.post("/API/Login",{
             correo:correo,
             password:password,
             fbid:fbid
         }).success(function(data){
+            $scope.cargando = false;
             $log.log("--SUCCESS--");
             $log.log("data:",data);
             $scope.usuario = {
@@ -84,6 +89,7 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','mdDateTime'])
                 $location.url("/App/Eventos");
             }
         }).error(function(data){
+            $scope.cargando = false;
             $log.log("--Error--");
             $log.log("data:",data);
         });
@@ -96,18 +102,21 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','mdDateTime'])
     }
     //CATEGORIAS
     $scope.getCategorias = function(){
+        $scope.cargando = true;
         $http.get("/API/Categorias").success(function(data){
             $scope.categorias = [];
             for (key in data){
                 $scope.categorias.push(data[key].Nombre);
             }
+            $scope.cargando = false;
             $log.log("Categorias:",$scope.categorias);
         });
     }
     ///EVENTOS
     $scope.getEventos = function(){
+        $scope.cargando = true;
+        $scope.eventos = [];
         $http.get("/API/Buscar?busqueda=").success(function(data){
-            $scope.eventos = [];
             for (key in data){
                 var evento = data[key];
                 $scope.eventos.push({
@@ -119,16 +128,15 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','mdDateTime'])
                     id:evento.objectId
                 });
             }
+            $scope.cargando = false;
             $log.log("Eventos:",$scope.eventos);
         });
     };
     //EVENTO
     $scope.getEvento = function(id){
+        $scope.cargando = true;
         $http.get("/API/Evento?idEvento="+id).success(function(data){
 
-            /*
-            Falta fotos, comentarios y datos de organizacion
-            */
             $log.log("data:",data);
             $scope.evento={
                 categoria:data.Categorias[0],
@@ -159,15 +167,18 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','mdDateTime'])
             for(key in data.Fotos){
                 $scope.evento.fotos.push(data.Fotos[key].Archivo.url);
             }
+            $scope.cargando = false;
             $log.log("Evento:",$scope.evento);
         });
     };
     //SOLICITAR PARTICIPACION
     $scope.solicitarParticipacion = function(idEvento,idUsuario){
+        $scope.cargando = true;
         $http.post("/API/Participar",{
             idEvento:idEvento,
             idUsuario:idUsuario
         }).success(function(){
+            $scope.cargando = false;
             swal(
                 {
                     title:"Exito!",
@@ -227,16 +238,13 @@ $timeout(function(){
 
 })
 .controller('eventosCtrl',function($scope,$timeout,$location){
-        $scope.evento = {};
-    $scope.searchCategoria = function(){
-
-    };
     $scope.getCategorias();
     $scope.getEventos();
 
 
 })
 .controller('eventoCtrl',function($scope,$timeout,$location,$routeParams){
+        $scope.evento = {};
         $scope.getEvento($routeParams.id);
         $scope.confirmarParticipacion = function(){
             swal({

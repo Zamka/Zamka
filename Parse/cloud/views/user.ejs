@@ -44,6 +44,11 @@
         </md-button>
     </div>
 </md-toolbar>
+
+<div class="loadingBack" layout="row" layout-align="center center" ng-show="cargando">
+    <md-progress-circular class="md-warn" md-mode="indeterminate"></md-progress-circular>
+</div>
+
 <div class="contenedor" layout="row" layout-align="center start" flex ng-view>
 </div>
 
