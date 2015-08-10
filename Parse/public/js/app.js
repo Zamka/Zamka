@@ -88,6 +88,12 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','mdDateTime'])
             $log.log("data:",data);
         });
     };
+    //LOGOUT
+    $scope.logout = function(){
+        localStorage.usuario = null;
+        $scope.usuario = null;
+        $location.url("/App");
+    }
     //CATEGORIAS
     $scope.getCategorias = function(){
         $http.get("/API/Categorias").success(function(data){

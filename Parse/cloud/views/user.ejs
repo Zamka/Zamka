@@ -15,8 +15,32 @@
     <div class="md-toolbar-tools">
         <a href="/App/Eventos"><img class="heightFull" src="/img/logow.png"></a>
         <span flex></span>
-        <md-button class="md-icon-button" aria-label="More">
+
+        <md-button ng-hide="usuario" class="md-icon-button" aria-label="More">
+            <md-tooltip md-direction="down">
+                Ingresar
+            </md-tooltip>
             <i class="fa fa-sign-in"></i>
+        </md-button>
+
+
+        <md-button ng-show="usuario" class="md-icon-button" aria-label="More">
+            <md-tooltip md-direction="down">
+                Mi Perfil
+            </md-tooltip>
+            <i class="fa fa-users"></i>
+        </md-button>
+        <md-button ng-show="usuario" class="md-icon-button" aria-label="More">
+            <md-tooltip md-direction="down">
+                Mi Cuenta
+            </md-tooltip>
+            <i class="fa fa-inbox"></i>
+        </md-button>
+        <md-button ng-show="usuario" class="md-icon-button" aria-label="Salir" ng-click="logout()">
+            <md-tooltip md-direction="down">
+                Salir
+            </md-tooltip>
+            <i class="fa fa-sign-out"></i>
         </md-button>
     </div>
 </md-toolbar>
