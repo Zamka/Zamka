@@ -116,14 +116,14 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','mdDateTime'])
                 /*
                 Falta fotos, comentarios y datos de organizacion
                 */
-
+                $log.log("data:",data);
                 $scope.evento={
                     categoria:data.Categorias[0],
                     contenido:data.Contenido,
                     descripcion:data.Descripcion,
                     fecha:data.Fecha.iso,
                     nombre:data.Nombre,
-                    foto:data.Imagen.url,
+                    foto:data.Imagen["_url"],
                     id:data.objectId,
                     comentarios:[],
                     fotos: [],
