@@ -1,21 +1,24 @@
 <div layout="column" layout-align="start center" flex="90">
     <br>
     <div layout="row" layout-align="space-between start">
-        <div layout="row" layout-align="space-around start" layout-wrap flex="80">
-        <md-card ng-repeat="evento in eventos" flex="30" class="evento-card" ng-click="irEvento(evento.id)">
-            <img ng-src="[[evento.foto]]" class="md-card-image" alt="Washed Out">
-            <md-card-content>
-                <div layout="row" layout-align="start center">
-                    <label class="headers categoria">[[evento.categoria]]</label>
-                    <div class="headers"><i class="fa fa-flag"></i> 30</div>
-                    <div class="headers"><i class="fa fa-calendar-o"></i> [[showDate(evento.fecha)]]</div>
-                </div>
-                <h2 class="md-title">[[evento.nombre]]</h2>
-                <p>
-                  [[evento.descripcion]]
-                </p>
-            </md-card-content>
-        </md-card>
+        <div layout="row" layout-align="start start" layout-wrap flex="80">
+            <div ng-repeat="evento in eventos" flex-sm="100" flex-gt-md="50" flex-gt-lg="33">
+                <md-card class="evento-card" ng-click="irEvento(evento.id)">
+                    <img ng-src="[[evento.foto]]" class="md-card-image" alt="Washed Out">
+                    <md-card-content>
+                        <div layout="row" layout-align="start center">
+                            <label class="headers categoria">[[evento.categoria]]</label>
+                            <div class="headers"><i class="fa fa-flag"></i> 30</div>
+                            <div class="headers"><i class="fa fa-calendar-o"></i> [[showDate(evento.fecha)]]</div>
+                        </div>
+                        <h2 class="md-title">[[evento.nombre]]</h2>
+                        <p>
+                            [[evento.descripcion]]
+                        </p>
+                    </md-card-content>
+                </md-card>
+            </div>
+
 
         </div>
         <div flex="20">
