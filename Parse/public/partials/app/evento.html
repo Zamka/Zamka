@@ -16,13 +16,13 @@
                     <label class="nombreLbl">[[evento.org.nombre]]</label>
                     <hr class="center width-80">
                     <div layout="row" layout-align="space-around center">
-                        <md-button class="md-fab social-fab" aria-label="Use Android">
+                        <md-button class="md-fab social-fab" ng-click="showToast('Proximamente')">
                             <i class="fa fa-facebook"></i>
                         </md-button>
-                        <md-button class="md-fab social-fab" aria-label="Use Android">
+                        <md-button class="md-fab social-fab" ng-click="showToast('Proximamente')">
                             <i class="fa fa-twitter"></i>
                         </md-button>
-                        <md-button class="md-fab social-fab" aria-label="Use Android">
+                        <md-button class="md-fab social-fab" ng-click="showToast('Proximamente')">
                             <i class="fa fa-google-plus"></i>
                         </md-button>
                     </div>
@@ -46,7 +46,7 @@
 
         <div flex="30">
             <time-date-picker class="md-whiteframe-z1 center" ng-model="evento.fecha" orientation="true" ></time-date-picker>
-            <md-button class="md-raised participar center">Participar</md-button>
+            <md-button class="md-raised participar center" ng-click="confirmarParticipacion()">Participar</md-button>
         </div>
     </div>
 <br>

@@ -43,7 +43,7 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','mdDateTime'])
             requireBase: false
         });
 })
-.controller('AppCtrl', function($scope,$timeout,$location,$http,$log){
+.controller('AppCtrl', function($scope,$timeout,$location,$http,$log,$mdToast){
     $scope.irEvento = function(id){
         $location.url("/App/Evento/"+id);
     };
@@ -161,6 +161,27 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','mdDateTime'])
     $scope.verFecha = function(){
         $log.log("fecha:",$scope.fechafecha);
     }
+    $scope.toastPosition = {
+        bottom: false,
+        top: true,
+        left: false,
+        right: true
+    };
+    $scope.getToastPosition = function() {
+        return Object.keys($scope.toastPosition)
+            .filter(function(pos) { return $scope.toastPosition[pos]; })
+            .join(' ');
+    };
+
+    $scope.showToast = function(txt) {
+        $mdToast.show(
+            $mdToast.simple()
+                .content(txt)
+                .position($scope.getToastPosition())
+                .hideDelay(3000)
+        );
+    };
+
 
 
 
@@ -185,9 +206,30 @@ $timeout(function(){
     $scope.getCategorias();
     $scope.getEventos();
 
+
 })
 .controller('eventoCtrl',function($scope,$timeout,$location,$routeParams){
         $scope.getEvento($routeParams.id);
+        $scope.confirmarParticipacion = function(){
+            swal({
+                    title: "Estas Seguro?",
+                    text: "Si aceptas participar en este evento es un compromiso con esta organizacion y deberas cumplir en asistir al evento",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#009688",
+                    confirmButtonText: "Si,Deseo Participar!",
+                    cancelButtonText: "Cancelar",
+                    closeOnConfirm: false },
+                function(){
+                    swal(
+                        {
+                            title:"Exito!",
+                            text:"Registramos tu peticion para participar, por favor este atento a su confirmacion.",
+                            type:"success",
+                            confirmButtonColor: "#009688"
+                        });
+                });
+        };
 })
 .controller('perfilCtrl',function($scope,$timeout,$location){
 
