@@ -121,10 +121,9 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','mdDateTime'])
                     categoria:data.Categorias[0],
                     contenido:data.Contenido,
                     descripcion:data.Descripcion,
-                    fecha:data.Fecha.iso,
+                    fecha:data.Fecha,
                     nombre:data.Nombre,
                     foto:data.Imagen["_url"],
-                    id:data.objectId,
                     comentarios:[],
                     fotos: [],
                     org:{
@@ -138,7 +137,8 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','mdDateTime'])
                         usuario:{
                             nombre:data.Comentarios[key].Nombre,
                             foto:data.Comentarios[key].Foto["_url"],
-                            id:data.Comentarios[key].idUsuario
+                            id:data.Comentarios[key].idUsuario,
+                            fecha:data.Comentarios[key].Fecha
                         },
                         comentario:data.Comentarios[key].Comentario
                     })
@@ -155,7 +155,12 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','mdDateTime'])
     $scope.showDate = function(iso){
         return moment(iso).format("Do MMM YYYY");
     }
-
+    $scope.timeSince = function(iso){
+        return moment(iso).fromNow();
+    }
+    $scope.verFecha = function(){
+        $log.log("fecha:",$scope.fechafecha);
+    }
 
 
 

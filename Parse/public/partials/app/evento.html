@@ -37,14 +37,8 @@
             <div flex="100">
                 <br>
                 <div layout="row" layout-align="space-around center">
-                    <md-card class="fotosCard">
-                        <img src="/img/Picture1.jpg">
-                    </md-card>
-                    <md-card class="fotosCard">
-                        <img src="/img/Picture2.jpg">
-                    </md-card>
-                    <md-card class="fotosCard">
-                        <img src="/img/Picture3.jpg">
+                    <md-card class="fotosCard" ng-repeat="foto in evento.">
+                        <img ng-src="[[foto]]">
                     </md-card>
                 </div>
             </div>
@@ -52,7 +46,7 @@
 
         <div flex="30">
 
-            <time-date-picker class="md-whiteframe-z1 center" ng-model="dateValue" orientation="true" ></time-date-picker>
+            <time-date-picker class="md-whiteframe-z1 center" ng-model="fechafecha" orientation="true" ></time-date-picker>
             <md-button class="md-raised participar center">Participar</md-button>
         </div>
     </div>
@@ -68,7 +62,7 @@
                 <a href="/App/Perfil/[[comentario.usuario.id]]"><img class="circlePhoto md-whiteframe-z1" ng-src="[[comentario.usuario.foto]]"></a>
             </div>
             <div flex="70" layout="column" layout-align="start start">
-                <p><label class="nombreLbl" >[[comentario.usuario.nombre]] </label><i class="fa fa-calendar-o"></i> Hace 5 dias</p>
+                <p><label class="nombreLbl" >[[comentario.usuario.nombre]] </label><i class="fa fa-calendar-o"></i> [[timeSince(comentario.fecha)]]</p>
                 <div>
                     <p>[[comentario.comentario]]</p>
                 </div>
