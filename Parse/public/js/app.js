@@ -1,4 +1,5 @@
 var timenow=Date.now();
+moment.locale('es');
 angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','mdDateTime'])
 .config(function($mdThemingProvider,$routeProvider,$interpolateProvider,$locationProvider) {
   $routeProvider
@@ -44,7 +45,7 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','mdDateTime'])
 })
 .controller('AppCtrl', function($scope,$timeout,$location,$http,$log){
     $scope.irEvento = function(id){
-        $location.url("/App/Evento/1");
+        $location.url("/App/Evento/"+id);
     };
     ///FB LOGIN
     $scope.loginFB = function(){
@@ -88,8 +89,31 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','mdDateTime'])
                 $scope.categorias.push(data[key].Nombre);
             }
             $log.log("Categorias:",$scope.categorias);
-
         });
+    }
+    ///EVENTOS
+    $scope.getEventos = function(){
+        $http.get("/API/Buscar?busqueda=").success(function(data){
+            $scope.eventos = [];
+            for (key in data){
+                var evento = data[key];
+                $scope.eventos.push({
+                    categoria:evento.Categorias[0],
+                    descripcion:evento.Descripcion,
+                    fecha:evento.Fecha.iso,
+                    nombre:evento.Nombre,
+                    foto:evento.Imagen.url,
+                    id:evento.objectId
+                });
+            }
+            $log.log("Eventos:",$scope.eventos);
+        });
+    };
+
+    //UTIL
+
+    $scope.showDate = function(iso){
+        return moment(iso).format("Do MMM YYYY");
     }
 
 
@@ -113,6 +137,7 @@ $timeout(function(){
 
     };
     $scope.getCategorias();
+    $scope.getEventos();
 
 })
 .controller('eventoCtrl',function($scope,$timeout,$location){
