@@ -175,8 +175,8 @@ $timeout(function(){
     $scope.getEventos();
 
 })
-.controller('eventoCtrl',function($scope,$timeout,$location){
-
+.controller('eventoCtrl',function($scope,$timeout,$location,$routeParams){
+        $scope.getEvento($routeParams.id);
 })
 .controller('perfilCtrl',function($scope,$timeout,$location){
 
