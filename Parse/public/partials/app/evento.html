@@ -1,8 +1,8 @@
 <div layout="column" layout-align="start center" flex="100">
     <div class="evento-header" layout="column" layout-align="center center">
             <div layout="column" layout-align="center start">
-                <label class="categoria">CATEGORIA</label>
-                <h1 class="evento-titulo">Titulo del Evento</h1>
+                <label class="categoria">[[evento.categoria]]</label>
+                <h1 class="evento-titulo">[[evento.nombre]]</h1>
             </div>
     </div>
     <br>
@@ -12,8 +12,8 @@
                 <div layout="column" layout-align="space-around center">
                     <label class="orgLbl">ORGANIZACION</label>
                     <hr class="orgHr center">
-                    <a href="/App/ONG/1"><img class="fullWidth" src="/img/logo.png" ></a>
-                    <label class="nombreLbl">NOMBRE</label>
+                    <a href="/App/ONG/[[evento.org.id]]"><img class="fullWidth" ng-src="[[evento.org.foto]]" ></a>
+                    <label class="nombreLbl">[[evento.org.nombre]]</label>
                     <hr class="center width-80">
                     <div layout="row" layout-align="space-around center">
                         <md-button class="md-fab social-fab" aria-label="Use Android">
@@ -31,11 +31,7 @@
             </div>
             <div flex="70">
                 <div class="width-90 center">
-                    <h2>Descripcion</h2>
-                    <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                    </p>
-                    <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?</p>
+                   <p>[[evento.contenido]]</p>
                 </div>
             </div>
             <div flex="100">
@@ -67,14 +63,14 @@
         <label>COMENTARIOS</label>
         <hr>
     </div>
-        <div layout="row" layout-align="space-around center" class="fullwidth" layout-wrap>
+        <div ng-repeat="comentario in evento.comentarios" layout="row" layout-align="space-around center" class="fullwidth" layout-wrap>
             <div flex="30" layout="row" layout-align="center center">
-                <a href="/App/Perfil/1"><img class="circlePhoto md-whiteframe-z1" src="/img/logo.png"></a>
+                <a href="/App/Perfil/[[comentario.usuario.id]]"><img class="circlePhoto md-whiteframe-z1" ng-src="[[comentario.usuario.foto]]"></a>
             </div>
             <div flex="70" layout="column" layout-align="start start">
-                <p><label class="nombreLbl" >NOMBRE </label><i class="fa fa-calendar-o"></i> Hace 5 dias</p>
+                <p><label class="nombreLbl" >[[comentario.usuario.nombre]] </label><i class="fa fa-calendar-o"></i> Hace 5 dias</p>
                 <div>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat</p>
+                    <p>[[comentario.comentario]]</p>
                 </div>
             </div>
             <div flex="100">
@@ -82,35 +78,6 @@
             </div>
         </div>
 
-        <div layout="row" layout-align="space-around center" class="fullwidth" layout-wrap>
-            <div flex="30" layout="row" layout-align="center center">
-                <a href="/App/Perfil/1"><img class="circlePhoto md-whiteframe-z1" src="/img/logo.png"></a>
-            </div>
-            <div flex="70" layout="column" layout-align="start start">
-                <p><label class="nombreLbl" >NOMBRE </label><i class="fa fa-calendar-o"></i> Hace 5 dias</p>
-                <div>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat</p>
-                </div>
-            </div>
-            <div flex="100">
-                <br><hr class="width-80 center">
-            </div>
-        </div>
-
-        <div layout="row" layout-align="space-around center" class="fullwidth" layout-wrap>
-            <div flex="30" layout="row" layout-align="center center">
-                <a href="/App/Perfil/1"><img class="circlePhoto md-whiteframe-z1" src="/img/logo.png"></a>
-            </div>
-            <div flex="70" layout="column" layout-align="start start">
-                <p><label class="nombreLbl" >NOMBRE </label><i class="fa fa-calendar-o"></i> Hace 5 dias</p>
-                <div>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat</p>
-                </div>
-            </div>
-            <div flex="100">
-                <br><hr class="width-80 center">
-            </div>
-        </div>
 
 
     </div>
