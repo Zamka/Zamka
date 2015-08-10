@@ -44,6 +44,11 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','mdDateTime'])
         });
 })
 .controller('AppCtrl', function($scope,$timeout,$location,$http,$log,$mdToast){
+    //CheckLogin
+    if(localStorage.usuario){
+        $scope.usuario = JSON.parse(localStorage.usuario);
+    }
+
     $scope.irEvento = function(id){
         $location.url("/App/Evento/"+id);
     };
@@ -73,6 +78,8 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','mdDateTime'])
                 foto:data.image.url,
                 nombre:data.name
             };
+            localStorage.usuario = JSON.stringify($scope.usuario);
+
             if (data.objectId){
                 $location.url("/App/Eventos");
             }
@@ -110,46 +117,61 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','mdDateTime'])
         });
     };
     //EVENTO
-        $scope.getEvento = function(id){
-            $http.get("/API/Evento?idEvento="+id).success(function(data){
+    $scope.getEvento = function(id){
+        $http.get("/API/Evento?idEvento="+id).success(function(data){
 
-                /*
-                Falta fotos, comentarios y datos de organizacion
-                */
-                $log.log("data:",data);
-                $scope.evento={
-                    categoria:data.Categorias[0],
-                    contenido:data.Contenido,
-                    descripcion:data.Descripcion,
-                    fecha:data.Fecha,
-                    nombre:data.Nombre,
-                    foto:data.Imagen["_url"],
-                    comentarios:[],
-                    fotos: [],
-                    org:{
-                        nombre:data.Organizacion.Nombre,
-                        id:data.Organizacion.objectId,
-                        foto:data.Organizacion.Foto.url
-                    }
-                };
-                for (key in data.Comentarios){
-                    $scope.evento.comentarios.push({
-                        usuario:{
-                            nombre:data.Comentarios[key].Nombre,
-                            foto:data.Comentarios[key].Foto["_url"],
-                            id:data.Comentarios[key].idUsuario,
-                            fecha:data.Comentarios[key].Fecha
-                        },
-                        comentario:data.Comentarios[key].Comentario
-                    })
+            /*
+            Falta fotos, comentarios y datos de organizacion
+            */
+            $log.log("data:",data);
+            $scope.evento={
+                categoria:data.Categorias[0],
+                contenido:data.Contenido,
+                descripcion:data.Descripcion,
+                fecha:data.Fecha,
+                nombre:data.Nombre,
+                foto:data.Imagen["_url"],
+                comentarios:[],
+                fotos: [],
+                org:{
+                    nombre:data.Organizacion.Nombre,
+                    id:data.Organizacion.objectId,
+                    foto:data.Organizacion.Foto.url
                 }
-                for(key in data.Fotos){
-                    $scope.evento.fotos.push(data.Fotos[key].Archivo.url);
-                }
-                $log.log("Evento:",$scope.evento);
-            });
-        };
+            };
+            for (key in data.Comentarios){
+                $scope.evento.comentarios.push({
+                    usuario:{
+                        nombre:data.Comentarios[key].Nombre,
+                        foto:data.Comentarios[key].Foto["_url"],
+                        id:data.Comentarios[key].idUsuario,
+                        fecha:data.Comentarios[key].Fecha
+                    },
+                    comentario:data.Comentarios[key].Comentario
+                })
+            }
+            for(key in data.Fotos){
+                $scope.evento.fotos.push(data.Fotos[key].Archivo.url);
+            }
+            $log.log("Evento:",$scope.evento);
+        });
+    };
+    //SOLICITAR PARTICIPACION
+    $scope.solicitarParticipacion = function(idEvento,idUsuario){
+        $http.post("/API/Participar",{
+            idEvento:idEvento,
+            idUsuario:idUsuario
+        }).success(function(){
+            swal(
+                {
+                    title:"Exito!",
+                    text:"Registramos tu peticion para participar, por favor este atento a su confirmacion.",
+                    type:"success",
+                    confirmButtonColor: "#009688"
+                });
+        });
 
+    }
     //UTIL
 
     $scope.showDate = function(iso){
@@ -221,13 +243,7 @@ $timeout(function(){
                     cancelButtonText: "Cancelar",
                     closeOnConfirm: false },
                 function(){
-                    swal(
-                        {
-                            title:"Exito!",
-                            text:"Registramos tu peticion para participar, por favor este atento a su confirmacion.",
-                            type:"success",
-                            confirmButtonColor: "#009688"
-                        });
+                    $scope.solicitarParticipacion($routeParams.id,$scope.usuario.id);
                 });
         };
 })
