@@ -124,8 +124,23 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','mdDateTime'])
                     fecha:data.Fecha.iso,
                     nombre:data.Nombre,
                     foto:data.Imagen.url,
-                    id:data.objectId
+                    id:data.objectId,
+                    comentarios:[],
+                    fotos: [],
                 };
+                for (key in data.Comentarios){
+                    $scope.evento.comentarios.push({
+                        usuario:{
+                            nombre:data.Comentarios[key].Nombre,
+                            foto:data.Comentarios[key].Foto["_url"],
+                            id:data.Comentarios[key].idUsuario
+                        },
+                        comentario:data.Comentarios[key].Comentario
+                    })
+                }
+                for(key in data.Fotos){
+                    $scope.evento.fotos.push(data.Fotos[key].Archivo.url);
+                }
                 $log.log("Evento:",$scope.evento);
             });
         };
@@ -160,8 +175,8 @@ $timeout(function(){
     $scope.getEventos();
 
 })
-.controller('eventoCtrl',function($scope,$timeout,$location){
-
+.controller('eventoCtrl',function($scope,$timeout,$location,$routeParams){
+        $scope.getEvento($routeParams.id);
 })
 .controller('perfilCtrl',function($scope,$timeout,$location){
 
