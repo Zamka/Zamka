@@ -12,7 +12,10 @@ var organizacion = require('cloud/routes/organizacion');
 app.set('views', 'cloud/views');  // Specify the folder to find templates
 app.set('view engine', 'ejs');    // Set the template engine
 //app.use(expressLayouts);
-app.use(express.bodyParser());    // Middleware for reading request body
+
+app.use(express.bodyParser());
+app.use(express.json());
+app.use(express.urlencoded());
 
 app.locals.parseApplicationId = 'YOUR_APP_ID';
 app.locals.parseJavascriptKey = 'YOUR_JAVASCRIPT_KEY';
