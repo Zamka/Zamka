@@ -49,9 +49,21 @@ exports.evento = function (req, res) {
             respuesta.Contenido = evento.get("Contenido");
             respuesta.Categorias = evento.get("Categorias");
             respuesta.Fecha = evento.get("Categorias");
-            respuesta.Organizacion= evento.get("Organizacion");
+            respuesta.Organizacion = evento.get("Organizacion");
             //respuesta.Evento = evento;
-            res.json(respuesta);
+            respuesta.Fotos = evento.get("Fotos");
+            var relation = evento.relation("Fotos");
+            var query3 = relation.query();
+            query3.find({
+                success: function (fotos) {
+                    respuesta.Fotos = fotos;
+                    res.json(respuesta);
+                },
+                error: function (error) {
+                    res.json(error);
+                }
+            });
+
         }, function (error) {
             res.json(error);
         });
