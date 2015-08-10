@@ -127,6 +127,11 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','mdDateTime'])
                     id:data.objectId,
                     comentarios:[],
                     fotos: [],
+                    org:{
+                        nombre:data.Organizacion.Nombre,
+                        id:data.Organizacion.objectId,
+                        foto:data.Organizacion.Foto.url
+                    }
                 };
                 for (key in data.Comentarios){
                     $scope.evento.comentarios.push({
