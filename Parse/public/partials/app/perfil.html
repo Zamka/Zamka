@@ -1,78 +1,40 @@
 <div layout="column" layout-align="start center" flex="100">
     <div class="evento-header" layout="row" layout-align="center center">
         <div layout="column" layout-align="center center"flex="30">
-            <img class="circlePhotoPerfil md-whiteframe-z1" src="/img/logo.png">
+            <img class="circlePhotoPerfil md-whiteframe-z1" ng-src="[[perfil.foto]]">
         </div>
         <div layout="column" layout-align="center start" flex="70">
             <label class="categoria">VOLUNTARIO</label>
-            <h1 class="evento-titulo">Nombre del Voluntario</h1>
-            <h2 class="evento-desc">#CATEGORIA1 #CATEGORIA2 #CATEGORIA3</h2>
+            <h1 class="evento-titulo">[[perfil.nombre]]</h1>
+            <h2 class="evento-desc"><a ng-repeat="categoria in perfil.gustos" href="/App/Categoria/[[categoria]]"><span>#[[categoria]]</span></a></h2>
         </div>
     </div>
     <br>
-    <div layout="row" layout-align="space-around start" layout-wrap>
+    <div layout="row" layout-align="start start" layout-wrap class="width-95 center">
         <div flex="100">
-            <div class="width-95 center">
-                <h1>Participe en estos eventos</h1>
-                <hr>
-            </div>
+            <h1>Participe en estos eventos</h1>
+            <hr>
         </div>
-        <md-card flex="24" class="evento-card" ng-click="irEvento()">
-            <img src="/img/Picture1.jpg" class="md-card-image" alt="Washed Out">
-            <md-card-content>
-                <div layout="row" layout-align="start center">
-                    <label class="headers categoria">CATEGORIA</label>
-                    <div class="headers"><i class="fa fa-flag"></i> 30</div>
-                    <div class="headers"><i class="fa fa-calendar-o"></i> 8/8/2015</div>
-                </div>
-                <h2 class="md-title">Titulo</h2>
-                <p>
-                    Descripcion del evento y un parrafo chico para mostrar como se veria la card con una descripcion de este tamaño le pondria algo  de lorem ipsum pero con esto ya es suficiente.
-                </p>
-            </md-card-content>
-        </md-card>
-        <md-card flex="24" class="evento-card" ng-click="irEvento()">
-            <img src="/img/Picture1.jpg" class="md-card-image" alt="Washed Out">
-            <md-card-content>
-                <div layout="row" layout-align="start center">
-                    <label class="headers categoria">CATEGORIA</label>
-                    <div class="headers"><i class="fa fa-flag"></i> 30</div>
-                    <div class="headers"><i class="fa fa-calendar-o"></i> 8/8/2015</div>
-                </div>
-                <h2 class="md-title">Titulo</h2>
-                <p>
-                    Descripcion del evento y un parrafo chico para mostrar como se veria la card con una descripcion de este tamaño le pondria algo  de lorem ipsum pero con esto ya es suficiente.
-                </p>
-            </md-card-content>
-        </md-card>
-        <md-card flex="24" class="evento-card" ng-click="irEvento()">
-            <img src="/img/Picture1.jpg" class="md-card-image" alt="Washed Out">
-            <md-card-content>
-                <div layout="row" layout-align="start center">
-                    <label class="headers categoria">CATEGORIA</label>
-                    <div class="headers"><i class="fa fa-flag"></i> 30</div>
-                    <div class="headers"><i class="fa fa-calendar-o"></i> 8/8/2015</div>
-                </div>
-                <h2 class="md-title">Titulo</h2>
-                <p>
-                    Descripcion del evento y un parrafo chico para mostrar como se veria la card con una descripcion de este tamaño le pondria algo  de lorem ipsum pero con esto ya es suficiente.
-                </p>
-            </md-card-content>
-        </md-card>
-        <md-card flex="24" class="evento-card" ng-click="irEvento()">
-            <img src="/img/Picture1.jpg" class="md-card-image" alt="Washed Out">
-            <md-card-content>
-                <div layout="row" layout-align="start center">
-                    <label class="headers categoria">CATEGORIA</label>
-                    <div class="headers"><i class="fa fa-flag"></i> 30</div>
-                    <div class="headers"><i class="fa fa-calendar-o"></i> 8/8/2015</div>
-                </div>
-                <h2 class="md-title">Titulo</h2>
-                <p>
-                    Descripcion del evento y un parrafo chico para mostrar como se veria la card con una descripcion de este tamaño le pondria algo  de lorem ipsum pero con esto ya es suficiente.
-                </p>
-            </md-card-content>
-        </md-card>
+        <div flex="100" ng-show="perfil.participaciones.length==0">
+            <h2>Todabia no he participado de nigun evento.</h2>
+        </div>
+        <div flex="25" ng-repeat="participacion in perfil.participaciones">
+            <md-card class="evento-card" ng-click="irEvento(participacion.idEvento)">
+                <img src="/img/Picture1.jpg" class="md-card-image" alt="Washed Out">
+                <md-card-content>
+                    <div layout="row" layout-align="start center">
+                        <label class="headers categoria">[[participacion.categoria]]</label>
+                        <div class="headers"><i class="fa fa-calendar-o"></i> [[showDate(participacion.Fecha)]]</div>
+                    </div>
+                    <h2 class="md-title">[[participacion.Nombre]]</h2>
+                    <p>
+                       [[participacion.Descripcion]]
+                    </p>
+                </md-card-content>
+            </md-card>
+        </div>
+
+
 
     </div>
     <br>

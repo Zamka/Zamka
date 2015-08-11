@@ -214,6 +214,22 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','mdDateTime'])
         });
 
     }
+    //PERFIL
+    $scope.getUsuario = function(id){
+        $scope.perfil={};
+        $scope.cargando = true;
+        $http.get("/API/Usuario?idUsuario="+id)
+            .success(function(data){
+            $scope.cargando = false;
+            $log.log("PerfilData:",data);
+            $scope.perfil={
+                nombre:data.Nombre,
+                foto:data.Foto["_url"],
+                gustos:data.Gustos,
+                participaciones:data.listaParticipacion
+            };
+        });
+    }
     //UTIL
 
     $scope.showDate = function(iso){
@@ -294,8 +310,8 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','mdDateTime'])
                 });
         };
 })
-.controller('perfilCtrl',function($scope,$timeout,$location){
-
+.controller('perfilCtrl',function($scope,$timeout,$location,$routeParams){
+        $scope.getUsuario($routeParams.id);
 })
 .controller('ongCtrl',function($scope,$timeout,$location){
 
