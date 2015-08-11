@@ -1,5 +1,6 @@
 var ONG = Parse.Object.extend("Organizacion");
 var ComentarioOrganizacion = Parse.Object.extend("ComentarioOrganizacion");
+var Evento = Parse.Object.extend("Evento");
 
 exports.getONG = function (req, res) {
 
@@ -10,6 +11,7 @@ exports.getONG = function (req, res) {
     query2.include("Usuario");
     var respuesta = {};
     var comentariosrespuesta = [];
+    var query4 = new Parse.Query(Evento);
     query.get(id, function (organizacion) {
         query2.equalTo("Organizacion", organizacion);
         query2.find().then(function (comentarios) {
@@ -27,13 +29,19 @@ exports.getONG = function (req, res) {
             respuesta.Descripcion = organizacion.get("Descripcion");
             respuesta.Contenido = organizacion.get("Contenido");
             respuesta.Imagen = organizacion.get("Imagen");
-            //respuesta.Evento = evento;
             var relation = organizacion.relation("Fotos");
             var query3 = relation.query();
             query3.find({
                 success: function (fotos) {
                     respuesta.Fotos = fotos;
-                    res.json(respuesta);
+                    query4.equalTo("Organizacion", organizacion);
+                    query4.find().then(function (eventos) {
+                        respuesta.listaEventos = eventos;
+                        res.json(respuesta);
+                    }, function (error) {
+                        res.json(error);
+                    });
+
                 },
                 error: function (error) {
                     res.json(error);
