@@ -263,7 +263,8 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','mdDateTime'])
                         descripcion:data.listaEventos[key].Descripcion,
                         foto:data.listaEventos[key].Imagen.url,
                         fecha:data.listaEventos[key].Fecha.iso,
-                        id:data.listaEventos[key].objectId
+                        id:data.listaEventos[key].objectId,
+                        categoria:data.listaEventos[key].Categorias[0]
                     });
                 }
                 $log.log("ONG:",$scope.ong);
