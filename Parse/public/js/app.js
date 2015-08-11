@@ -231,7 +231,6 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','mdDateTime'])
         });
     }
     //UTIL
-
     $scope.showDate = function(iso){
         return moment(iso).format("Do MMM YYYY");
     }
@@ -264,6 +263,9 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','mdDateTime'])
     $scope.searchCategoria = function(cat){
         $location.url("/App/Categoria/"+cat);
     };
+    $scope.listaUno=function(arr){
+        return arr[0];
+    }
 
 
 
