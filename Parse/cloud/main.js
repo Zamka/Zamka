@@ -10,7 +10,7 @@ Parse.Cloud.beforeSave("Participacion", function (request, response) {
     query.equalTo("Evento", evento);
     query.count({
         success: function (count) {
-            if (count === 0) {
+            if (count < 2) {
                 response.success();
             } else {
                 response.error("Usuario Ya inscrito");

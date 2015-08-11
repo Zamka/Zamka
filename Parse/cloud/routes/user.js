@@ -1,5 +1,5 @@
 var User = Parse.User.extend("User");
-
+var Participacion = Parse.Object.extend("Participacion");
 
 // Shows the list of memes
 exports.login = function (req, res) {
@@ -63,7 +63,31 @@ exports.loginOrganizacion = function (req, res) {
 exports.getUser = function (req, res) {
     var id = req.query.idUsuario;
     var query = new Parse.Query(User);
+    var query2 = new Parse.Query(Participacion);
+    var respuesta = {};
+    var participacionrespuesta = [];
+    query2.include("Evento");
     query.get(id, function (usuario) {
-        res.json(usuario);
+        query2.equalTo("Usuario", usuario);
+        query2.equalTo("Asistencia", true);
+        query2.find().then(function (participaciones) {
+            var i = 0;
+            participaciones.forEach(function (participacion) {
+                participacionrespuesta[i] = {};
+                participacionrespuesta[i].idEvento = participacion.get("Evento").id;
+                participacionrespuesta[i].Descripcion = participacion.get("Evento").get("Descripcion");
+                participacionrespuesta[i].Imagen = participacion.get("Evento").get("Imagen");
+                participacionrespuesta[i].Fecha = participacion.get("Evento").get("Fecha");
+                participacionrespuesta[i++].Nombre = participacion.get("Evento").get("Nombre");
+            });
+            respuesta.Nombre = usuario.get("name");
+            respuesta.Foto = usuario.get("image");
+            respuesta.Biografia = usuario.get("bio");
+            respuesta.Gustos = usuario.get("Gustos");
+            respuesta.listaParticipacion = participacionrespuesta;
+            res.json(respuesta);
+        }, function (error) {
+            res.json(error);
+        });
     });
 };
