@@ -1,81 +1,61 @@
 <div layout="column" layout-align="start center" flex="100">
     <div class="evento-header" layout="row" layout-align="center center">
         <div layout="column" layout-align="center center"flex="30">
-            <img class="heightFull" src="/img/logo.png">
+            <img class="heightFull" ng-src="[[ong.foto]]">
         </div>
         <div layout="column" layout-align="center start" flex="70">
             <label class="categoria">ORGANIZACION</label>
-            <h1 class="evento-titulo">Nombre de la Organizacion</h1>
-            <h2 class="evento-desc">Descripcion de la organizacion, aca va un texto pequeño con un slogan o con una descripcion de lo que hace la organizacion.</h2>
+            <h1 class="evento-titulo">[[ong.nombre]]</h1>
+            <h2 class="evento-desc">[[ong.descripcion]]</h2>
         </div>
     </div>
     <br>
-    <div layout="row" layout-align="space-around start" layout-wrap>
+    <div layout="row" layout-align="start start" layout-wrap  class="width-95 center">
         <div flex="100">
             <div class="width-95 center">
                 <h1>Esta organizacion es responsable por los siguientes eventos</h1>
                 <hr>
             </div>
         </div>
-        <md-card flex="24" class="evento-card" ng-click="irEvento()">
-            <img src="/img/Picture1.jpg" class="md-card-image" alt="Washed Out">
-            <md-card-content>
-                <div layout="row" layout-align="start center">
-                    <label class="headers categoria">CATEGORIA</label>
-                    <div class="headers"><i class="fa fa-flag"></i> 30</div>
-                    <div class="headers"><i class="fa fa-calendar-o"></i> 8/8/2015</div>
-                </div>
-                <h2 class="md-title">Titulo</h2>
-                <p>
-                    Descripcion del evento y un parrafo chico para mostrar como se veria la card con una descripcion de este tamaño le pondria algo  de lorem ipsum pero con esto ya es suficiente.
-                </p>
-            </md-card-content>
-        </md-card>
-        <md-card flex="24" class="evento-card" ng-click="irEvento()">
-            <img src="/img/Picture1.jpg" class="md-card-image" alt="Washed Out">
-            <md-card-content>
-                <div layout="row" layout-align="start center">
-                    <label class="headers categoria">CATEGORIA</label>
-                    <div class="headers"><i class="fa fa-flag"></i> 30</div>
-                    <div class="headers"><i class="fa fa-calendar-o"></i> 8/8/2015</div>
-                </div>
-                <h2 class="md-title">Titulo</h2>
-                <p>
-                    Descripcion del evento y un parrafo chico para mostrar como se veria la card con una descripcion de este tamaño le pondria algo  de lorem ipsum pero con esto ya es suficiente.
-                </p>
-            </md-card-content>
-        </md-card>
-        <md-card flex="24" class="evento-card" ng-click="irEvento()">
-            <img src="/img/Picture1.jpg" class="md-card-image" alt="Washed Out">
-            <md-card-content>
-                <div layout="row" layout-align="start center">
-                    <label class="headers categoria">CATEGORIA</label>
-                    <div class="headers"><i class="fa fa-flag"></i> 30</div>
-                    <div class="headers"><i class="fa fa-calendar-o"></i> 8/8/2015</div>
-                </div>
-                <h2 class="md-title">Titulo</h2>
-                <p>
-                    Descripcion del evento y un parrafo chico para mostrar como se veria la card con una descripcion de este tamaño le pondria algo  de lorem ipsum pero con esto ya es suficiente.
-                </p>
-            </md-card-content>
-        </md-card>
-        <md-card flex="24" class="evento-card" ng-click="irEvento()">
-            <img src="/img/Picture1.jpg" class="md-card-image" alt="Washed Out">
-            <md-card-content>
-                <div layout="row" layout-align="start center">
-                    <label class="headers categoria">CATEGORIA</label>
-                    <div class="headers"><i class="fa fa-flag"></i> 30</div>
-                    <div class="headers"><i class="fa fa-calendar-o"></i> 8/8/2015</div>
-                </div>
-                <h2 class="md-title">Titulo</h2>
-                <p>
-                    Descripcion del evento y un parrafo chico para mostrar como se veria la card con una descripcion de este tamaño le pondria algo  de lorem ipsum pero con esto ya es suficiente.
-                </p>
-            </md-card-content>
-        </md-card>
+        <div flex="25" ng-repeat="evento in ong.eventos">
+            <md-card flex="24" class="evento-card" ng-click="irEvento([[evento.id]])">
+                <img ng-src="[[evento.foto]]" class="md-card-image" alt="Washed Out">
+                <md-card-content>
+                    <div layout="row" layout-align="start center">
+                        <label class="headers categoria">[[evento.categoria]]</label>
+                        <div class="headers"><i class="fa fa-calendar-o"></i> [[showDate(evento.Fecha)]]</div>
+                    </div>
+                    <h2 class="md-title">[[evento.nombre]]</h2>
+                    <p>
+                        [[evento.descripcion]]
+                    </p>
+                </md-card-content>
+            </md-card>
+        </div>
+
 
     </div>
     <br>
+    <div layout="column" layout-align="start center" class="width-80">
+        <div class="fullwidth">
+            <label>COMENTARIOS</label>
+            <hr>
+        </div>
+        <div ng-repeat="comentario in ong.comentarios" layout="row" layout-align="space-around center" class="fullwidth" layout-wrap>
+            <div flex="30" layout="row" layout-align="center center">
+                <a href="/App/Perfil/[[comentario.usuario.id]]"><img class="circlePhoto md-whiteframe-z1" ng-src="[[comentario.usuario.foto]]"></a>
+            </div>
+            <div flex="70" layout="column" layout-align="start start">
+                <p><label class="nombreLbl" >[[comentario.usuario.nombre]] </label><i class="fa fa-calendar-o"></i> [[timeSince(comentario.fecha)]]</p>
+                <div>
+                    <p>[[comentario.comentario]]</p>
+                </div>
+            </div>
+            <div flex="100">
+                <br><hr class="width-80 center">
+            </div>
+        </div>
+    </div>
 
 
 </div>
