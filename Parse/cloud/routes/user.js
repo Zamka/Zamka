@@ -78,6 +78,7 @@ exports.getUser = function (req, res) {
                 participacionrespuesta[i].Descripcion = participacion.get("Evento").get("Descripcion");
                 participacionrespuesta[i].Imagen = participacion.get("Evento").get("Imagen");
                 participacionrespuesta[i].Fecha = participacion.get("Evento").get("Fecha");
+                participacionrespuesta[i].Categorias= participacion.get("Evento").get("Categorias");
                 participacionrespuesta[i++].Nombre = participacion.get("Evento").get("Nombre");
             });
             respuesta.Nombre = usuario.get("name");
