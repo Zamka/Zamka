@@ -132,7 +132,7 @@ hr .width-80{
 .estado-pendiente{color: #dfb700;font-size: 2em;}
 .estado-rechazado{color: #e64807;font-size: 2em;}
 .loadingBack{
-    background-color: rgba(15,15,15,0.1);
+    background-color: rgba(196, 196, 196, 0.8);
     position: fixed;
     z-index: 500;
     width: 100%;
