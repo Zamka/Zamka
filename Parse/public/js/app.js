@@ -231,6 +231,44 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','mdDateTime'])
             };
         });
     }
+    //ONG
+    $scope.getOng = function(id){
+        $scope.ong={};
+        $scope.cargando = true;
+        $http.get("/API/Admin/ONG?idONG="+id)
+            .success(function(data){
+                $scope.cargando = false;
+                $log.log("ONG Data:",data);
+                $scope.ong={
+                    nombre:data.Nombre,
+                    foto:data.Fotos[0]["_url"],
+                    descripcion:data.Descripcion,
+                    eventos:[],
+                    comentarios:[]
+                };
+                for(key in data.Comentarios){
+                    $scope.ong.comentarios.push({
+                        comentario:data.Comentarios[key].Comentario,
+                        fecha:data.Comentarios[key].Fecha,
+                        usuario:{
+                            nombre:data.Comentarios[key].Nombre,
+                            id:data.Comentarios[key].idUsuario,
+                            foto:data.Comentarios[key].Foto["_url"]
+                        }
+                    });
+                }
+                for(key in data.listaEventos){
+                    $scope.ong.eventos.push({
+                        nombre:data.listaEventos[key].Nombre,
+                        descripcion:data.listaEventos[key].Descripcion,
+                        foto:data.listaEventos[key].Imagen.url,
+                        fecha:data.listaEventos[key].Fecha.iso,
+                        id:data.listaEventos[key].objectId
+                    });
+                }
+                $log.log("ONG:",$scope.ong);
+            });
+    }
     //Peticiones
     $scope.getPeticiones = function(){
         $scope.cargando = true;
@@ -366,6 +404,7 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','mdDateTime'])
     $scope.scrollTop();
     $scope.getUsuario($routeParams.id);
 })
-.controller('ongCtrl',function($scope,$timeout,$location){
-
+.controller('ongCtrl',function($scope,$timeout,$routeParams){
+    $scope.scrollTop();
+    $scope.getOng($routeParams.id);
 });
