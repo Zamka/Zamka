@@ -37,7 +37,7 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','mdDateTime'])
       })
       .when('/App/MiCuenta', {
           templateUrl: '/partials/app/mispeticiones.html',
-          controller: 'perfilCtrl'
+          controller: 'peticionesCtrl'
       });
   $mdThemingProvider.theme('default');
   $interpolateProvider.startSymbol('[[');
@@ -85,7 +85,8 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','mdDateTime'])
                 email:data.email,
                 fbid:data.facebookID,
                 foto:data.image.url,
-                nombre:data.name
+                nombre:data.name,
+                id:data.objectId
             };
             localStorage.usuario = JSON.stringify($scope.usuario);
 
@@ -230,6 +231,33 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','mdDateTime'])
             };
         });
     }
+    //Peticiones
+    $scope.getPeticiones = function(){
+        $scope.cargando = true;
+        $scope.peticiones = [];
+
+        $log.log("/API/SolicitudesUsuario?idUsuario="+$scope.usuario.id);
+        $http.get("/API/SolicitudesUsuario?idUsuario="+$scope.usuario.id)
+            .success(function(data){
+                $log.log("peticionesData",data);
+                $scope.cargando = false;
+                for(key in data){
+                    $scope.peticiones.push({
+                       estado:data[key].estado,
+                        evento:{
+                            nombre:data[key].evento.Nombre,
+                            descripcion:data[key].evento.Descripcion,
+                            foto:data[key].evento.Imagen.url,
+                            fecha:data[key].evento.Fecha.iso,
+                            id:data[key].evento.objectId,
+                            categoria:data[key].evento.Categorias[0]
+                        }
+                    });
+                }
+                $log.log("Peticiones:",$scope.peticiones);
+                localStorage.peticiones = JSON.stringify($scope.peticiones);
+            });
+    }
     //UTIL
     $scope.showDate = function(iso){
         return moment(iso).format("Do MMM YYYY");
@@ -251,8 +279,8 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','mdDateTime'])
             .filter(function(pos) { return $scope.toastPosition[pos]; })
             .join(' ');
     };
-
     $scope.showToast = function(txt) {
+        $scope.scrollTop();
         $mdToast.show(
             $mdToast.simple()
                 .content(txt)
@@ -266,10 +294,25 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','mdDateTime'])
     $scope.listaUno=function(arr){
         return arr[0];
     }
-
-
-
-
+    $scope.getEstado = function(a){
+        switch (a){
+            case -1:
+                return "fa-times-circle-o estado-rechazado";
+            case 0:
+                return "fa-clock-o estado-pendiente";
+            case 1:
+                return "fa-check-circle-o estado-aprobado";
+        }
+    }
+    $scope.goToMiCuenta = function(){
+        $location.url("/App/MiCuenta");
+    }
+    $scope.goToMiPerfil = function(){
+        $location.url("/App/Perfil/"+$scope.usuario.id);
+    }
+    $scope.scrollTop = function(){
+        $("html, body").animate({ scrollTop: 0 }, "slow");
+    };
 })
 .controller('indexCtrl',function($scope,$timeout,$location){
     $timeout(function(){
@@ -278,7 +321,7 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','mdDateTime'])
         }else{
             $location.url("/App/Login");
         }
-    },300,true);
+    },1000,true);
 
 })
 .controller('loginCtrl',function($scope,$timeout,$location){
@@ -288,32 +331,40 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','mdDateTime'])
 
 })
 .controller('eventosCtrl',function($scope,$timeout,$location){
+    $scope.scrollTop();
     $scope.getCategorias();
     $scope.getEventos();
 })
 .controller('categoriaCtrl',function($scope,$timeout,$location,$routeParams){
+    $scope.scrollTop();
     $scope.getCategorias();
     $scope.getEventosCat($routeParams.cat);
 })
 .controller('eventoCtrl',function($scope,$timeout,$location,$routeParams){
-        $scope.getEvento($routeParams.id);
-        $scope.confirmarParticipacion = function(){
-            swal({
-                    title: "Estas Seguro?",
-                    text: "Si aceptas participar en este evento es un compromiso con esta organizacion y deberas cumplir en asistir al evento",
-                    type: "warning",
-                    showCancelButton: true,
-                    confirmButtonColor: "#009688",
-                    confirmButtonText: "Si,Deseo Participar!",
-                    cancelButtonText: "Cancelar",
-                    closeOnConfirm: false },
-                function(){
-                    $scope.solicitarParticipacion($routeParams.id,$scope.usuario.id);
-                });
-        };
+    $scope.scrollTop();
+    $scope.getEvento($routeParams.id);
+    $scope.confirmarParticipacion = function(){
+        swal({
+                title: "Estas Seguro?",
+                text: "Si aceptas participar en este evento es un compromiso con esta organizacion y deberas cumplir en asistir al evento",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#009688",
+                confirmButtonText: "Si,Deseo Participar!",
+                cancelButtonText: "Cancelar",
+                closeOnConfirm: false },
+            function(){
+                $scope.solicitarParticipacion($routeParams.id,$scope.usuario.id);
+            });
+    };
+})
+.controller('peticionesCtrl',function($scope,$timeout,$location,$routeParams){
+    $scope.scrollTop();
+    $scope.getPeticiones();
 })
 .controller('perfilCtrl',function($scope,$timeout,$location,$routeParams){
-        $scope.getUsuario($routeParams.id);
+    $scope.scrollTop();
+    $scope.getUsuario($routeParams.id);
 })
 .controller('ongCtrl',function($scope,$timeout,$location){
 
