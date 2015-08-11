@@ -34,6 +34,40 @@ exports.login = function (req, res) {
 // Shows a list of popular memes based on view count
 exports.registro = function (req, res) {
     var user = new Parse.User();
+
+    var correo = req.body.correo;
+    var password = req.body.password;
+    var fbid = req.body.fbid;
+    var cover = req.body.cover;
+    var foto = req.body.foto;
+    var nombre = req.body.nombre;
+    var gustos = req.body.gustos;
+    var sexo = req.body.sexo;
+    var biografia = req.body.biografia;
+
+    user.set("username", correo);
+    user.set("email", correo);
+    if (password === undefined || password === null) {
+        user.set("password", "Z!mkaPasWoRasHascBcSReasons");
+        user.set("fbid", fbid);
+    } else {
+        user.set("password", password);
+    }
+    user.set("gender", sexo);
+    user.set("name", nombre);
+    user.set("bio", biografia);
+    user.set("Gustos", gustos);
+
+    user.signUp(null, {
+        success: function (user) {
+            res.json(user);
+        },
+        error: function (user, error) {
+            res.json(error);
+        }
+    });
+
+
 };
 
 exports.loginOrganizacion = function (req, res) {
@@ -78,7 +112,7 @@ exports.getUser = function (req, res) {
                 participacionrespuesta[i].Descripcion = participacion.get("Evento").get("Descripcion");
                 participacionrespuesta[i].Imagen = participacion.get("Evento").get("Imagen");
                 participacionrespuesta[i].Fecha = participacion.get("Evento").get("Fecha");
-                participacionrespuesta[i].Categorias= participacion.get("Evento").get("Categorias");
+                participacionrespuesta[i].Categorias = participacion.get("Evento").get("Categorias");
                 participacionrespuesta[i++].Nombre = participacion.get("Evento").get("Nombre");
             });
             respuesta.Nombre = usuario.get("name");
