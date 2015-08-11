@@ -138,3 +138,6 @@ hr .width-80{
     width: 100%;
     height:100%;
 }
+.evento-desc > a {
+    margin-right: 3px;
+}
