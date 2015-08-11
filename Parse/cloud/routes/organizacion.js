@@ -28,7 +28,7 @@ exports.getONG = function (req, res) {
             respuesta.Nombre = organizacion.get("Nombre");
             respuesta.Descripcion = organizacion.get("Descripcion");
             respuesta.Contenido = organizacion.get("Contenido");
-            respuesta.Imagen = organizacion.get("Imagen");
+            respuesta.Imagen = organizacion.get("Foto");
             var relation = organizacion.relation("Fotos");
             var query3 = relation.query();
             query3.find({
