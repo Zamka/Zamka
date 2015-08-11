@@ -241,7 +241,7 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','mdDateTime'])
                 $log.log("ONG Data:",data);
                 $scope.ong={
                     nombre:data.Nombre,
-                    foto:data.Fotos[0]["_url"],
+                    foto:data.Imagen["_url"],
                     descripcion:data.Descripcion,
                     eventos:[],
                     comentarios:[]
