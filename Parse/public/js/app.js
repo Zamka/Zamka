@@ -70,6 +70,10 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','mdDateTime'])
             $log.log("data:",data);
         });
     };
+    //SIGNUP
+    $scope.register = function(nombre,correo,password){
+
+    }
     // LOGIN
     $scope.login = function(correo,password,fbid){
         $scope.cargando = true;

@@ -49,7 +49,6 @@ app.put("/API/Admin/Evento", eventos.editarEvento);
 
 app.get("/API/Admin/ONG", organizacion.getONG);
 
-
 app.get('/App*', function (req, res) {
     res.render('user');
 });
@@ -57,7 +56,8 @@ app.get('/Admin*', function (req, res) {
     res.render('admin');
 });
 app.get('/', function (req, res) {
-    res.redirect('https://www.facebook.com/pages/Zamka/705880659483641');
+    res.render('index');
+    //res.redirect('https://www.facebook.com/pages/Zamka/705880659483641');
 });
 
 app.listen();
