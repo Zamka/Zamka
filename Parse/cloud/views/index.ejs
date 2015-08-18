@@ -10,7 +10,7 @@
     <link rel="shortcut icon" href="/img/favicon.ico"/>
     <link href='http://fonts.googleapis.com/css?family=Roboto+Condensed:400,300,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" media="screen" type="text/css" href="/css/reset.css">
-    <link rel="stylesheet" media="screen" type="text/css" href="/css/main.css">
+    <link rel="stylesheet" media="screen" type="text/css" href="/css/main.css?v=125">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script src="/js/jquery.smooth-scroll.js"></script>
@@ -68,18 +68,18 @@
     <div id="datos">
         <div id="cnt_ic_datos">
             <div class="ic_datos">
-                <div id="titulo_voluntario">34%</div>
-                <img class="ic_center" src="/img/primer_dato.png">
+                <div id="dato1" class="titulo_voluntario"><span>34</span>%</div>
+                <img class="ic_datos_center" src="/img/primer_dato.png">
                 <div class="sub_titu_volunt">SON VOLUNTARIOS</div>
             </div>
             <div class="ic_datos">
-                <div id="titulo_voluntario">43%</div>
-                <img class="ic_center" src="/img/segundo_dato.png">
-                <div class="sub_titu_volunt">SON DEL SECTOR D/C </div>
+                <div id="dato2" class="titulo_voluntario"><span>19</span>%</div>
+                <img class="ic_datos_center" src="/img/segundo_dato.png">
+                <div class="sub_titu_volunt">SON JOVENES </div>
             </div>
             <div class="ic_datos">
-                <div id="titulo_voluntario">51%</div>
-                <img class="ic_center" src="/img/tercer_dato.png">
+                <div id="dato3" class="titulo_voluntario"><span>51</span>%</div>
+                <img class="ic_datos_center" src="/img/tercer_dato.png">
                 <div class="sub_titu_volunt">SI DONAN</div>
             </div>
         </div>
@@ -91,12 +91,12 @@
                 <div id="porcentaje_primer_motivo">56%</div>
             </div>
             <div class="barra_datos">
-                <div id="primer_motivo"></div>
+                <div id="segundo_motivo"></div>
                 <div class="tx_motivo">POR SU TRABAJO</div>
                 <div id="porcentaje_segundo_motivo">36%</div>
             </div>
             <div class="barra_datos">
-                <div id="primer_motivo"></div>
+                <div id="tercer_motivo"></div>
                 <div class="tx_motivo">NO SABE COMO HACERLO</div>
                 <div id="porcentaje_tercer_motivo">16%</div>
             </div>
@@ -106,12 +106,21 @@
 
 <footer>
     <div id="contacto">
+        <div id="unete_contacto">
+            <div id="frase_unete">ÚNETE AL SUEÑO</div>
+            <div id="tx_unete">
+                Muy pronto podras ser parte del cambio! Dejanos tus datos para formar parte de esta comunidad.
+            </div>
+        </div>
         <div id="content_datos">
             <div id="formulario">
                 <form>
-                    <input type="text" class="content_form" name="nombre" placeholder="Nombre">
-                    <input type="text" class="content_form" name="e-mail" placeholder="E-mail">
-                    <textarea id="mensaje_form" placeholder="Mensaje"></textarea>
+                    <select class="tipo_content_form" name="tipo_usuario">
+                        <option value="voluntario">Voluntario</option>
+                        <option value="organizacion">Organización solidaria</option>
+                    </select>
+                    <input type="text" class="content_form" name="nombre" placeholder="Nombres">
+                    <input type="text" class="content_form" name="e-mail" placeholder="Correo electrónico">
                     <input type="submit" id="enviar_form" value="Enviar">
                 </form>
             </div>
@@ -142,7 +151,88 @@
     </div>
 </footer>
 <script>
-    $('a').smoothScroll();
+    $(document).ready(function() {
+
+        var flag = false;
+        var flag_dato = false;
+        var scroll;
+
+        $(window).scroll(function(){
+            scroll = $(window).scrollTop();
+
+
+            if(scroll > 150)
+            {
+                if(!flag)
+                {
+                    $("#logo_nav").css({"marginTop":"-18px","width":"50px","height":"50px"});
+                    flag = true;
+                }
+
+            }
+            else
+            {
+                if(flag)
+                {
+                    $("#logo_nav").css({"marginTop":"150px","width":"150px","height":"150px"});
+                    flag = false;
+                }
+            }
+
+            if(scroll > 2000)
+            {
+                if(!flag_dato)
+                {
+                    flag_dato=true;
+                    datos();
+                }
+            }
+
+            if(scroll <= 1704)
+            {
+                $("#dato1 span").html(0);
+                $("#dato2 span").html(0);
+                $("#dato3 span").html(0);
+                flag_dato=false;
+            }
+        });
+
+
+        function datos()
+        {
+            var i=0; j=0; k=0;
+
+            var dato1time = setInterval(
+                    function(){$("#dato1 span").html(i);
+                        i++;
+                        if(i==35)
+                        {
+                            clearInterval(dato1time);
+                        }
+                    }, 35);
+
+            var dato2time = setInterval(
+                    function(){$("#dato2 span").html(j);
+                        j++;
+                        if(j==20)
+                        {
+                            clearInterval(dato2time);
+                        }
+                    }, 35);
+
+            var dato3time = setInterval(
+                    function(){$("#dato3 span").html(k);
+                        k++;
+                        if(k==52)
+                        {
+                            clearInterval(dato3time);
+                        }
+                    }, 35);
+        }
+        $('nav a').smoothScroll();
+    });
+
+
 </script>
 </body>
 

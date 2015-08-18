@@ -182,17 +182,23 @@ section {
 
 #cnt_ic_datos {
     display: table;
-    height: 167px;
+    height: 180px;
     margin: auto;
     position: relative;
     top: 150px;
+    min-width: 82%;
 }
 
 .ic_datos {
     display: block;
     float: left;
-    height: 270px;
-    margin:10px;
+    height: 300px;
+    width: 33.3%;
+}
+.ic_datos_center{
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
 }
 
 #cnt_barra_datos {
@@ -228,10 +234,11 @@ section {
     max-height: 102px;
 }
 
-#titulo_voluntario {
+.titulo_voluntario {
     text-align: center;
     color: #ffffff;
     font: 400 75px / 45px roboto condensed;
+    margin-bottom: 6px;
 }
 
 .sub_titu_volunt {
@@ -240,15 +247,6 @@ section {
     text-align: center;
     margin-bottom: 30px;
 }
-
-#primer_motivo {
-    background-color: #ffffff;
-    display: inline-block;
-    height: 30px;
-    width: 179px;
-    border-radius: 15px 0px 0px 15px;
-}
-
 .tx_motivo {
     display: inline;
     color: #6fcd6e;
@@ -258,6 +256,7 @@ section {
     left: 15px;
     margin-top: 9px;
 }
+
 
 #porcentaje_primer_motivo {
     display: inline;
@@ -426,4 +425,73 @@ section {
     color: rgba(255, 255, 255, 0.45);
     font: 300 15px / 15px roboto condensed;
     outline: none;
+}
+#primer_motivo {
+    background-color: #ffffff;
+    display: inline-block;
+    height: 30px;
+    width: 180px;
+    border-radius: 15px 0px 0px 15px;
+}
+#segundo_motivo {
+    background-color: #fff;
+    display: inline-block;
+    height: 30px;
+    width: 114px;
+    border-radius: 15px 0px 0px 15px;
+}
+
+#tercer_motivo {
+    background-color: #ffffff;
+    display: inline-block;
+    height: 30px;
+    width: 33px;
+    border-radius: 15px 0px 0px 15px;
+}
+#unete_contacto {
+    margin: auto;
+    width: 82%;
+    position: relative;
+    display: block;
+}
+
+footer {
+    width: 100%;
+    height: 750px;
+    background-color: #555555;
+    position: relative;
+    display: table;
+    margin: auto;
+}
+#frase_unete {
+    text-align: center;
+    font: 500 45px / 45px roboto condensed;
+    color: #fff;
+}
+
+#tx_unete {
+    font: 300 15px / 18px roboto condensed;
+    color: #fff;
+    text-align: center;
+    margin-top: 30px;
+}
+.tipo_content_form {
+    height: 45px;
+    width: 245px;
+    background-color: #707070;
+    margin-bottom: 12px;
+    border-color: #c2c2c2;
+    border-radius: 6px;
+    border-style: solid;
+    border-width: 1px;
+    color: rgba(255, 255, 255, 0.45);
+    font: 300 15px / 15px roboto condensed;
+    outline: none;
+}
+#unete_contacto {
+    margin: auto;
+    width: 82%;
+    position: relative;
+    display: block;
+    margin-top: 40px;
 }
