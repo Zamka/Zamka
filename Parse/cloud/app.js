@@ -35,11 +35,13 @@ app.get("/API/Categorias", categorias.fetch);
 app.get("/API/Buscar", eventos.buscar);
 app.get("/API/EventosCat", eventos.porCategoria);
 app.get("/API/Evento", eventos.evento);
+app.get("/API/EventosSugeridos", eventos.sugeridos);
 
 //de Usuario
 app.get("/API/Usuario", user.getUser);
 app.post("/API/Participar", participacion.participar);
 app.get("/API/SolicitudesUsuario", participacion.getParticipaciones);
+
 
 //Organizacion
 app.post("/API/Admin/Login", user.loginOrganizacion);

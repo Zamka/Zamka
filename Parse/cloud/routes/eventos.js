@@ -73,6 +73,17 @@ exports.evento = function (req, res) {
     });
 };
 
+exports.sugeridos = function (req, res) {
+    var busqueda = req.query.busqueda;
+    var query = new Parse.Query(Evento);
+    query.limit(100);
+    query.contains("Nombre", busqueda);
+    query.descending('createdAt');
+    query.find().then(function (eventos) {
+        res.json(eventos);
+    });
+};
+
 exports.eventosONG = function (req, res) {
     var idONG = req.query.idONG;
     var query = new Parse.Query(Evento);
