@@ -11,10 +11,13 @@
     <link href='http://fonts.googleapis.com/css?family=Roboto+Condensed:400,300,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" media="screen" type="text/css" href="/css/reset.css">
     <link rel="stylesheet" media="screen" type="text/css" href="/css/main.css?v=125">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.0/sweetalert.min.css">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script src="/js/jquery.smooth-scroll.js"></script>
     <script src="/js/jquery_animation_nav.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.0/sweetalert.min.js"></script>
+
 </head>
 
 <body>
@@ -33,7 +36,7 @@
 <section>
     <div id="home">
         <div id="cnt_tx_home">
-            <p class="font_home">LAS GRANDES OPORTUNIDADES PARA AYUDAR A OTROS RARA VEZ LLEGAN, PERO LAS PEQUEÑAS, NOS RODEAN TODOS LOS DÍAS.</p>
+            <p class="font_home">EL MUNDO NECESITA VOLUNTARIOS QUE ACTUEN POR SUS SUEÑOS VERDADEROS AGENTES DE CAMBIO</p>
         </div>
     </div>
 
@@ -115,13 +118,13 @@
         <div id="content_datos">
             <div id="formulario">
                 <form>
-                    <select class="tipo_content_form" name="tipo_usuario">
+                    <select class="tipo_content_form" id="tipo_usuario">
                         <option value="voluntario">Voluntario</option>
                         <option value="organizacion">Organización solidaria</option>
                     </select>
-                    <input type="text" class="content_form" name="nombre" placeholder="Nombres">
-                    <input type="text" class="content_form" name="e-mail" placeholder="Correo electrónico">
-                    <input type="submit" id="enviar_form" value="Enviar">
+                    <input type="text" class="content_form" id="nombre" placeholder="Nombres">
+                    <input type="text" class="content_form" id="e-mail" placeholder="Correo electrónico">
+                    <input type="button" id="enviar_form" value="Enviar">
                 </form>
             </div>
             <div id="contacto_separador">
@@ -156,6 +159,26 @@
         var flag = false;
         var flag_dato = false;
         var scroll;
+        $("#enviar_form").click(function(){
+            var nombre = $("#nombre").val();
+            var correo = $("#e-mail").val();
+            var tipo = $("#tipo_usuario").val();
+
+            if(nombre != "" && correo != ""){
+                $.post( "/API/Inscripcion",{
+                    "nombre":nombre,
+                    "correo":correo,
+                    "tipo":tipo
+                }).done(function() {
+                    swal("Gracias!", "Ya estas registrado! Pronto te mandaremos más noticias.", "success");
+                }).fail(function() {
+                    swal("Ouch!", "Ocurrio un error, por favor intenta otra vez", "warning");
+                });
+            }else{
+                swal("Faltan campos!", "No te olvides de poner tu información", "warning");
+            }
+        });
+
 
         $(window).scroll(function(){
             scroll = $(window).scrollTop();
@@ -214,7 +237,7 @@
             var dato2time = setInterval(
                     function(){$("#dato2 span").html(j);
                         j++;
-                        if(j==20)
+                        if(j==17)
                         {
                             clearInterval(dato2time);
                         }

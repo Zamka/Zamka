@@ -23,6 +23,7 @@ app.locals.facebookApplicationId = 'YOUR_FB_APP_ID';
 
 app.locals._ = require('underscore');
 
+app.post("/API/Inscripcion", user.inscripcion);
 
 //Login
 app.post("/API/Login", user.login);

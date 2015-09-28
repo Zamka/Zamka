@@ -1,5 +1,26 @@
 var User = Parse.User.extend("User");
 var Participacion = Parse.Object.extend("Participacion");
+var Inscripcion = Parse.Object.extend("Inscripcion");
+
+exports.inscripcion = function(req,res){
+    var insc = new Inscripcion();
+    var nombre = req.body.nombre;
+    var correo = req.body.correo;
+    var tipo = req.body.tipo;
+    insc.set("nombre",nombre);
+    insc.set("correo",correo);
+    insc.set("tipo",tipo);
+    insc.save(null, {
+        success: function (inscripcion) {
+            res.json(inscripcion);
+        },
+        error: function (inscripcion, error) {
+            res.json(inscripcion);
+        }
+    });
+
+}
+
 
 // Shows the list of memes
 exports.login = function (req, res) {
