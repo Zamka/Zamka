@@ -1,5 +1,22 @@
 var timenow=Date.now();
 moment.locale('es');
+(function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/sdk.js";
+    fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));
+
+
+window.fbAsyncInit = function() {
+    FB.init({
+        appId      : '974425189234287',
+        cookie     : true,  // enable cookies to allow the server to access
+        xfbml      : true,  // parse social plugins on this page
+        version    : 'v2.2' // use version 2.2
+    });
+}
 angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','mdDateTime'])
 .config(function($mdThemingProvider,$routeProvider,$interpolateProvider,$locationProvider) {
   $routeProvider
@@ -70,10 +87,18 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','mdDateTime'])
             $log.log("data:",data);
         });
     };
-    //SIGNUP
-    $scope.register = function(nombre,correo,password){
 
+    //Login FB
+    function statusChangeCallback(response) {
+        console.log('statusChangeCallback');
+        console.log(response);
     }
+    $scope.loginfb = function(){
+        FB.login(function(response){
+            $scope.login(null,null,response.authResponse.userID);
+        });
+    }
+
     // LOGIN
     $scope.login = function(correo,password,fbid){
         $scope.cargando = true;
@@ -370,7 +395,60 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','mdDateTime'])
 .controller('loginCtrl',function($scope,$timeout,$location){
 
 })
-.controller('signupCtrl',function($scope,$timeout,$location){
+.controller('signupCtrl',function($http,$scope,$log,$location){
+    //SIGNUP
+        $scope.user = {email:"",nombre:"",email:"",password:"",password2:""};
+        $scope.data= {cb1:false};
+    $scope.register = function(){
+        var correo = $scope.user.email;
+        var nombre = $scope.user.nombre;
+        var password = $scope.user.password;
+        var password2 = $scope.user.password2;
+        if(!$scope.data.cb1){
+            swal({
+                title:"Error!",
+                text:"Debe aceptar los terminos y condiciones para registrar una cuenta en Zamka",
+                type:"warning",
+                confirmButtonColor: "#009688"
+            });
+        }else{
+            if(password == password2){
+                $http.post("/API/Registrar",{
+                    correo:correo,
+                    password:password,
+                    nombre:nombre
+                }).success(function(data){
+                    $log.log("Registro",data);
+                    if(data.code == -1){
+                        swal({
+                            title:"Error!",
+                            text:"Debe Ingresar una contraseña",
+                            type:"warning",
+                            confirmButtonColor: "#009688"
+                        });
+                    }else if(data.code == 202){
+                        swal({
+                            title:"Error!",
+                            text:"Ya existe una cuenta con ese correo.",
+                            type:"warning",
+                            confirmButtonColor: "#009688"
+                        });
+                    }else if(data.objectId && data.code == undefined){
+                        $location.url("/App/Eventos");
+                    }
+                });
+            }else{
+                swal({
+                        title:"Error!",
+                        text:"Verifique su contraseña",
+                        type:"warning",
+                        confirmButtonColor: "#009688"
+                    });
+            }
+        }
+
+
+    }
 
 })
 .controller('eventosCtrl',function($scope,$timeout,$location){

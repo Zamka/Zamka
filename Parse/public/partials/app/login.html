@@ -3,7 +3,7 @@
     <div layout="row" layout-align="space-around center" layout-wrap layout-padding>
         <md-input-container flex="50">
             <label>E-MAIL</label>
-            <input ng-model="user.email">
+            <input type="email" ng-model="user.email">
         </md-input-container>
         <md-input-container flex="50">
             <label>PASSWORD</label>
@@ -21,6 +21,6 @@
             <p flex="33" style="text-align: center"> o Ingresa por </p>
             <hr flex="33">
         </div>
-        <md-button class="md-raised md-primary" flex="100" ng-click="showToast('Proximamente')">Facebook</md-button>
+        <md-button class="md-raised md-primary" flex="100" ng-click="loginfb()">Facebook</md-button>
     </div>
 </div>

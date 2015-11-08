@@ -7,5 +7,5 @@
   <md-icon md-font-icon="fa-lock" class="fa"></md-icon>
   <input ng-model="user.password" type="password" placeholder="Contraseña">
 </md-input-container>
-<md-button class="md-raised right">Ingresar <i class="fa fa-unlock-alt"></i></md-button>
+<md-button class="md-raised right" ng-click="login(user.name,user.password)">Ingresar <i class="fa fa-unlock-alt"></i></md-button>
 </md-content>

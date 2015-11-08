@@ -17,9 +17,9 @@ app.use(express.bodyParser());
 app.use(express.json());
 app.use(express.urlencoded());
 
-app.locals.parseApplicationId = 'YOUR_APP_ID';
-app.locals.parseJavascriptKey = 'YOUR_JAVASCRIPT_KEY';
-app.locals.facebookApplicationId = 'YOUR_FB_APP_ID';
+app.locals.parseApplicationId = 'Cqnfkkzz1qHUkc200NnE4AQrDqe7pyT5F9YNTd9K';
+app.locals.parseJavascriptKey = 'K4KL6bUdTljIuKE31QRfyGan9vMe8mcRMTnPbjVQ';
+app.locals.facebookApplicationId = '974425189234287';
 
 app.locals._ = require('underscore');
 
