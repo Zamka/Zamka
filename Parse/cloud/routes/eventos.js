@@ -112,20 +112,41 @@ exports.crearEvento = function (req, res) {
     evento.set("Nombre", nombre);
     evento.set("Descripcion", descripcion);
     evento.set("Contenido", contenido);
-    //evento.set("cover", cover);
-    //evento.set("categorias", categorias);
+    evento.set("categorias", categorias);
     //evento.set("fotos", fotos);
     evento.set("idONG", idONG);
     evento.set("vistas", 0);
 
-    evento.save(null, {
-        success: function (evento) {
-            res.json(evento);
-        },
-        error: function (evento, error) {
-            res.json(error);
-        }
-    });
+    if (cover != null) {
+        var file = new Parse.File("cover.png", {base64: cover}, "image/png");
+        file.save(null, {
+            success: function (cover) {
+                evento.set("cover", cover);
+                evento.save(null, {
+                    success: function (evento) {
+                        res.json(evento);
+                    },
+                    error: function (evento, error) {
+                        res.json(error);
+                    }
+                });
+
+            },
+            error: function (gameScore, error) {
+                res.json(error);
+            }
+        })
+    } else {
+        evento.save(null, {
+            success: function (evento) {
+                res.json(evento);
+            },
+            error: function (evento, error) {
+                res.json(error);
+            }
+        });
+
+    }
 
 
 };
@@ -146,15 +167,45 @@ exports.editarEvento = function (req, res) {
             evento.set("nombre", nombre);
             evento.set("descripcion", descripcion);
             evento.set("contenido", contenido);
-            //evento.set("cover", cover);
-            //evento.set("categorias", categorias);
-            //evento.set("fotos", fotos);
+            evento.set("categorias", categorias);
+            var relation = evento.relation("Fotos");
 
-            evento.save(null, {
-                success: function (evento) {
-                    res.json(evento);
-                }
+            fotos.forEach(function (foto) {
+                relation.add(foto)
             });
+
+            relation.save();
+
+            if (cover != null) {
+                var file = new Parse.File("cover.png", {base64: cover}, "image/png");
+                file.save(null, {
+                    success: function (cover) {
+                        evento.set("cover", cover);
+                        evento.save(null, {
+                            success: function (evento) {
+                                res.json(evento);
+                            },
+                            error: function (evento, error) {
+                                res.json(error);
+                            }
+                        });
+
+                    },
+                    error: function (gameScore, error) {
+                        res.json(error);
+                    }
+                })
+            } else {
+                evento.save(null, {
+                    success: function (evento) {
+                        res.json(evento);
+                    },
+                    error: function (evento, error) {
+                        res.json(error);
+                    }
+                });
+
+            }
 
         },
         error: function (evento, error) {

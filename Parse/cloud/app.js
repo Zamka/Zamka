@@ -7,6 +7,7 @@ var categorias = require('cloud/routes/categorias');
 var eventos = require('cloud/routes/eventos');
 var participacion = require('cloud/routes/participacion');
 var organizacion = require('cloud/routes/organizacion');
+var imagenes = require('cloud/routes/imagenes');
 
 // Global app configuration section
 app.set('views', 'cloud/views');  // Specify the folder to find templates
@@ -51,6 +52,14 @@ app.post("/API/Admin/CrearEvento", eventos.crearEvento);
 app.put("/API/Admin/Evento", eventos.editarEvento);
 
 app.get("/API/Admin/ONG", organizacion.getONG);
+
+//Imagenes
+
+app.get("/API/Admin/Imagenes",imagenes.getImagenes);
+app.post("/API/Admin/Imagenes",imagenes.addImagen);
+app.delete("/API/Admin/Imagenes",imagenes.delete);
+
+
 
 app.get('/App*', function (req, res) {
     res.render('user');
