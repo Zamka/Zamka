@@ -1,5 +1,5 @@
 var timenow = Date.now();
-angular.module('ZamkaAdmin', ['ngMaterial','ngRoute'])
+angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','ngStorage'])
     .config(function($mdThemingProvider,$routeProvider,$interpolateProvider,$locationProvider) {
         $routeProvider
             .when('/Admin', {
@@ -33,7 +33,11 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute'])
         $interpolateProvider.endSymbol(']]');
         $locationProvider.html5Mode(true);
     })
-    .controller('AppCtrl',function($scope, $mdSidenav,$http,$log){
+    .controller('AppCtrl',function($scope, $mdSidenav,$http,$log,$location,$localStorage){
+        $scope.sideNavOpen = false;
+        $scope.organizacion = {};
+        if($localStorage.organizacion != null)
+            $scope.organizacion = $localStorage.organizacion;
         $scope.toggleSidenav = function(menuId) {
             $mdSidenav(menuId).toggle();
         };
@@ -44,28 +48,67 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute'])
             $http.post("/API/Admin/Login",{usuario:usuario,password:password})
                 .success(function(data){
                     $log.log(data);
-                    $scope.getEventos(data.objectId);
+                    $location.url("/Admin/eventos");
+                    $scope.organizacion = data;
+                    $localStorage.organizacion = data;
+
+                    //$scope.subirFoto(imgTestBase64,$scope.organizacion.objectId);
                 })
                 .error(function(error){
                     $log.log(error);
                 });
         };
         $scope.getEventos = function(idONG){
+            $scope.eventos = [];
             $http.get("/API/Admin/Eventos?idONG="+idONG)
                 .success(function(data){
-                    $log.log(data)
+                    $log.log(data);
+                    $scope.eventos = data;
                 })
                 .error(function(error){
                     $log.log(error)
                 });
         };
-        $scope.crearEvento = function(nombre,descripcion,contenido,cover,categorias,fotos,idONG){
+        $scope.getComentariosOng = function(idONG){
+            $scope.eventos = [];
+            $http.get("/API/ComentariosOng?idONG="+idONG)
+                .success(function(data){
+                    $log.log(data);
+                    $scope.organizacion.comentarios = data;
+                })
+                .error(function(error){
+                    $log.log(error)
+                });
+        };
+        $scope.subirFoto = function(foto,idONG){
+            $http.post("/API/Admin/SubirImagen",{
+                imagen:{base64:foto},
+                idONG:idONG
+            })
+                .success(function(data){
+                    $log.log(data);
+                    var foto = data;
+                    $scope.crearEvento(
+                        "Evento de Prueba API",
+                        "Descripcion del evento",
+                        "<strong>Contenido del evento aca deberia ser HTML</strong>",
+                        ["Artes","Deportes","Construcción"],
+                        foto.objectId,
+                        [foto.objectId,foto.objectId,foto.objectId],
+                        $scope.organizacion.objectId
+                    );
+                })
+                .error(function(error){
+                    $log.log(error);
+                });
+        };
+        $scope.crearEvento = function(nombre,descripcion,contenido,categorias,foto,fotos,idONG){
             $http.post("/API/Admin/CrearEvento",{
                 nombre:nombre,
                 descripcion:descripcion,
                 contenido:contenido,
-                cover:cover,
                 categorias:categorias,
+                foto:foto,
                 fotos:fotos,
                 idONG:idONG
             })
@@ -93,6 +136,16 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute'])
                     $log.log(error);
                 });
         };
+
+
+        // UTILITIES
+
+        $scope.showDate = function(iso){
+            return moment(iso).format("Do MMM YYYY");
+        }
+        $scope.timeSince = function(iso){
+            return moment(iso).fromNow();
+        }
     })
     .controller('indexCtrl',function($scope,$mdToast,$timeout){
         $scope.lala = "lala";
@@ -142,15 +195,13 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute'])
         },1000);
 
     })
-    .controller('eventosCtrl',function($scope,$timeout,$log){
-        $scope.eventos = [
-            {nombre:"Evento 5",img:"/img/Picture5.jpg",href:"/Admin/evento/5"},
-            {nombre:"Evento 4",img:"/img/Picture4.jpg",href:"/Admin/evento/4"},
-            {nombre:"Evento 3",img:"/img/Picture3.jpg",href:"/Admin/evento/3"},
-            {nombre:"Evento 2",img:"/img/Picture2.jpg",href:"/Admin/evento/2"},
-            {nombre:"Evento 1",img:"/img/Picture1.jpg",href:"/Admin/evento/1"}];
+    .controller('eventosCtrl',function($scope,$timeout,$log,$mdSidenav){
+        $scope.$parent.sideNavOpen = true;
+        $scope.getEventos($scope.organizacion.idOrganizacion);
+
     })
     .controller('eventoCtrl',function($scope, $routeParams,$log,$mdDialog){
+
         $scope.eventoID = $routeParams.id;
         $scope.nombre = "Nombre del Evento";
         $scope.desc = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...";
@@ -209,12 +260,10 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute'])
 
     })
     .controller('perfilCtrl',function($scope){
-        $scope.eventos = [
-            {nombre:"Evento 5",img:"/img/Picture5.jpg",href:"/Admin/evento/5"},
-            {nombre:"Evento 4",img:"/img/Picture4.jpg",href:"/Admin/evento/4"},
-            {nombre:"Evento 3",img:"/img/Picture3.jpg",href:"/Admin/evento/3"},
-            {nombre:"Evento 2",img:"/img/Picture2.jpg",href:"/Admin/evento/2"},
-            {nombre:"Evento 1",img:"/img/Picture1.jpg",href:"/Admin/evento/1"}];
+        $scope.$parent.sideNavOpen = true;
+        $scope.getEventos($scope.organizacion.idOrganizacion);
+        $scope.getComentariosOng($scope.organizacion.idOrganizacion);
+
 
     })
     .controller('eventoStatCtrl',function($scope,$http,$log){

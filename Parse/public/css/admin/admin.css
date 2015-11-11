@@ -2,8 +2,9 @@
 md-toolbar.md-default-theme {
   background-color: rgb(120,1,64);
 }
-.fa{
-  font-size: 1.4em;
+.fa{vertical-align: inherit;}
+.d24{
+  line-height: 24px!important;
 }
 md-sidenav>a>.fa{
 font-size:1em;

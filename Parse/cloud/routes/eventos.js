@@ -1,5 +1,6 @@
 var Evento = Parse.Object.extend("Evento");
 var ONG = Parse.Object.extend("Organizacion");
+var Imagen = Parse.Object.extend("Imagenes");
 var ComentarioEvento = Parse.Object.extend("ComentarioEvento");
 
 exports.buscar = function (req, res) {
@@ -29,6 +30,8 @@ exports.evento = function (req, res) {
     var query = new Parse.Query(Evento);
     var query2 = new Parse.Query(ComentarioEvento);
     query.include("Organizacion");
+    query.include("Imagen");
+    query.include("Fotos");
     query2.select("Comentario", "Usuario");
     query2.include("Usuario");
     var respuesta = {};
@@ -53,8 +56,6 @@ exports.evento = function (req, res) {
             respuesta.Fecha = evento.createdAt;
             respuesta.Organizacion = evento.get("Organizacion");
             respuesta.Imagen = evento.get("Imagen");
-            //respuesta.Evento = evento;
-            respuesta.Fotos = evento.get("Fotos");
             var relation = evento.relation("Fotos");
             var query3 = relation.query();
             query3.find({
@@ -91,126 +92,97 @@ exports.eventosONG = function (req, res) {
     ong.id = idONG;
 
     query.equalTo("Organizacion", ong);
+    query.include("Imagen");
     query.find().then(function (eventos) {
-        res.json(eventos);
+        var eventosFormatted = [];
+        for (var key in eventos){
+            console.log(eventos[key]);
+            eventosFormatted.push({
+                id:eventos[key].id,
+                nombre:eventos[key].get("Nombre"),
+                descripcion:eventos[key].get("Descripcion"),
+                foto:eventos[key].get("Imagen").get("Archivo")["_url"],
+                fecha:eventos[key].get("Fecha")
+            });
+        }
+        console.log(eventosFormatted);
+        res.json(eventosFormatted);
     }, function (error) {
         res.json(error);
     });
 };
 
 exports.crearEvento = function (req, res) {
-    //nombre,descripcion,contenido,cover,categorias,fotos,idONG
+
     var evento = new Evento();
     var nombre = req.body.nombre;
     var descripcion = req.body.descripcion;
     var contenido = req.body.contenido;
-    var cover = req.body.cover;
     var categorias = req.body.categorias;
+    var foto = req.body.foto;
     var fotos = req.body.fotos;
     var idONG = req.body.idONG;
-
+    var ong = new ONG();
+    ong.id = idONG;
+    evento.set("Organizacion", ong);
     evento.set("Nombre", nombre);
     evento.set("Descripcion", descripcion);
     evento.set("Contenido", contenido);
-    evento.set("categorias", categorias);
-    //evento.set("fotos", fotos);
-    evento.set("idONG", idONG);
-    evento.set("vistas", 0);
+    evento.set("Categorias", categorias);
 
-    if (cover != null) {
-        var file = new Parse.File("cover.png", {base64: cover}, "image/png");
-        file.save(null, {
-            success: function (cover) {
-                evento.set("cover", cover);
-                evento.save(null, {
-                    success: function (evento) {
-                        res.json(evento);
-                    },
-                    error: function (evento, error) {
-                        res.json(error);
-                    }
-                });
+    evento.set("Vistas", 0);
 
-            },
-            error: function (gameScore, error) {
-                res.json(error);
-            }
-        })
-    } else {
-        evento.save(null, {
-            success: function (evento) {
-                res.json(evento);
-            },
-            error: function (evento, error) {
-                res.json(error);
-            }
-        });
-
+    var imagen = new Imagen();
+    imagen.id = foto;
+    evento.set("Imagen", imagen);
+    var fotosR = evento.relation("Fotos");
+    for(var fotoKey in fotos){
+        var imagen = new Imagen();
+        imagen.id = fotos[fotoKey];
+        fotosR.add(imagen);
     }
-
-
-};
-exports.editarEvento = function (req, res) {
-
-    //nombre,descripcion,contenido,cover,categorias,fotos,idEvento
-    var nombre = req.body.nombre;
-    var descripcion = req.body.descripcion;
-    var contenido = req.body.contenido;
-    var cover = req.body.cover;
-    var categorias = req.body.categorias;
-    var fotos = req.body.fotos;
-    var idEvento = req.body.idEvento;
-
-    var query = new Parse.Query(Evento);
-    query.get(idEvento, {
+    evento.save(null, {
         success: function (evento) {
-            evento.set("nombre", nombre);
-            evento.set("descripcion", descripcion);
-            evento.set("contenido", contenido);
-            evento.set("categorias", categorias);
-            var relation = evento.relation("Fotos");
-
-            fotos.forEach(function (foto) {
-                relation.add(foto)
-            });
-
-            relation.save();
-
-            if (cover != null) {
-                var file = new Parse.File("cover.png", {base64: cover}, "image/png");
-                file.save(null, {
-                    success: function (cover) {
-                        evento.set("cover", cover);
-                        evento.save(null, {
-                            success: function (evento) {
-                                res.json(evento);
-                            },
-                            error: function (evento, error) {
-                                res.json(error);
-                            }
-                        });
-
-                    },
-                    error: function (gameScore, error) {
-                        res.json(error);
-                    }
-                })
-            } else {
-                evento.save(null, {
-                    success: function (evento) {
-                        res.json(evento);
-                    },
-                    error: function (evento, error) {
-                        res.json(error);
-                    }
-                });
-
-            }
-
+            res.json(evento);
         },
         error: function (evento, error) {
             res.json(error);
         }
     });
-
+};
+exports.editarEvento = function (req, res) {
+    var nombre = req.body.nombre;
+    var descripcion = req.body.descripcion;
+    var contenido = req.body.contenido;
+    var categorias = req.body.categorias;
+    var foto = req.body.foto;
+    var fotos = req.body.fotos;
+    var query = new Parse.Query(Evento);
+    query.get(idEvento, {
+        success: function (evento) {
+            if(nombre)
+                evento.set("Nombre", nombre);
+            if(descripcion)
+                evento.set("Descripcion", descripcion);
+            if(contenido)
+                evento.set("Contenido", contenido);
+            if(categorias)
+                evento.set("categorias", categorias);
+            if(fotos)
+                evento.set("fotos", fotos);
+            if(foto)
+                evento.set("Imagen", foto);
+            evento.save(null, {
+                success: function (evento) {
+                    res.json(evento);
+                },
+                error: function (evento, error) {
+                    res.json(error);
+                }
+            });
+        },
+        error: function (evento, error) {
+            res.json(error);
+        }
+    });
 };

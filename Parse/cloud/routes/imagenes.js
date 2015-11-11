@@ -1,4 +1,5 @@
 var Imagenes = Parse.Object.extend("Imagenes");
+var Ong = Parse.Object.extend("Organizacion");
 
 // Shows the list of memes
 exports.fetch = function (req, res) {
@@ -9,7 +10,6 @@ exports.fetch = function (req, res) {
         res.json(imagenes);
     });
 };
-
 exports.getImagenes = function (req, res) {
     var query = new Parse.Query(Imagenes);
     var organizacion = req.query.idONG;
@@ -21,31 +21,41 @@ exports.getImagenes = function (req, res) {
     });
 };
 
-exports.addImagen = function (req, res) {
-    var organizacion = req.body.idONG;
-    var imagen = req.body.imagen;
-
-    var file = new Parse.File("Imagen.zzz", imagen, "image/png");
-
-    file.save(null, {
-        success: function (files) {
-            var Imagen = new Imagenes();
-            Imagen.set("Organizacion", organizacion);
-            Imagen.set("Archivo", files);
-            Imagen.save(null, {
-                success: function (resultado) {
-                    res.json(resultado);
-                },
-                error: function (evento, error) {
-                    res.json(error);
-                }
-            });
-
+exports.getImagen = function (req, res) {
+    var query = new Parse.Query(Imagenes);
+    var idImagen = req.query.idImagen;
+    query.get(idFoto,{
+        success:function (imagen) {
+            res.json(imagen);
         },
-        error: function (gameScore, error) {
+        error:function(imagen,error){
             res.json(error);
         }
-    })
+    });
+};
+
+exports.addImagen = function (req, res) {
+    var idOng = req.body.idONG;
+    var imagen = req.body.imagen;
+    var ong = new Ong();
+    ong.id = idOng;
+    var file = new Parse.File("img.png", imagen, "image/png");
+
+    file.save().then(function(){
+        var Imagen = new Imagenes();
+        Imagen.set("Organizacion", ong);
+        Imagen.set("Archivo", file);
+        Imagen.save(null, {
+            success: function (resultado) {
+                res.json(resultado);
+            },
+            error: function (evento, error) {
+                res.json(error);
+            }
+        });
+    },function(error){
+        res.json(error);
+    });
 
 };
 

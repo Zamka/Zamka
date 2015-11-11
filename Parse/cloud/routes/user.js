@@ -1,6 +1,7 @@
 var User = Parse.User.extend("User");
 var Participacion = Parse.Object.extend("Participacion");
 var Inscripcion = Parse.Object.extend("Inscripcion");
+var ONG = Parse.Object.extend("Organizacion");
 
 exports.inscripcion = function (req, res) {
     var insc = new Inscripcion();
@@ -99,13 +100,29 @@ exports.loginOrganizacion = function (req, res) {
             if (user.get("organizacion") === undefined) {
                 res.send("Usuario no posee ninguna organizacion");
             } else {
-                var organizacion = user.get("organizacion");
-                organizacion.fetch({
-                    success: function (organizacion) {
-                        res.json(organizacion);
-                    }
-                });
+                var orgId = user.get("organizacion").id;
+                var query = new Parse.Query(ONG);
+                query.get(orgId).then(
+                    function(organizacion){
+                        organizacion.relation("Fotos").query().find().then(
+                            function(fotos){
+                                res.json({
+                                    idUser:user.id,
+                                    idOrganizacion:organizacion.id,
+                                    Categorias:user.get("Gustos"),
+                                    Contenido:organizacion.get("Contenido"),
+                                    Descripcion:organizacion.get("Descripcion"),
+                                    Nombre:organizacion.get("Nombre"),
+                                    Foto:organizacion.get("Foto")["_url"],
+                                    Fotos:fotos
+                                });
+                        });
 
+                    },
+                    function(data,error){
+                        res.json(error);
+                    }
+                );
             }
         },
         error: function (user, error) {

@@ -1,46 +1,26 @@
- @import url("//cdnjs.cloudflare.com/ajax/libs/animate.css/3.2.6/animate.min.css");
+@import url("//cdnjs.cloudflare.com/ajax/libs/animate.css/3.2.6/animate.min.css");
+/*
+.md-green{
+    background-color: #770140 !important;
+}
+.md-green:hover {
+    background-color: #600134 !important;
+}*/
 md-grid-tile {
- 	transition: all 400ms ease-out 50ms; 
+ 	transition: all 400ms ease-out;
+    background-position: center;
+    background-size: cover;
 }	
 
 md-grid-tile-footer{
-	transition: all 400ms ease-out 50ms; 
+    background: rgba(20,20,20,.8)!important;
+	transition: all 400ms ease-out;
+}
+md-grid-tile-footer figcaption{
+    width: 100%;
+    padding: 8px;
 }
 figure:hover > md-grid-tile-footer{
-	height:60px!important;
+	height:100%!important;
 }
- .tiledImg{
-     height:100%;
-    width: auto;
- }
- .fullwidth{
-     width: 100%;
- }
- .floating1 > md-icon,.floating2 > md-icon,.floating3 > md-icon{
-     margin-top: -3px!important;
-     font-size: 2em;
- }
- .floating1{
-     position:absolute;
-     top:5px;
-     left:5px;
- }
- .floating2{
-     position:absolute;
-     top:65px;
-     left:5px;
- }
- .floating3{
-     position:absolute;
-     top:125px;
-     left:5px;
- }
- .md-green{
-     background-color: #770140 !important;
- }
- .md-green:hover{
-     background-color: #600134 !important;
- }
- .md-green>md-icon {
-     color: white!important;
- }
+.descripcion{font-size: 0.8em;}
