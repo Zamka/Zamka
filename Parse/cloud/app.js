@@ -55,7 +55,7 @@ app.post("/API/Admin/CrearEvento", eventos.crearEvento);
 app.put("/API/Admin/Evento", eventos.editarEvento);
 
 app.get("/API/Admin/ONG", organizacion.getONG);
-
+app.get("/API/Admin/Participantes",participacion.getParticipantes);
 //Imagenes
 
 //app.get("/API/Admin/Imagenes",imagenes.getImagenes);

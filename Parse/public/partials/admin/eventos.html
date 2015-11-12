@@ -15,7 +15,7 @@
                     <label class="headers categoria">[[evento.nombre]]</label>
                     <div class="headers"><i class="fa fa-calendar-o"></i> [[showDate(evento.fecha)]]</div>
                 </div>
-                <div>
+                <div layout-padding>
                     <p class="descripcion">
                         [[evento.descripcion]]
                     </p>
@@ -27,7 +27,7 @@
                     <md-button class="md-fab md-mini md-primary">
                         <md-icon md-font-icon="fa-pencil-square-o" class="fa d24"></md-icon>
                     </md-button>
-                    <md-button class="md-fab md-mini md-primary">
+                    <md-button class="md-fab md-mini md-primary" ng-click="goTo('/Admin/EventoLista/'+evento.id)">
                         <md-icon md-font-icon="fa-users" class="fa d24"></md-icon>
                     </md-button>
                     <md-button class="md-fab md-mini md-warn">

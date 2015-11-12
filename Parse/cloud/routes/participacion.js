@@ -31,7 +31,6 @@ exports.getParticipaciones = function (req, res) {
     var idUsuario = req.query.idUsuario;
     var usuario = new User();
     usuario.id = idUsuario;
-
     var query = new Parse.Query(Participacion);
     query.limit(100);
     query.equalTo("Usuario", usuario);
@@ -54,5 +53,30 @@ exports.getParticipaciones = function (req, res) {
         res.send(respuesta);
     }, function (error) {
         res.send(error);
+    });
+};
+exports.getParticipantes = function(req,res,next){
+    var idEvento = req.query.idEvento;
+    var evento = new Evento();
+    evento.id = idEvento;
+    var query = new Parse.Query(Participacion);
+    query.equalTo("Evento", evento);
+    query.descending('createdAt');
+    query.include("Usuario");
+    query.find().then(function (data) {
+        console.log(data);
+        var formattedData = [];
+        for (var key in data){
+            formattedData.push({
+                idPeticion:data[key].id,
+                estado:data[key].get("Estado"),
+                nombre:data[key].get("Usuario").get("name"),
+                idUsuario:data[key].get("Usuario").id,
+                Foto:data[key].get("Usuario").get("image")["_url"]
+            });
+        }
+        res.send(formattedData);
+    }, function (error) {
+        return next({error:error});
     });
 };

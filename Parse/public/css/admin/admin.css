@@ -6,6 +6,15 @@ md-toolbar.md-default-theme {
 .d24{
   line-height: 24px!important;
 }
+.md-calendar-day-header th,.md-calendar-month-label {
+  text-transform: capitalize;
+}
+.md-datepicker-input{
+  color:grey!important;
+}
+.md-subheader-wrapper{
+  margin-left: 0px!important;
+}
 md-sidenav>a>.fa{
 font-size:1em;
 }
@@ -105,4 +114,26 @@ https://github.com/google/material-design-icons
 .stagger-11 {
   -webkit-animation-delay: 0.55s;
   animation-delay: 0.55s;
+}
+.cropArea {
+  background: #E4E4E4;
+  overflow: hidden;
+  width:500px;
+  height:500px;
+}
+.removeBtn{
+  position: absolute;
+  right: 5px;
+  top: 5px;
+}
+.md-button.md-fab.md-mini {
+  z-index: 1!important;
+}
+md-grid-list md-grid-tile {
+  transition: all 400ms ease-out;
+  background-size: cover;
+  background-position: center;
+}
+a md-icon{
+  margin-top: 12px!important;
 }

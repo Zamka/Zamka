@@ -25,52 +25,59 @@ exports.porCategoria = function (req, res) {
     });
 };
 
-exports.evento = function (req, res) {
+exports.evento = function (req, res,next) {
     var id = req.query.idEvento;
     var query = new Parse.Query(Evento);
     var query2 = new Parse.Query(ComentarioEvento);
     query.include("Organizacion");
     query.include("Imagen");
-    query.include("Fotos");
+    //query.include("Fotos");
     query2.select("Comentario", "Usuario");
     query2.include("Usuario");
     var respuesta = {};
     var comentariosrespuesta = [];
-    query.get(id, function (evento) {
-        query2.equalTo("Evento", evento);
-        query2.find().then(function (comentarios) {
-            var i = 0;
-            comentarios.forEach(function (comentario) {
-                comentariosrespuesta[i] = {};
-                comentariosrespuesta[i].idUsuario = comentario.get("Usuario").id;
-                comentariosrespuesta[i].Nombre = comentario.get("Usuario").get("name");
-                comentariosrespuesta[i].Foto = comentario.get("Usuario").get("image");
-                comentariosrespuesta[i].Fecha = comentario.createdAt;
-                comentariosrespuesta[i++].Comentario = comentario.get("Comentario");
-            });
-            respuesta.Comentarios = comentariosrespuesta;
-            respuesta.Nombre = evento.get("Nombre");
-            respuesta.Descripcion = evento.get("Descripcion");
-            respuesta.Contenido = evento.get("Contenido");
-            respuesta.Categorias = evento.get("Categorias");
-            respuesta.Fecha = evento.createdAt;
-            respuesta.Organizacion = evento.get("Organizacion");
-            respuesta.Imagen = evento.get("Imagen");
-            var relation = evento.relation("Fotos");
-            var query3 = relation.query();
-            query3.find({
-                success: function (fotos) {
-                    respuesta.Fotos = fotos;
-                    res.json(respuesta);
-                },
-                error: function (error) {
-                    res.json(error);
-                }
+    query.get(id).then(function (data) {
+        if(data){
+            respuesta.Nombre = data.get("Nombre");
+            respuesta.Descripcion = data.get("Descripcion");
+            respuesta.Contenido = data.get("Contenido");
+            respuesta.Categorias = data.get("Categorias");
+            respuesta.Fecha = data.createdAt;
+            respuesta.Organizacion = data.get("Organizacion");
+            respuesta.Imagen = data.get("Imagen");
+            var relation = data.relation("Fotos");
+            query2.equalTo("Evento", data);
+            query2.find().then(function (comentarios) {
+                var i = 0;
+                comentarios.forEach(function (comentario) {
+                    comentariosrespuesta[i] = {};
+                    comentariosrespuesta[i].idUsuario = comentario.get("Usuario").id;
+                    comentariosrespuesta[i].Nombre = comentario.get("Usuario").get("name");
+                    comentariosrespuesta[i].Foto = comentario.get("Usuario").get("image");
+                    comentariosrespuesta[i].Fecha = comentario.createdAt;
+                    comentariosrespuesta[i++].Comentario = comentario.get("Comentario");
+                });
+                respuesta.Comentarios = comentariosrespuesta;
+                var query3 = relation.query();
+                query3.find({
+                    success: function (fotos) {
+                        respuesta.Fotos = fotos;
+                        res.json(respuesta);
+                    },
+                    error: function (error) {
+                        return next({error:error});
+                    }
+                });
+            }, function (error) {
+                return next({error:error});
             });
 
-        }, function (error) {
-            res.json(error);
-        });
+
+        }else{
+            return next({error:"evento not found"});
+        }
+    },function(error){
+        return next({error:error});
     });
 };
 

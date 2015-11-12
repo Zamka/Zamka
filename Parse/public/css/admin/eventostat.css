@@ -10,6 +10,9 @@
 	margin-top: -3px!important;
 	font-size: 2em;
 }
+.floating1 > md-icon{
+	margin-top: 12px!important;
+}
 .floating2{
 	position:absolute;
 	top:65px;
@@ -26,4 +29,14 @@
 }
 .md-green:hover{
   	background-color: #259b24!important;
+}
+md-grid-tile {
+	transition: all 400ms ease-out;
+	background-position: center;
+	background-size: cover;
+}
+
+md-grid-tile-footer{
+	background: rgba(20,20,20,.8)!important;
+	transition: all 400ms ease-out;
 }

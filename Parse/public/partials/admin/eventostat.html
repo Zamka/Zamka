@@ -1,12 +1,16 @@
 <link rel="stylesheet" type="text/css" href="/css/admin/eventostat.css?v=[[timestamp()]]">
-<h2>Administración de Voluntarios</h2>
+<h2 style="margin-left: 5px">Administración de Voluntarios</h2>
+<section>
+  <md-subheader class="md-primary"><h2>Pendientes</h2></md-subheader>
+<div style="width: 90%;margin-left: auto;margin-right: auto;">
 <md-grid-list
       md-cols-sm="2" md-cols-md="2" md-cols-gt-md="6"
         md-row-height-gt-md="1:1" md-row-height="2:2"
         md-gutter="12px" md-gutter-gt-sm="8px" >
-  <md-grid-tile ng-repeat="persona in usuarios" class="animated zoomInDown stagger-[[$index]]"
+  <md-grid-tile style="background-image:url('[[persona.Foto]]');transition: all 400ms ease-out;background-position: center;background-size: cover;
+  " ng-repeat="persona in participantes.pendientes" class="animated zoomInDown stagger-[[$index]]"
   md-rowspan="2" md-colspan="2">
-  <md-button class="floating1 md-fab md-primary">
+  <md-button class="floating1 md-fab md-primary" href="/App/Perfil/[[persona.idUsuario]]" target="_blank">
   <md-tooltip md-direction="right">
     Ver Perfil
   </md-tooltip>
@@ -24,10 +28,56 @@
   </md-tooltip>
   <md-icon md-font-icon="fa-times" class="fa"></md-icon>
   </md-button>
-      <img class="tiledImg" src="[[persona.user.picture.large]]">
        <md-grid-tile-footer>
-      <h3>[[persona.user.name.first + ' ' + persona.user.name.last]]</h3>
+      <h3 style="text-transform: capitalize">[[persona.nombre]]</h3>
     </md-grid-tile-footer>
   </md-grid-tile>
-  
 </md-grid-list>
+</div>
+</section>
+<section>
+  <md-subheader class="md-primary"><h2>Aceptados</h2></md-subheader>
+  <div style="width: 90%;margin-left: auto;margin-right: auto;">
+    <md-grid-list
+            md-cols-sm="2" md-cols-md="2" md-cols-gt-md="6"
+            md-row-height-gt-md="1:1" md-row-height="2:2"
+            md-gutter="12px" md-gutter-gt-sm="8px" >
+      <md-grid-tile style="background-image:url('[[persona.Foto]]');transition: all 400ms ease-out;background-position: center;background-size: cover;
+  " ng-repeat="persona in participantes.aprobados" class="animated zoomInDown stagger-[[$index]]"
+                    md-rowspan="2" md-colspan="2">
+        <md-button class="floating1 md-fab md-primary" href="/App/Perfil/[[persona.idUsuario]]" target="_blank">
+          <md-tooltip md-direction="right">
+            Ver Perfil
+          </md-tooltip>
+          <md-icon md-font-icon="fa-user" class="fa"></md-icon>
+        </md-button>
+        <md-grid-tile-footer>
+          <h3 style="text-transform: capitalize">[[persona.nombre]]</h3>
+        </md-grid-tile-footer>
+      </md-grid-tile>
+    </md-grid-list>
+  </div>
+</section>
+<section>
+  <md-subheader class="md-primary"><h2>Rechazados</h2></md-subheader>
+  <div style="width: 90%;margin-left: auto;margin-right: auto;">
+    <md-grid-list
+            md-cols-sm="2" md-cols-md="2" md-cols-gt-md="6"
+            md-row-height-gt-md="1:1" md-row-height="2:2"
+            md-gutter="12px" md-gutter-gt-sm="8px" >
+      <md-grid-tile style="background-image:url('[[persona.Foto]]');transition: all 400ms ease-out;background-position: center;background-size: cover;
+  " ng-repeat="persona in participantes.rechazados" class="animated zoomInDown stagger-[[$index]]"
+                    md-rowspan="2" md-colspan="2">
+        <md-button class="floating1 md-fab md-primary" href="/App/Perfil/[[persona.idUsuario]]" target="_blank">
+          <md-tooltip md-direction="right">
+            Ver Perfil
+          </md-tooltip>
+          <md-icon md-font-icon="fa-user" class="fa"></md-icon>
+        </md-button>
+        <md-grid-tile-footer>
+          <h3 style="text-transform: capitalize">[[persona.nombre]]</h3>
+        </md-grid-tile-footer>
+      </md-grid-tile>
+    </md-grid-list>
+  </div>
+</section>

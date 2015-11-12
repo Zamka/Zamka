@@ -1,34 +1,44 @@
 var timenow = Date.now();
-angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','ngStorage'])
+angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','ngStorage','ngMessages','ngImgCrop'])
     .config(function($mdThemingProvider,$routeProvider,$interpolateProvider,$locationProvider) {
         $routeProvider
             .when('/Admin', {
                 templateUrl: '/partials/admin/index.html',
                 controller: 'indexCtrl'
             })
-            .when('/Admin/estadisticas', {
-                templateUrl: '/partials/admin/estadisticas.html',
-                controller: 'estaCtrl'
-            })
-            .when('/Admin/eventos', {
+            .when('/Admin/Eventos', {
                 templateUrl: '/partials/admin/eventos.html',
                 controller: 'eventosCtrl'
             })
-            .when('/Admin/perfil', {
+            .when('/Admin/CrearEvento', {
+                templateUrl: '/partials/admin/crearevento.html',
+                controller: 'crearEventoCtrl'
+            })
+            .when('/Admin/Perfil', {
                 templateUrl: '/partials/admin/perfil.html',
                 controller: 'perfilCtrl'
             })
-            .when('/Admin/evento/:id', {
+            .when('/Admin/Evento/:id', {
                 templateUrl: '/partials/admin/evento.html',
                 controller: 'eventoCtrl'
             })
-            .when('/Admin/eventoStat/:id', {
+            .when('/Admin/EventoLista/:id', {
                 templateUrl: '/partials/admin/eventostat.html',
                 controller: 'eventoStatCtrl'
             });
         $mdThemingProvider.theme('default')
-            .primaryPalette('pink')
-            .accentPalette('grey');
+            .primaryPalette('pink', {
+                'default': '500',
+                'hue-1': '100',
+                'hue-2': '400',
+                'hue-3': '900'
+            })
+            .accentPalette('grey', {
+                'default': '500',
+                'hue-1': '400',
+                'hue-2': '700',
+                'hue-3': '900'
+            });
         $interpolateProvider.startSymbol('[[');
         $interpolateProvider.endSymbol(']]');
         $locationProvider.html5Mode(true);
@@ -48,7 +58,7 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','ngStorage'])
             $http.post("/API/Admin/Login",{usuario:usuario,password:password})
                 .success(function(data){
                     $log.log(data);
-                    $location.url("/Admin/eventos");
+                    $location.url("/Admin/Eventos");
                     $scope.organizacion = data;
                     $localStorage.organizacion = data;
 
@@ -136,7 +146,44 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','ngStorage'])
                     $log.log(error);
                 });
         };
+        $scope.getCategorias = function(){
+            $scope.cargando = true;
+            $http.get("/API/Categorias").success(function(data){
+                $scope.categorias = [];
+                for (key in data){
+                    $scope.categorias.push(data[key].Nombre);
+                }
+                $scope.cargando = false;
+                $log.log("Categorias:",$scope.categorias);
+            });
+        }
 
+        $scope.getParticipantes = function(idEvento){
+            $log.log("getParticipantes");
+            $scope.participantes = {
+                pendientes:[],
+                aprobados:[],
+                rechazados:[]
+            };
+            $http.get("/API/Admin/Participantes?idEvento="+idEvento).success(function(data){
+                $log.log(data);
+                for (var key in data){
+                    switch (data[key].estado){
+                        case 0:
+                            $scope.participantes.pendientes.push(data[key]);
+                            break;
+                        case 1:
+                            $scope.participantes.aprobados.push(data[key]);
+                            break;
+                        case 2:
+                            $scope.participantes.rechazados.push(data[key]);
+                            break;
+                    }
+                }
+            }).error(function(err){
+                $log.log(err);
+            });
+        }
 
         // UTILITIES
 
@@ -145,6 +192,9 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','ngStorage'])
         }
         $scope.timeSince = function(iso){
             return moment(iso).fromNow();
+        }
+        $scope.goTo = function(sitio){
+            $location.url(sitio);
         }
     })
     .controller('indexCtrl',function($scope,$mdToast,$timeout){
@@ -159,104 +209,85 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','ngStorage'])
         },500,false);
 
     })
-    .controller('estaCtrl',function($scope,$mdToast,$timeout){
-        $timeout(function(){
-            new Morris.Line({
-                element: 'participantes',
-                data: [
-                    { Año: '2008', Participantes: 200 },
-                    { Año: '2009', Participantes: 100 },
-                    { Año: '2010', Participantes: 50 },
-                    { Año: '2011', Participantes: 50 },
-                    { Año: '2012', Participantes: 200 }
-                ],
-                xkey: 'Año',
-                ykeys: ['Participantes'],
-                labels: ['Participantes']
-            });
-            new Morris.Donut({
-                element:'sexos',
-                data:[{label:'Hombres',value:300},{label:'Mujeres',value:400}],
-                colors:['#91B9D9','pink']
-            });
-            new Morris.Bar({
-                element:'eventos',
-                data: [
-                    { evento: '2008 - Evento 1', Participantes: 200 },
-                    { evento: '2009 - Evento 2', Participantes: 100 },
-                    { evento: '2010 - Evento 3', Participantes: 50 },
-                    { evento: '2011 - Evento 4', Participantes: 50 },
-                    { evento: '2012 - Evento 5', Participantes: 200 }
-                ],
-                xkey: 'evento',
-                ykeys: ['Participantes'],
-                labels: ['Participantes']
-            });
-        },1000);
-
-    })
     .controller('eventosCtrl',function($scope,$timeout,$log,$mdSidenav){
         $scope.$parent.sideNavOpen = true;
         $scope.getEventos($scope.organizacion.idOrganizacion);
 
     })
-    .controller('eventoCtrl',function($scope, $routeParams,$log,$mdDialog){
+    .controller('crearEventoCtrl',function($scope, $routeParams,$log,$mdDialog,$timeout){
+        $scope.getCategorias();
+        $scope.minDate = new Date();
+        $scope.fotos=[];
+        $scope.showCropped = function(){
+            $scope.fotos.push($scope.myCroppedImage);
+            $log.log($scope.myCroppedImage);
+        }
 
-        $scope.eventoID = $routeParams.id;
-        $scope.nombre = "Nombre del Evento";
-        $scope.desc = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...";
-        $scope.contenido = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
+        $scope.fistFoto = function(){
+            if($scope.fotos[0] == undefined){
+                return "http://mave.me/img/projects/full_placeholder.png";
+            }else{
+                return $scope.fotos[0];
+            }
+        }
+        $scope.getBg = function(){
+            return {
+                'background-image':'url(' + $scope.fistFoto() + ')'
+            }
+        }
 
-        $scope.tituloDialog = function(ev) {
-            $mdDialog.show({
-                controller: DialogController,
-                templateUrl: '/partials/admin/templates/titulo.html',
-                targetEvent: ev,
-                resolve: {
-                    texto: function () {
-                        return $scope.nombre;
-                    }}
-            })
-                .then(function(answer) {
-                    $scope.nombre = answer
-                }, function() {
-                    //Se cancelo
-                });
+
+        $scope.loadImage = function(){
+            $timeout(function(){
+                $log.log(document.getElementById("fileInput"));
+                document.getElementById("fileInput").click();},500);
+            $scope.showAdvanced();
         };
 
-        $scope.descDialog = function(ev) {
+        $scope.showAdvanced = function(ev) {
             $mdDialog.show({
                 controller: DialogController,
-                templateUrl: '/partials/admin/templates/descripcion.html',
+                templateUrl: '/partials/admin/templates/subirFoto.html',
+                parent: angular.element(document.body),
                 targetEvent: ev,
-                resolve: {
-                    texto: function () {
-                        return $scope.desc;
-                    }}
+                clickOutsideToClose: true
             })
-                .then(function(answer) {
-                    $scope.desc = answer
-                }, function() {
-                    //Se cancelo
+                .then(function (answer) {
+                    $scope.fotos.push(answer);
+                    $log.log(answer);
+                }, function () {
+                    $scope.status = 'You cancelled the dialog.';
                 });
+        };
+        function DialogController($scope, $mdDialog,$timeout,$log) {
+
+            $scope.myImage='';
+            $scope.myCroppedImage='';
+
+
+            angular.element(document.querySelector('#fileInput')).on('change',function(evt) {
+                var file=evt.currentTarget.files[0];
+                var reader = new FileReader();
+                reader.onload = function (evt) {
+                    $scope.$apply(function($scope){
+                        $scope.myImage=evt.target.result;
+                        document.getElementById("formFile").reset();
+                    });
+                };
+                reader.readAsDataURL(file);
+            });
+
+            $scope.hide = function() {
+                $mdDialog.hide();
+            };
+            $scope.cancel = function() {
+                $mdDialog.cancel();
+            };
+            $scope.ok = function() {
+                $mdDialog.hide($scope.myCroppedImage);
+            };
         }
 
-        $scope.conDialog = function(ev) {
-            $mdDialog.show({
-                controller: DialogController,
-                templateUrl: '/partials/admin/templates/contenido.html',
-                targetEvent: ev,
-                resolve: {
-                    texto: function () {
-                        return $scope.contenido;
-                    }}
-            })
-                .then(function(answer) {
-                    $scope.contenido = answer
-                }, function() {
-                    //Se cancelo
-                });
-        }
 
     })
     .controller('perfilCtrl',function($scope){
@@ -266,41 +297,12 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','ngStorage'])
 
 
     })
-    .controller('eventoStatCtrl',function($scope,$http,$log){
-        $http.get('http://api.randomuser.me/?results=20&nat=es').success(function(data){
-            $scope.usuarios = data.results;
-            $log.log($scope.usuarios);
-        });
+    .controller('eventoStatCtrl',function($scope,$http,$log,$routeParams){
+        $log.log($routeParams);
+        $scope.getParticipantes($routeParams.id);
+
     });
 
 
 
 
-function DialogController($scope, $mdDialog, $log,texto,$mdToast) {
-    $scope.texto = texto;
-    $scope.hide = function() {
-        $mdDialog.hide();
-    };
-    $scope.cancel = function() {
-        $mdDialog.cancel();
-    };
-    $scope.ok = function() {
-        $mdDialog.hide($scope.texto);
-    };
-    $scope.okDesc = function() {
-        $log.log($scope);
-        $log.log($scope.texto);
-
-        if(!$scope.texto){
-            $mdToast.show(
-                $mdToast.simple()
-                    .content('Se exedio del limite de caracteres')
-                    .position('top')
-                    .hideDelay(2000)
-            );
-        }else{
-            $mdDialog.hide($scope.texto);
-        }
-
-    };
-}
