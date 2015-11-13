@@ -1,7 +1,7 @@
-express = require('express');
-expressLayouts = require('cloud/express-layouts');
-app = express();
 
+var express = require('express');
+var expressLayouts = require('cloud/express-layouts');
+var app = express();
 var user = require('cloud/routes/user');
 var categorias = require('cloud/routes/categorias');
 var eventos = require('cloud/routes/eventos');
@@ -14,8 +14,9 @@ var comentarios = require('cloud/routes/comentarios');
 app.set('views', 'cloud/views');  // Specify the folder to find templates
 app.set('view engine', 'ejs');    // Set the template engine
 //app.use(expressLayouts);
+app.use(express.limit('4mb'));
 
-app.use(express.bodyParser());
+app.use(express.bodyParser({limit:4000000}));
 app.use(express.json());
 app.use(express.urlencoded());
 
@@ -53,9 +54,12 @@ app.post("/API/Admin/Login", user.loginOrganizacion);
 app.get("/API/Admin/Eventos", eventos.eventosONG);
 app.post("/API/Admin/CrearEvento", eventos.crearEvento);
 app.put("/API/Admin/Evento", eventos.editarEvento);
+app.post("/API/Admin/BorrarEvento", eventos.borrarEvento);
 
 app.get("/API/Admin/ONG", organizacion.getONG);
 app.get("/API/Admin/Participantes",participacion.getParticipantes);
+app.post("/API/Admin/AprobarParticipante",participacion.aprobarParticipante);
+app.post("/API/Admin/RechazarParticipante",participacion.rechazarParticipante);
 //Imagenes
 
 //app.get("/API/Admin/Imagenes",imagenes.getImagenes);

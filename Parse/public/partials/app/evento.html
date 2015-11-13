@@ -1,4 +1,4 @@
-<div layout="column" layout-align="start center" flex="100">
+<div layout="column" layout-align="start start" flex="100">
     <div class="evento-header" layout="column" layout-align="center center">
             <div layout="column" layout-align="center start">
                 <label class="categoria">[[evento.categoria]]</label>
@@ -6,7 +6,7 @@
             </div>
     </div>
     <br>
-    <div layout="row" layout-align="space-around start">
+    <div layout="row" layout-align="space-around start" style="width:100%;">
         <div flex="70" layout="row" layout-align="space-around start" layout-wrap>
             <div flex="30">
                 <div layout="column" layout-align="space-around center">
@@ -36,10 +36,36 @@
             </div>
             <div flex="100">
                 <br>
-                <div layout="row" layout-align="space-around center">
-                    <md-card class="fotosCard" ng-repeat="foto in evento.fotos">
-                        <img ng-src="[[foto]]">
-                    </md-card>
+                <md-grid-list style="width: 80%;margin-right: auto;margin-left: auto"
+                              md-cols-sm="1"
+                              md-cols-md="2"
+                              md-cols-gt-md="3"
+                              md-row-height="1:1"
+                              md-gutter="12px"
+                              md-gutter-gt-sm="8px">
+                    <md-grid-tile class="md-whiteframe-1dp" ng-repeat="foto in evento.fotos"
+                                  style="background-image:url('[[foto]]');"  ng-style="stagger($index)" class="animated zoomInDown">
+                    </md-grid-tile>
+                </md-grid-list>
+                <div layout="column" layout-align="start center" class="width-80">
+                    <div class="fullwidth">
+                        <label>COMENTARIOS</label>
+                        <hr>
+                    </div>
+                    <div ng-repeat="comentario in evento.comentarios" layout="row" layout-align="space-around center" class="fullwidth" layout-wrap>
+                        <div flex="30" layout="row" layout-align="center center">
+                            <a href="/App/Perfil/[[comentario.usuario.id]]"><img class="circlePhoto md-whiteframe-z1" ng-src="[[comentario.usuario.foto]]"></a>
+                        </div>
+                        <div flex="70" layout="column" layout-align="start start">
+                            <p><label class="nombreLbl" >[[comentario.usuario.nombre]] </label><i class="fa fa-calendar-o"></i> [[timeSince(comentario.fecha)]]</p>
+                            <div>
+                                <p>[[comentario.comentario]]</p>
+                            </div>
+                        </div>
+                        <div flex="100">
+                            <br><hr class="width-80 center">
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -51,24 +77,5 @@
     </div>
 <br>
 
-    <div layout="column" layout-align="start center" class="width-80">
-    <div class="fullwidth">
-        <label>COMENTARIOS</label>
-        <hr>
-    </div>
-        <div ng-repeat="comentario in evento.comentarios" layout="row" layout-align="space-around center" class="fullwidth" layout-wrap>
-            <div flex="30" layout="row" layout-align="center center">
-                <a href="/App/Perfil/[[comentario.usuario.id]]"><img class="circlePhoto md-whiteframe-z1" ng-src="[[comentario.usuario.foto]]"></a>
-            </div>
-            <div flex="70" layout="column" layout-align="start start">
-                <p><label class="nombreLbl" >[[comentario.usuario.nombre]] </label><i class="fa fa-calendar-o"></i> [[timeSince(comentario.fecha)]]</p>
-                <div>
-                    <p>[[comentario.comentario]]</p>
-                </div>
-            </div>
-            <div flex="100">
-                <br><hr class="width-80 center">
-            </div>
-        </div>
-    </div>
+
 </div>

@@ -1,3 +1,9 @@
+console.realWarn = console.warn;
+console.warn = function (message) {
+    if (message.indexOf("ARIA") == -1) {
+        console.realWarn.apply(console, arguments);
+    }
+};
 var timenow = Date.now();
 angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','ngStorage','ngMessages','ngImgCrop'])
     .config(function($mdThemingProvider,$routeProvider,$interpolateProvider,$locationProvider) {
@@ -18,9 +24,13 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','ngStorage','ngMessages','n
                 templateUrl: '/partials/admin/perfil.html',
                 controller: 'perfilCtrl'
             })
-            .when('/Admin/Evento/:id', {
-                templateUrl: '/partials/admin/evento.html',
-                controller: 'eventoCtrl'
+            .when('/Admin/EditarOrganizacion', {
+                templateUrl: '/partials/admin/editarOrganizacion.html',
+                controller: 'editarOrganizacionCtrl'
+            })
+            .when('/Admin/EditarEvento/:id', {
+                templateUrl: '/partials/admin/editarEvento.html',
+                controller: 'editarEventoCtrl'
             })
             .when('/Admin/EventoLista/:id', {
                 templateUrl: '/partials/admin/eventostat.html',
@@ -43,7 +53,7 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','ngStorage','ngMessages','n
         $interpolateProvider.endSymbol(']]');
         $locationProvider.html5Mode(true);
     })
-    .controller('AppCtrl',function($scope, $mdSidenav,$http,$log,$location,$localStorage){
+    .controller('AppCtrl',function($scope, $mdSidenav,$http,$log,$location,$localStorage,$mdToast){
         $scope.sideNavOpen = false;
         $scope.organizacion = {};
         if($localStorage.organizacion != null)
@@ -54,15 +64,20 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','ngStorage','ngMessages','n
         $scope.timestamp = function(){
             return timenow;
         };
-        $scope.login = function(usuario,password){
+        $scope.login = function(usuario,password,noGo){
             $http.post("/API/Admin/Login",{usuario:usuario,password:password})
                 .success(function(data){
                     $log.log(data);
-                    $location.url("/Admin/Eventos");
                     $scope.organizacion = data;
-                    $localStorage.organizacion = data;
+                    $scope.organizacion.usuario = usuario;
+                    $scope.organizacion.password = password;
+                    $localStorage.organizacion = $scope.organizacion;
+                    if(noGo){
 
-                    //$scope.subirFoto(imgTestBase64,$scope.organizacion.objectId);
+                    }else{
+                        $location.url("/Admin/Eventos");
+                    }
+
                 })
                 .error(function(error){
                     $log.log(error);
@@ -90,37 +105,29 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','ngStorage','ngMessages','n
                     $log.log(error)
                 });
         };
-        $scope.subirFoto = function(foto,idONG){
+        $scope.subirFoto = function(foto,idONG,callback){
             $http.post("/API/Admin/SubirImagen",{
                 imagen:{base64:foto},
                 idONG:idONG
-            })
-                .success(function(data){
+            }).success(function(data){
                     $log.log(data);
-                    var foto = data;
-                    $scope.crearEvento(
-                        "Evento de Prueba API",
-                        "Descripcion del evento",
-                        "<strong>Contenido del evento aca deberia ser HTML</strong>",
-                        ["Artes","Deportes","Construcción"],
-                        foto.objectId,
-                        [foto.objectId,foto.objectId,foto.objectId],
-                        $scope.organizacion.objectId
-                    );
-                })
-                .error(function(error){
-                    $log.log(error);
-                });
+                    callback(data);
+            })
+            .error(function(error){
+                $log.log(error);
+                    callback();
+            });
         };
-        $scope.crearEvento = function(nombre,descripcion,contenido,categorias,foto,fotos,idONG){
+        $scope.crearEvento = function(nombre,descripcion,fecha,contenido,foto,categorias,fotos){
             $http.post("/API/Admin/CrearEvento",{
                 nombre:nombre,
                 descripcion:descripcion,
                 contenido:contenido,
+                fecha:fecha,
                 categorias:categorias,
                 foto:foto,
                 fotos:fotos,
-                idONG:idONG
+                idONG:$scope.organizacion.objectId
             })
                 .success(function(data){
                     $log.log(data);
@@ -129,21 +136,35 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','ngStorage','ngMessages','n
                     $log.log(error);
                 });
         };
-        $scope.editarEvento = function(nombre,descripcion,contenido,cover,categorias,fotos,idEvento){
+        $scope.editarEvento = function(nombre,descripcion,fecha,contenido,foto,categorias,fotos,idEvento){
+            $log.log(fotos);
             $http.put("/API/Admin/Evento",{
                 nombre:nombre,
                 descripcion:descripcion,
+                fecha:fecha,
                 contenido:contenido,
-                cover:cover,
+                foto:foto,
                 categorias:categorias,
                 fotos:fotos,
                 idEvento:idEvento
             })
                 .success(function(data){
                     $log.log(data);
+                    $mdToast.show(
+                        $mdToast.simple()
+                            .content('Se Guardaron sus cambios con exito')
+                            .position('top')
+                            .hideDelay(3000)
+                    );
                 })
                 .error(function(error){
                     $log.log(error);
+                    $mdToast.show(
+                        $mdToast.simple()
+                            .content('Ocurrio un error Guardando los cambios de su Evento, por favor intente denuevo')
+                            .position('top')
+                            .hideDelay(3000)
+                    );
                 });
         };
         $scope.getCategorias = function(){
@@ -156,7 +177,7 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','ngStorage','ngMessages','n
                 $scope.cargando = false;
                 $log.log("Categorias:",$scope.categorias);
             });
-        }
+        };
 
         $scope.getParticipantes = function(idEvento){
             $log.log("getParticipantes");
@@ -183,18 +204,71 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','ngStorage','ngMessages','n
             }).error(function(err){
                 $log.log(err);
             });
+        };
+
+        $scope.aprobarParticipante = function(idParticipacion){
+            $http.post("/API/Admin/AprobarParticipante",{idParticipacion:idParticipacion}).success(function(data){
+                $log.log(data);
+                for(key in $scope.participantes.pendientes){
+                    if ($scope.participantes.pendientes[key].idPeticion == idParticipacion){
+                        $scope.participantes.aprobados.push($scope.participantes.pendientes[key]);
+                        $scope.participantes.pendientes.splice(key,1);
+
+                    }
+                }
+            }).error(function(err){
+                $log.log(err);
+            });
+        };
+        $scope.rechazarParticipante = function(idParticipacion){
+            $http.post("/API/Admin/RechazarParticipante",{idParticipacion:idParticipacion}).success(function(data){
+                $log.log(data);
+                for(key in $scope.participantes.pendientes){
+                    if ($scope.participantes.pendientes[key].idPeticion == idParticipacion){
+                        $scope.participantes.rechazados.push($scope.participantes.pendientes[key]);
+                        $scope.participantes.pendientes.splice(key,1);
+                    }
+                }
+            }).error(function(err){
+                $log.log(err);
+            });
+        };
+        $scope.borrarEvento = function(idEvento){
+            swal({
+                title: "¿Estas Seguro?",
+                text: "Estas a punto de borrar este evento. Si lo haces, no podras recuperarlo",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Si, Borrar",
+                closeOnConfirm: false
+            }, function(){
+                $http.post("/API/Admin/BorrarEvento",{idEvento:idEvento}).success(function(){
+                    swal("Evento Borrado", "Este evento fue borrado con exito", "success");
+                    $scope.getEventos($scope.organizacion.idOrganizacion);
+                }).error(function(error){
+                    $log.error(error);
+                });
+
+            });
         }
 
         // UTILITIES
 
         $scope.showDate = function(iso){
             return moment(iso).format("Do MMM YYYY");
-        }
+        };
         $scope.timeSince = function(iso){
             return moment(iso).fromNow();
-        }
+        };
         $scope.goTo = function(sitio){
             $location.url(sitio);
+        };
+        $scope.stagger = function(i){
+            return {
+                '-webkit-animation-delay': (i*0.05)+'s',
+            'animation-delay': (i*0.05)+'s'
+            }
         }
     })
     .controller('indexCtrl',function($scope,$mdToast,$timeout){
@@ -214,20 +288,92 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','ngStorage','ngMessages','n
         $scope.getEventos($scope.organizacion.idOrganizacion);
 
     })
+    .controller('editarOrganizacionCtrl',function($scope,$timeout,$log,$mdDialog){
+        $scope.login($scope.organizacion.usuario,$scope.organizacion.password,true);
+
+        $scope.getCategorias();
+        $scope.loadImage = function(){
+            $timeout(function(){
+                $log.log(document.getElementById("fileInput"));
+                document.getElementById("fileInput").click();},500);
+            $scope.showAdvanced();
+        };
+        $log.log($scope.organizacion);
+        $scope.ong = {
+            nombre:$scope.organizacion.Nombre,
+            logo:$scope.organizacion.Foto,
+            descripcion:$scope.organizacion.Descripcion,
+            contenido:$scope.organizacion.Contenido,
+            categoria:$scope.organizacion.Categorias[0]
+        };
+        $scope.getBg = function(){
+            return {
+                'background-image':'url(' + $scope.ong.logo + ')'
+            }
+        }
+
+
+        $scope.showAdvanced = function(ev) {
+            $mdDialog.show({
+                controller: DialogController,
+                templateUrl: '/partials/admin/templates/subirFoto.html',
+                parent: angular.element(document.body),
+                targetEvent: ev,
+                clickOutsideToClose: true
+            })
+                .then(function (answer) {
+                    $log.log(answer);
+                    $scope.ong.logo=answer;
+                }, function () {
+                    $scope.status = 'You cancelled the dialog.';
+                });
+        };
+
+        function DialogController($scope, $mdDialog,$timeout,$log) {
+
+            $scope.myImage='';
+            $scope.myCroppedImage='';
+
+
+            angular.element(document.querySelector('#fileInput')).on('change',function(evt) {
+                var file=evt.currentTarget.files[0];
+                var reader = new FileReader();
+                reader.onload = function (evt) {
+                    $scope.$apply(function($scope){
+                        $scope.myImage=evt.target.result;
+                        document.getElementById("formFile").reset();
+                    });
+                };
+                reader.readAsDataURL(file);
+            });
+
+            $scope.hide = function() {
+                $mdDialog.hide();
+            };
+            $scope.cancel = function() {
+                $mdDialog.cancel();
+            };
+            $scope.ok = function() {
+                $mdDialog.hide($scope.myCroppedImage);
+            };
+        }
+    })
     .controller('crearEventoCtrl',function($scope, $routeParams,$log,$mdDialog,$timeout){
         $scope.getCategorias();
         $scope.minDate = new Date();
-        $scope.fotos=[];
+        $scope.evento={};
+        $scope.loadingFoto = false;
+        $scope.evento.fotos=[];
         $scope.showCropped = function(){
-            $scope.fotos.push($scope.myCroppedImage);
+            $scope.evento.fotos.push($scope.myCroppedImage);
             $log.log($scope.myCroppedImage);
         }
 
         $scope.fistFoto = function(){
-            if($scope.fotos[0] == undefined){
+            if($scope.evento.fotos[0] == undefined){
                 return "http://mave.me/img/projects/full_placeholder.png";
             }else{
-                return $scope.fotos[0];
+                return $scope.evento.fotos[0].Archivo.url;
             }
         }
         $scope.getBg = function(){
@@ -243,7 +389,9 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','ngStorage','ngMessages','n
                 document.getElementById("fileInput").click();},500);
             $scope.showAdvanced();
         };
-
+        $scope.removeFoto = function(index){
+            $scope.evento.fotos.splice(index,1);
+        }
         $scope.showAdvanced = function(ev) {
             $mdDialog.show({
                 controller: DialogController,
@@ -253,11 +401,167 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','ngStorage','ngMessages','n
                 clickOutsideToClose: true
             })
                 .then(function (answer) {
-                    $scope.fotos.push(answer);
-                    $log.log(answer);
+                    $scope.loadingFoto = true;
+                    $scope.subirFoto(answer,$scope.myCroppedImage,function(foto){
+                        $log.log(foto);
+                        if(foto){
+                            $scope.evento.fotos.push(foto);
+                        }else{
+                            $mdToast.show(
+                                $mdToast.simple()
+                                    .content('Ocurrio un error subiendo su foto, por favor intente denuevo')
+                                    .position('top')
+                                    .hideDelay(3000)
+                            );
+                        }
+                        $scope.loadingFoto = false;
+                    });
                 }, function () {
                     $scope.status = 'You cancelled the dialog.';
                 });
+        };
+        $scope.guardar = function(){
+            $scope.crearEvento(
+                $scope.evento.nombre,
+                $scope.evento.descripcion,
+                $scope.evento.fecha,
+                $scope.evento.contenido,
+                $scope.evento.fotos[0],
+                [$scope.categoria],
+                $scope.evento.fotos);
+        };
+        function DialogController($scope, $mdDialog,$timeout,$log) {
+
+            $scope.myImage='';
+            $scope.myCroppedImage='';
+
+
+            angular.element(document.querySelector('#fileInput')).on('change',function(evt) {
+                var file=evt.currentTarget.files[0];
+                var reader = new FileReader();
+                reader.onload = function (evt) {
+                    $scope.$apply(function($scope){
+                        $scope.myImage=evt.target.result;
+                        document.getElementById("formFile").reset();
+                    });
+                };
+                reader.readAsDataURL(file);
+            });
+
+            $scope.hide = function() {
+                $mdDialog.hide();
+            };
+            $scope.cancel = function() {
+                $mdDialog.cancel();
+            };
+            $scope.ok = function() {
+                $mdDialog.hide($scope.myCroppedImage);
+            };
+        }
+
+
+
+    })
+    .controller('editarEventoCtrl',function($scope, $routeParams,$log,$mdDialog,$timeout,$http,$mdToast,$window){
+        $scope.getCategorias();
+        $scope.evento={};
+        $scope.loadingFoto = false;
+        $scope.getEvento = function(id){
+            $http.get("/API/Evento?idEvento="+id).success(function(data){
+                $log.log("data:",data);
+                $scope.evento={
+                    id:id,
+                    categoria:data.Categorias[0],
+                    contenido:data.Contenido,
+                    descripcion:data.Descripcion,
+                    fecha:new Date(data.Fecha),
+                    nombre:data.Nombre,
+                    foto:data.Imagen["_url"],
+                    comentarios:[],
+                    fotos: [],
+                    org:{
+                        nombre:data.Organizacion.Nombre,
+                        id:data.Organizacion.objectId,
+                        foto:data.Organizacion.Foto.url
+                    }
+                };
+                for(key in data.Fotos){
+                    $scope.evento.fotos.push(data.Fotos[key]);
+                }
+                $log.log("Evento:",$scope.evento);
+                $scope.categoria=$scope.evento.categoria;
+            });
+        };
+
+        $scope.getEvento($routeParams.id);
+        $scope.evento.fotos=[];
+        $scope.showCropped = function(){
+            $scope.evento.fotos.push($scope.myCroppedImage);
+            $log.log($scope.myCroppedImage);
+        }
+
+        $scope.fistFoto = function(){
+            if($scope.evento.fotos[0] == undefined){
+                return "http://mave.me/img/projects/full_placeholder.png";
+            }else{
+                return $scope.evento.fotos[0].Archivo.url;
+            }
+        }
+        $scope.getBg = function(){
+            return {
+                'background-image':'url(' + $scope.fistFoto() + ')'
+            }
+        }
+
+
+        $scope.loadImage = function(){
+            $timeout(function(){
+                $log.log(document.getElementById("fileInput"));
+                document.getElementById("fileInput").click();},500);
+            $scope.showAdvanced();
+        };
+        $scope.removeFoto = function(index){
+            $scope.evento.fotos.splice(index,1);
+        }
+        $scope.showAdvanced = function(ev) {
+            $mdDialog.show({
+                controller: DialogController,
+                templateUrl: '/partials/admin/templates/subirFoto.html',
+                parent: angular.element(document.body),
+                targetEvent: ev,
+                clickOutsideToClose: true
+            })
+                .then(function (answer) {
+                    $scope.loadingFoto = true;
+                    $scope.subirFoto(answer,$scope.myCroppedImage,function(foto){
+                        $log.log(foto);
+                        if(foto){
+                            $scope.evento.fotos.push(foto);
+                        }else{
+                            $mdToast.show(
+                                $mdToast.simple()
+                                    .content('Ocurrio un error subiendo su foto, por favor intente denuevo')
+                                    .position('top')
+                                    .hideDelay(3000)
+                            );
+                        }
+                        $scope.loadingFoto = false;
+                    });
+                }, function () {
+                    $scope.status = 'You cancelled the dialog.';
+                });
+        };
+
+        $scope.guardar = function(){
+            $scope.editarEvento(
+                $scope.evento.nombre,
+                $scope.evento.descripcion,
+                $scope.evento.fecha,
+                $scope.evento.contenido,
+                $scope.evento.fotos[0],
+                [$scope.categoria],
+                $scope.evento.fotos,
+                $scope.evento.id);
         };
         function DialogController($scope, $mdDialog,$timeout,$log) {
 

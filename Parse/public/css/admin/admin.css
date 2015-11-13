@@ -67,54 +67,6 @@ https://github.com/google/material-design-icons
 .red {
   background: #ff8a80; }
 
-.stagger-0 {
-  -webkit-animation-delay: 0s;
-  animation-delay: 0s;
-}
-.stagger-1 {
-  -webkit-animation-delay: 0.05s;
-  animation-delay: 0.05s;
-}
-.stagger-2 {
-  -webkit-animation-delay: 0.1s;
-  animation-delay: 0.1s;
-}
-.stagger-3 {
-  -webkit-animation-delay: 0.15s;
-  animation-delay: 0.15s;
-}
-.stagger-4 {
-  -webkit-animation-delay: 0.2s;
-  animation-delay: 0.2s;
-}
-.stagger-5 {
-  -webkit-animation-delay: 0.25s;
-  animation-delay: 0.25s;
-}
-.stagger-6 {
-  -webkit-animation-delay: 0.3s;
-  animation-delay: 0.3s;
-}
-.stagger-7 {
-  -webkit-animation-delay: 0.35s;
-  animation-delay: 0.35s;
-}
-.stagger-8 {
-  -webkit-animation-delay: 0.4s;
-  animation-delay: 0.4s;
-}
-.stagger-9 {
-  -webkit-animation-delay: 0.45s;
-  animation-delay: 0.45s;
-}
-.stagger-10 {
-  -webkit-animation-delay: 0.5s;
-  animation-delay: 0.5s;
-}
-.stagger-11 {
-  -webkit-animation-delay: 0.55s;
-  animation-delay: 0.55s;
-}
 .cropArea {
   background: #E4E4E4;
   overflow: hidden;
@@ -137,3 +89,4 @@ md-grid-list md-grid-tile {
 a md-icon{
   margin-top: 12px!important;
 }
+.md-button.md-icon-button {text-align: center}

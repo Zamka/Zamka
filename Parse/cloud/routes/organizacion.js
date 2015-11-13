@@ -11,7 +11,6 @@ exports.getONG = function (req, res) {
     query2.include("Usuario");
     var respuesta = {};
     var comentariosrespuesta = [];
-    var query4 = new Parse.Query(Evento);
     query.get(id, function (organizacion) {
         query2.equalTo("Organizacion", organizacion);
         query2.find().then(function (comentarios) {
@@ -34,9 +33,29 @@ exports.getONG = function (req, res) {
             query3.find({
                 success: function (fotos) {
                     respuesta.Fotos = fotos;
+
+                    var query4 = new Parse.Query(Evento);
+
+                    query4.include("Imagen");
                     query4.equalTo("Organizacion", organizacion);
                     query4.find().then(function (eventos) {
-                        respuesta.listaEventos = eventos;
+
+                        var eventosFormatted = [];
+                        for (var key in eventos){
+                            console.log(eventos[key]);
+                            eventosFormatted.push({
+                                id:eventos[key].id,
+                                nombre:eventos[key].get("Nombre"),
+                                descripcion:eventos[key].get("Descripcion"),
+                                foto:eventos[key].get("Imagen").get("Archivo")["_url"],
+                                fecha:eventos[key].get("Fecha"),
+                                categoria:eventos[key].get("Categorias")[0]
+
+                            });
+                        }
+
+
+                        respuesta.listaEventos = eventosFormatted;
                         res.json(respuesta);
                     }, function (error) {
                         res.json(error);

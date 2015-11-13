@@ -1,3 +1,4 @@
+<link rel="stylesheet" type="text/css" href="/css/admin/eventos.css">
 <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="true">
     <md-toolbar class="md-theme-indigo">
         <h1 class="md-toolbar-tools">Categorias</h1>
@@ -11,26 +12,27 @@
     </md-content>
 </md-sidenav>
 <md-content flex layout-padding>
-    <div layout="column" layout-align="start center">
-        <br>
-        <div layout="row" layout-align="space-between start">
-            <div layout="row" layout-align="start start" layout-wrap flex="80">
-                <div ng-repeat="evento in eventos" flex-sm="100" flex-gt-md="50" flex-gt-lg="33">
-                    <md-card class="evento-card" ng-click="irEvento(evento.id)">
-                        <img ng-src="[[evento.foto]]" class="md-card-image" alt="Washed Out">
-                        <md-card-content>
-                            <div layout="row" layout-align="start center">
-                                <label class="headers categoria">[[evento.categoria]]</label>
-                                <div class="headers"><i class="fa fa-calendar-o"></i> [[showDate(evento.fecha)]]</div>
-                            </div>
-                            <h2 class="md-title">[[evento.nombre]]</h2>
-                            <p>
-                                [[evento.descripcion]]
-                            </p>
-                        </md-card-content>
-                    </md-card>
+    <md-grid-list style="width: 100%" md-cols-sm="1"
+                  md-cols-md="2"
+                  md-cols-gt-md="3"
+                  md-row-height="3:2"
+                  md-gutter="12px"
+                  md-gutter-gt-sm="8px">
+        <md-grid-tile ng-repeat="evento in eventos"
+                      style="background-image:url('[[evento.foto]]')" ng-click="irEvento(evento.id)">
+            <md-grid-tile-footer layout="column" layout-align="start center">
+                <div layout="column" layout-align="start center">
+                    <div layout="row" layout-align="space-between center" style="width: 100%;margin:4px">
+                        <label class="headers categoria">[[evento.nombre]]</label>
+                        <div class="headers"><i class="fa fa-calendar-o"></i> [[showDate(evento.fecha)]]</div>
+                    </div>
+                    <div  layout-padding>
+                        <p class="descripcion">
+                            [[evento.descripcion]]
+                        </p>
+                    </div>
                 </div>
-            </div>
-        </div>
-    </div>
+            </md-grid-tile-footer>
+        </md-grid-tile>
+    </md-grid-list>
 </md-content>

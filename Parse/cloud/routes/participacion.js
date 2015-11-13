@@ -2,28 +2,46 @@ var Evento = Parse.Object.extend("Evento");
 var User = Parse.User.extend("User");
 var Participacion = Parse.Object.extend("Participacion");
 
-exports.participar = function (req, res) {
-    var participacion = new Participacion();
+exports.participar = function (req, res, next) {
+
     var idEvento = req.body.idEvento;
     var idUsuario = req.body.idUsuario;
+
     var evento = new Evento();
     evento.id = idEvento;
     var usuario = new User();
     usuario.id = idUsuario;
+    var query = new Parse.Query(Participacion);
+    query.equalTo("Evento", evento);
+    query.equalTo("Usuario", usuario);
+    query.include("Usuario");
+    query.find().then(function(data){
+        if(data){
+            return next("Usted ya tiene una peticion en este evento");
+        }else{
+            var participacion = new Participacion();
 
-    participacion.set("Usuario", usuario);
-    participacion.set("Evento", evento);
-    participacion.set("Estado", 0);
-    participacion.set("Asistencia", false);
-
-    participacion.save(null, {
-        success: function (participacion) {
-            res.json(participacion);
-        },
-        error: function (participacion, error) {
-            res.json(error);
+            participacion.set("Usuario", usuario);
+            participacion.set("Evento", evento);
+            participacion.set("Estado", 0);
+            participacion.set("Asistencia", false);
+            participacion.save(null, {
+                success: function (participacion) {
+                    res.json(participacion);
+                },
+                error: function (participacion, error) {
+                    return next(error);
+                }
+            });
         }
+
+    },function(error){
+        return next(error);
     });
+
+
+
+
 
 };
 
@@ -36,8 +54,6 @@ exports.getParticipaciones = function (req, res) {
     query.equalTo("Usuario", usuario);
     query.select("Evento", "Estado", "Asistencia");
     query.include(["Evento.Organizacion"]);
-    //query.include("Usuario");
-    //query.include("Evento");
     query.descending('createdAt');
     query.find().then(function (participaciones) {
         var respuesta = [];
@@ -77,6 +93,35 @@ exports.getParticipantes = function(req,res,next){
         }
         res.send(formattedData);
     }, function (error) {
+        return next({error:error});
+    });
+};
+exports.aprobarParticipante = function(req,res,next){
+    var idParticipacion = req.body.idParticipacion;
+    var query = new Parse.Query(Participacion);
+    query.get(idParticipacion).then(function(participacion){
+        participacion.set("Estado",1);
+        participacion.save(null,{success:function(data){
+            console.log(data);
+            res.json(data);
+        },error:function(error){
+            return next(error);
+        }});
+    },function(error){
+        return next(error);
+    });
+};
+exports.rechazarParticipante = function(req,res,next){
+    var idParticipacion = req.body.idParticipacion;
+    var query = new Parse.Query(Participacion);
+    query.get(idParticipacion).then(function(participacion){
+        participacion.set("Estado",2);
+        participacion.save().then(function(){
+            res.send("OK");
+        },function(error){
+            return next({error:error});
+        });
+    },function(error){
         return next({error:error});
     });
 };

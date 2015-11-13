@@ -2,7 +2,6 @@ var User = Parse.User.extend("User");
 var Participacion = Parse.Object.extend("Participacion");
 var Inscripcion = Parse.Object.extend("Inscripcion");
 var ONG = Parse.Object.extend("Organizacion");
-
 exports.inscripcion = function (req, res) {
     var insc = new Inscripcion();
     var nombre = req.body.nombre;
@@ -23,22 +22,54 @@ exports.inscripcion = function (req, res) {
 };
 
 
-exports.login = function (req, res) {
+exports.login = function (req, res,next) {
     console.log(req.body);
     var correo = req.body.correo;
     var password = req.body.password;
-    var fbId = req.body.fbId;
-
+    var fbId = req.body.fbid;
     var query = new Parse.Query(User);
-    console.log(password);
+
+
     if (password === null || password === undefined) {
+
+        Parse.Cloud.httpRequest({
+            url: 'https://graph.facebook.com/me?access_token='+fbId,
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            }
+        }).then(function(data) {
+            console.log(data);
+            res.json(data);
+        }, function(error) {
+            console.log(error);
+            return next(error);
+        });
+
+
+        /*
         query.equalTo("username", correo);
-        query.equalTo("fbId", fbId);
         query.first().then(function (user) {
-            res.json(user);
+            if(user){
+                var facebookId = user.get("facebookID");
+                if(fbId == facebookId){
+                    res.json(user);
+                }else{
+                    user.set("facebookID",fbId);
+                    user.save(null,{success:function(data){
+                        res.json(data);
+                    },error:function(error){
+                        return next(error)
+                    }
+                    });
+                }
+
+
+            }else{
+
+            }
         }, function (error) {
             res.json(error);
-        });
+        });*/
     } else {
         Parse.User.logIn(correo, password, {
             success: function (user) {
@@ -116,7 +147,7 @@ exports.loginOrganizacion = function (req, res) {
                                     Foto:organizacion.get("Foto")["_url"],
                                     Fotos:fotos
                                 });
-                        });
+                            });
 
                     },
                     function(data,error){

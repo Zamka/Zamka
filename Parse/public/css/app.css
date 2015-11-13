@@ -102,6 +102,9 @@ md-list {
 }
 .width-80{
     width: 80%;
+
+    margin-left: auto;
+    margin-right: auto;
 }
 .social-fab{
     font-size: 1.6em;
@@ -142,4 +145,10 @@ hr .width-80{
 }
 .evento-desc > a {
     margin-right: 3px;
+}
+md-grid-list md-grid-tile {
+    transition: all 400ms ease-out;
+    background-size: cover;
+    background-position: center;
+    cursor: pointer;
 }

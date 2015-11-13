@@ -92,10 +92,18 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','mdDateTime'])
     function statusChangeCallback(response) {
         console.log('statusChangeCallback');
         console.log(response);
-    }
+    };
+
     $scope.loginfb = function(){
-        FB.login(function(response){
-            $scope.login(null,null,response.authResponse.userID);
+        FB.getLoginStatus(function(response){
+            if (response.status === 'connected') {
+                $scope.login(response.email,null,FB.getAccessToken());
+            }
+            else {
+                FB.login(function(response){
+                    $scope.login(response.email,null,FB.getAccessToken());
+                }, {scope: 'email'});
+            }
         });
     }
 
@@ -132,6 +140,7 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','mdDateTime'])
     $scope.logout = function(){
         localStorage.usuario = null;
         $scope.usuario = null;
+        FB.logout();
         $location.url("/App");
     }
     //CATEGORIAS
@@ -151,15 +160,15 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','mdDateTime'])
         $scope.cargando = true;
         $scope.eventos = [];
         $http.get("/API/Buscar?busqueda=").success(function(data){
+            $log.log(data);
             for (key in data){
                 var evento = data[key];
                 $scope.eventos.push({
-                    categoria:evento.Categorias[0],
-                    descripcion:evento.Descripcion,
-                    fecha:evento.Fecha.iso,
-                    nombre:evento.Nombre,
-                    foto:evento.Imagen.url,
-                    id:evento.objectId
+                    descripcion:evento.descripcion,
+                    fecha:new Date(evento.fecha),
+                    nombre:evento.nombre,
+                    foto:evento.foto,
+                    id:evento.id
                 });
             }
             $scope.cargando = false;
@@ -174,12 +183,11 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','mdDateTime'])
             for (key in data){
                 var evento = data[key];
                 $scope.eventos.push({
-                    categoria:evento.Categorias[0],
-                    descripcion:evento.Descripcion,
-                    fecha:evento.Fecha.iso,
-                    nombre:evento.Nombre,
-                    foto:evento.Imagen.url,
-                    id:evento.objectId
+                    descripcion:evento.descripcion,
+                    fecha:evento.fecha,
+                    nombre:evento.nombre,
+                    foto:evento.foto,
+                    id:evento.id
                 });
             }
             $scope.cargando = false;
@@ -205,7 +213,7 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','mdDateTime'])
                 org:{
                     nombre:data.Organizacion.Nombre,
                     id:data.Organizacion.objectId,
-                    foto:data.Organizacion.Foto.url
+                    foto:data.Organizacion.foto["_url"]
                 }
             };
             for (key in data.Comentarios){
@@ -232,7 +240,8 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','mdDateTime'])
         $http.post("/API/Participar",{
             idEvento:idEvento,
             idUsuario:idUsuario
-        }).success(function(){
+        }).success(function(data){
+            $log.log(data);
             $scope.cargando = false;
             swal(
                 {
@@ -241,6 +250,8 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','mdDateTime'])
                     type:"success",
                     confirmButtonColor: "#009688"
                 });
+        }).error(function(error){
+            $log.error(error);
         });
 
     }
@@ -288,12 +299,12 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','mdDateTime'])
                 }
                 for(key in data.listaEventos){
                     $scope.ong.eventos.push({
-                        nombre:data.listaEventos[key].Nombre,
-                        descripcion:data.listaEventos[key].Descripcion,
-                        foto:data.listaEventos[key].Imagen.url,
-                        fecha:data.listaEventos[key].Fecha.iso,
-                        id:data.listaEventos[key].objectId,
-                        categoria:data.listaEventos[key].Categorias[0]
+                        nombre:data.listaEventos[key].nombre,
+                        descripcion:data.listaEventos[key].descripcion,
+                        foto:data.listaEventos[key].foto,
+                        fecha:new Date(data.listaEventos[key].fecha),
+                        id:data.listaEventos[key].id,
+                        categoria:data.listaEventos[key].categoria
                     });
                 }
                 $log.log("ONG:",$scope.ong);

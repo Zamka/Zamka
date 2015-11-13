@@ -39,7 +39,7 @@ exports.addImagen = function (req, res) {
     var imagen = req.body.imagen;
     var ong = new Ong();
     ong.id = idOng;
-    var file = new Parse.File("img.png", imagen, "image/png");
+    var file = new Parse.File("img.jpg", imagen, "image/jpeg");
 
     file.save().then(function(){
         var Imagen = new Imagenes();
