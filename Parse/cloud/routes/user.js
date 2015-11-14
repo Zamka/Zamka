@@ -2,6 +2,8 @@ var User = Parse.User.extend("User");
 var Participacion = Parse.Object.extend("Participacion");
 var Inscripcion = Parse.Object.extend("Inscripcion");
 var ONG = Parse.Object.extend("Organizacion");
+
+
 exports.inscripcion = function (req, res) {
     var insc = new Inscripcion();
     var nombre = req.body.nombre;
@@ -20,56 +22,83 @@ exports.inscripcion = function (req, res) {
     });
 
 };
-
-
 exports.login = function (req, res,next) {
     console.log(req.body);
     var correo = req.body.correo;
     var password = req.body.password;
     var fbId = req.body.fbid;
-    var query = new Parse.Query(User);
-
-
+    console.log("login");
     if (password === null || password === undefined) {
-
         Parse.Cloud.httpRequest({
             url: 'https://graph.facebook.com/me?access_token='+fbId,
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
             }
         }).then(function(data) {
-            console.log(data);
-            res.json(data);
-        }, function(error) {
-            console.log(error);
-            return next(error);
-        });
-
-
-        /*
-        query.equalTo("username", correo);
-        query.first().then(function (user) {
-            if(user){
-                var facebookId = user.get("facebookID");
-                if(fbId == facebookId){
+            console.log("FB-login");
+            var fbid = data.data.id;
+            var email = data.data.email;
+            var gender = data.data.gender;
+            var name = data.data.name;
+            var query = new Parse.Query(User);
+            query.equalTo("facebookID", fbid);
+            query.first().then(function (user) {
+                if(user){
+                    console.log("FB - Encontrado");
                     res.json(user);
                 }else{
-                    user.set("facebookID",fbId);
-                    user.save(null,{success:function(data){
-                        res.json(data);
-                    },error:function(error){
-                        return next(error)
-                    }
+                    console.log("Buscando Correo");
+                    var query2 = new Parse.Query(User);
+                    query2.equalTo("username", email);
+                    query2.first().then(function (emailUser) {
+                        if(emailUser){
+                            console.log("Correo Encontrado");
+                            Parse.Cloud.useMasterKey();
+                            console.log("Permiso de Llave Maestra");
+                            emailUser.set("facebookID", fbid);
+                            emailUser.save(null,{
+                                success:function(response){
+                                    console.log("Usuario Actualizado");
+                                    console.log(response);
+                                    res.json(response);
+                                }
+                                ,error:function(error){return next(error);}
+                            });
+                        }else{
+                            console.log("Nuevo Usuario");
+                            Parse.Cloud.httpRequest({
+                                url:"http://graph.facebook.com/" + fbid + "/picture?height=400&width=400",
+                                method: 'GET',
+                                followRedirects:true
+                            }).then(function(httpResponse){
+                                var imageBuffer = httpResponse.buffer;
+                                var file = new Parse.File("img.jpg", {base64:imageBuffer.toString('base64')}, "image/jpeg");
+                                file.save().then(function(){
+                                    var newUser = new Parse.User();
+                                    newUser.set("username", email);
+                                    newUser.set("email", email);
+                                    newUser.set("password", "Z!mkaPasWoRasHascBcSReasons");
+                                    newUser.set("facebookID", fbid);
+                                    newUser.set("gender", gender);
+                                    newUser.set("name", name);
+                                    newUser.set("image", file);
+                                    newUser.signUp(null, {
+                                        success: function (user) {
+                                            res.json(user);
+                                        },
+                                        error: function (user, error) {
+                                            return next(error);
+                                        }
+                                    });
+                                },function(error){return next(error);});
+                            },function(error){return next(error);});
+
+                        }
                     });
                 }
+            },function(error){return next(error);});
 
-
-            }else{
-
-            }
-        }, function (error) {
-            res.json(error);
-        });*/
+        }, function(error) {return next(error);});
     } else {
         Parse.User.logIn(correo, password, {
             success: function (user) {
