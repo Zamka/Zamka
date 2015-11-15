@@ -1,30 +1,30 @@
-<link rel="stylesheet" type="text/css" href="/css/admin/eventos.css?v=[[timestamp()]]">
-<div layout="column" layout-align="start center" flex="100">
-    <div class="evento-header" layout="row" layout-align="center center">
-        <div layout="column" layout-align="center center"flex="30">
-            <img class="heightFull" ng-src="[[organizacion.Foto]]">
-        </div>
-        <div layout="column" layout-align="center start" flex="70">
-            <label class="categoria">ORGANIZACION</label>
-            <h1 class="evento-titulo">[[organizacion.Nombre]]</h1>
-            <h2 class="evento-desc">[[organizacion.Descripcion]]</h2>
-        </div>
-    </div>
-    <br>
-    <div layout="column" layout-align="start start" layout-wrap  class="width-95 center">
-        <div style="width: 100%">
-            <div class="width-95 center">
-                <h1>Esta organizacion es responsable por los siguientes eventos</h1>
-                <hr>
+<div layout="column" layout-align="start start" flex="100">
+    <section>
+        <div class="evento-header" layout="row" layout-align="center center">
+            <div layout="column" layout-align="center center"flex="30">
+                <img style="height:150px" ng-src="[[ong.foto]]">
+            </div>
+            <div layout="column" layout-align="center start" flex="70">
+                <label class="categoria">ORGANIZACION</label>
+                <h1 class="evento-titulo">[[ong.nombre]]</h1>
+                <h2 class="evento-desc">[[ong.descripcion]]</h2>
             </div>
         </div>
-        <md-grid-list style="width: 100%" md-cols-sm="1"
+    </section>
+    <div style="width: 100%">
+        <div class="width-95 center">
+            <h1>Esta organizacion es responsable por los siguientes eventos</h1>
+            <hr>
+        </div>
+    </div>
+    <section>
+        <md-grid-list style="width: 90%;margin-right: auto;margin-left: auto" md-cols-sm="1"
                       md-cols-md="2"
                       md-cols-gt-md="3"
                       md-row-height="3:2"
                       md-gutter="12px"
                       md-gutter-gt-sm="8px">
-            <md-grid-tile ng-repeat="evento in eventos"
+            <md-grid-tile ng-repeat="evento in ong.eventos"
                           style="background-image:url('[[evento.foto]]')">
                 <md-grid-tile-footer layout="column" layout-align="start center">
                     <div layout="column" layout-align="start center">
@@ -36,7 +36,7 @@
                             <div class="headers"><i class="fa fa-calendar-o"></i> [[showDate(evento.fecha)]]</div>
                         </div>
                         <div  layout-padding>
-                            <p class="descripcion">
+                            <p style="white-space: pre;" class="descripcion">
                                 [[evento.descripcion]]
                             </p>
                         </div>
@@ -44,30 +44,31 @@
                 </md-grid-tile-footer>
             </md-grid-tile>
         </md-grid-list>
-
-
-    </div>
-    <br>
-    <div layout="column" layout-align="start center" class="width-80">
-        <div class="fullwidth">
-            <label>COMENTARIOS</label>
-            <hr>
-        </div>
-        <div ng-repeat="comentario in organizacion.comentarios" layout="row" layout-align="space-around center" class="fullwidth" layout-wrap>
-            <div flex="30" layout="row" layout-align="center center">
-                <a href="/App/Perfil/[[comentario.usuario.id]]" target="_blank"><img class="circlePhoto md-whiteframe-z1" ng-src="[[comentario.usuario.foto]]"></a>
+    </section>
+    <section>
+        <div layout="column" layout-align="start center" class="width-80">
+            <div class="fullwidth">
+                <label>COMENTARIOS</label>
+                <hr>
             </div>
-            <div flex="70" layout="column" layout-align="start start">
-                <p><label class="nombreLbl" >[[comentario.usuario.nombre]] </label><i class="fa fa-calendar-o"></i> [[timeSince(comentario.fecha)]]</p>
-                <div>
-                    <p>[[comentario.comentario]]</p>
+            <div flex="100" ng-show="ong.comentarios.length==0">
+                <h2>Todabia no hay ningun comentario en esta organizacion. Se el primero en dejar uno.</h2>
+            </div>
+            <div ng-repeat="comentario in ong.comentarios" layout="row" layout-align="space-around center" ng-style="stagger($index)" class="fullwidth animated zoomInDown" layout-wrap>
+                <div flex="30" layout="row" layout-align="center center">
+                    <a href="/App/Perfil/[[comentario.usuario.id]]"><img class="circlePhoto md-whiteframe-z1" ng-src="[[comentario.usuario.foto]]"></a>
+                </div>
+                <div flex="70" layout="column" layout-align="start start" class="whiteBackground md-whiteframe-1dp" layout-padding>
+                    <div class="fullWidth" layout="row" layout-align="space-between"><label class="nombreLbl" >[[comentario.usuario.nombre]] </label></span><div><i class="fa fa-calendar-o"></i> [[timeSince(comentario.fecha)]]</div></div>
+                    <div>
+                        <p style="white-space: pre;">[[comentario.comentario]]</p>
+                    </div>
+                </div>
+                <div flex="100">
+                    <br><hr class="width-80 center">
                 </div>
             </div>
-            <div flex="100">
-                <br><hr class="width-80 center">
-            </div>
         </div>
-    </div>
-
+    </section>
 
 </div>

@@ -36,7 +36,7 @@
                             <div class="headers"><i class="fa fa-calendar-o"></i> [[showDate(evento.fecha)]]</div>
                         </div>
                         <div  layout-padding>
-                            <p class="descripcion">
+                            <p style="white-space: pre;" class="descripcion">
                                 [[evento.descripcion]]
                             </p>
                         </div>
@@ -68,7 +68,7 @@
                 <div flex="70" layout="column" layout-align="start start" class="whiteBackground md-whiteframe-1dp" layout-padding>
                     <div class="fullWidth" layout="row" layout-align="space-between"><label class="nombreLbl" >[[comentario.usuario.nombre]] </label></span><div><i class="fa fa-calendar-o"></i> [[timeSince(comentario.fecha)]]</div></div>
                     <div>
-                        <p>[[comentario.comentario]]</p>
+                        <p style="white-space: pre;">[[comentario.comentario]]</p>
                     </div>
                 </div>
                 <div flex="100">

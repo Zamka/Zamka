@@ -57,24 +57,6 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','ngStorage','ngMessages','n
         $locationProvider.html5Mode(true);
     })
     .controller('AppCtrl',function($scope, $mdSidenav,$http,$log,$location,$localStorage,$mdToast,$timeout){
-        $scope.fixGrids = function(){
-            $timeout(function(){
-                var grids =document.getElementsByTagName("md-grid-list");
-                for(var key in grids){
-                    try {
-                        var grid = grids[key];
-                        var newHeight = grid.scrollHeight;
-                        grid.style.height = newHeight + "px";
-                    }catch(e){}
-                }
-            },1000);
-
-        };
-        window.onresize = function(){
-            $scope.fixGrids();
-        };
-
-
         $scope.sideNavOpen = false;
         $scope.organizacion = {};
         if($localStorage.organizacion != null)
@@ -118,27 +100,50 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','ngStorage','ngMessages','n
                     $log.log(error)
                 });
         };
-        $scope.getComentariosOng = function(idONG){
-            $scope.cargando =true;
-            $http.get("/API/ComentariosOng?idONG="+idONG)
+        $scope.getOng = function(id){
+            $scope.ong={};
+            $scope.cargando = true;
+            $http.get("/API/Admin/ONG?idONG="+id)
                 .success(function(data){
-
-                    $scope.eventos = [];
-                    $scope.cargando =false;
-                    $log.log(data);
-                    $scope.organizacion.comentarios = data;
-                })
-                .error(function(error){
-                    $scope.cargando =false;
-                    $log.log(error)
+                    $scope.cargando = false;
+                    $log.log("ONG Data:",data);
+                    $scope.ong={
+                        nombre:data.Nombre,
+                        foto:data.Imagen["_url"],
+                        descripcion:data.Descripcion,
+                        eventos:[],
+                        comentarios:[]
+                    };
+                    for(key in data.Comentarios){
+                        $scope.ong.comentarios.push({
+                            comentario:data.Comentarios[key].Comentario,
+                            fecha:data.Comentarios[key].Fecha,
+                            usuario:{
+                                nombre:data.Comentarios[key].Nombre,
+                                id:data.Comentarios[key].idUsuario,
+                                foto:data.Comentarios[key].Foto["_url"]
+                            }
+                        });
+                    }
+                    for(key in data.listaEventos){
+                        $scope.ong.eventos.push({
+                            nombre:data.listaEventos[key].nombre,
+                            descripcion:data.listaEventos[key].descripcion,
+                            foto:data.listaEventos[key].foto,
+                            fecha:new Date(data.listaEventos[key].fecha),
+                            id:data.listaEventos[key].id,
+                            categoria:data.listaEventos[key].categoria
+                        });
+                    }
+                    $log.log("ONG:",$scope.ong);
                 });
-        };
-        $scope.subirFoto = function(foto,idONG,callback){
+        }
+        $scope.subirFoto = function(foto,callback){
             $log.log(foto);
             $scope.cargando =true;
             $http.post("/API/Admin/SubirImagen",{
                 imagen:{base64:foto},
-                idONG:idONG
+                idONG:$scope.organizacion.idOrganizacion
             }).success(function(data){
                 $scope.cargando =false;
                 $log.log(data);
@@ -160,7 +165,7 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','ngStorage','ngMessages','n
                 categorias:categorias,
                 foto:foto,
                 fotos:fotos,
-                idONG:$scope.organizacion.objectId
+                idONG:$scope.organizacion.idOrganizacion
             })
                 .success(function(data){
                     $scope.cargando =false;
@@ -366,7 +371,6 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','ngStorage','ngMessages','n
         };
     })
     .controller('indexCtrl',function($scope,$mdToast,$timeout){
-        $scope.fixGrids();
         $scope.lala = "lala";
         $timeout(function(){
 
@@ -465,7 +469,6 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','ngStorage','ngMessages','n
         }
     })
     .controller('crearEventoCtrl',function($scope, $routeParams,$log,$mdDialog,$timeout,$mdToast){
-        $scope.fixGrids();
         $scope.getCategorias();
         $scope.minDate = new Date();
         $scope.evento={};
@@ -509,7 +512,7 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','ngStorage','ngMessages','n
             })
                 .then(function (answer) {
                     $scope.loadingFoto = true;
-                    $scope.subirFoto(answer,$scope.myCroppedImage,function(foto){
+                    $scope.subirFoto(answer,function(foto){
                         if(foto){
                             $scope.evento.fotos.push(foto);
                         }else{
@@ -571,7 +574,6 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','ngStorage','ngMessages','n
 
     })
     .controller('editarEventoCtrl',function($scope, $routeParams,$log,$mdDialog,$timeout,$http,$mdToast,$window){
-        $scope.fixGrids();
         $scope.getCategorias();
         $scope.evento={};
         $scope.loadingFoto = false;
@@ -654,7 +656,7 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','ngStorage','ngMessages','n
             })
                 .then(function (answer) {
                     $scope.loadingFoto = true;
-                    $scope.subirFoto(answer,$scope.myCroppedImage,function(foto){
+                    $scope.subirFoto(answer,function(foto){
                         if(foto){
                             $scope.evento.fotos.push(foto);
                         }else{
@@ -707,15 +709,10 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','ngStorage','ngMessages','n
 
     })
     .controller('perfilCtrl',function($scope){
-        $scope.fixGrids();
-        $scope.$parent.sideNavOpen = true;
-        $scope.getEventos($scope.organizacion.idOrganizacion);
-        $scope.getComentariosOng($scope.organizacion.idOrganizacion);
-
+        $scope.getOng($scope.organizacion.idOrganizacion);
 
     })
     .controller('eventoStatCtrl',function($scope,$http,$log,$routeParams){
-        $scope.fixGrids();
         $log.log($routeParams);
         $scope.getParticipantes($routeParams.id);
 
