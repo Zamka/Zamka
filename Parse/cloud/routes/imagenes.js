@@ -10,29 +10,6 @@ exports.fetch = function (req, res) {
         res.json(imagenes);
     });
 };
-exports.getImagenes = function (req, res) {
-    var query = new Parse.Query(Imagenes);
-    var organizacion = req.query.idONG;
-    query.limit(200);
-    query.equalTo("Organizacion", organizacion);
-    query.descending('createdAt');
-    query.find().then(function (imagenes) {
-        res.json(imagenes);
-    });
-};
-
-exports.getImagen = function (req, res) {
-    var query = new Parse.Query(Imagenes);
-    var idImagen = req.query.idImagen;
-    query.get(idFoto,{
-        success:function (imagen) {
-            res.json(imagen);
-        },
-        error:function(imagen,error){
-            res.json(error);
-        }
-    });
-};
 
 exports.addImagen = function (req, res) {
     var idOng = req.body.idONG;

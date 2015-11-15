@@ -26,45 +26,47 @@ app.locals.facebookApplicationId = '974425189234287';
 
 app.locals._ = require('underscore');
 
+//Landing
 app.post("/API/Inscripcion", user.inscripcion);
 
-//Login
+//Usuarios
 app.post("/API/Login", user.login);
 app.post("/API/Registrar", user.registro);
 
-//Categorias
 app.get("/API/Categorias", categorias.fetch);
 
-//Eventos
 app.get("/API/Buscar", eventos.buscar);
 app.get("/API/EventosCat", eventos.porCategoria);
 app.get("/API/Evento", eventos.evento);
 app.get("/API/EventosSugeridos", eventos.sugeridos);
 
-//de Usuario
 app.get("/API/Usuario", user.getUser);
+app.put("/API/Usuario", user.updateUser);
+
 app.post("/API/Participar", participacion.participar);
 app.get("/API/SolicitudesUsuario", participacion.getParticipaciones);
 
 app.get("/API/ComentariosOng",comentarios.comentariosOng);
+app.post("/API/ComentarEvento",comentarios.comentarEvento);
+app.post("/API/ComentarOrganizacion",comentarios.comentarOng);
 
 
 //Organizacion
 app.post("/API/Admin/Login", user.loginOrganizacion);
+
 app.get("/API/Admin/Eventos", eventos.eventosONG);
 app.post("/API/Admin/CrearEvento", eventos.crearEvento);
 app.put("/API/Admin/Evento", eventos.editarEvento);
 app.post("/API/Admin/BorrarEvento", eventos.borrarEvento);
 
 app.get("/API/Admin/ONG", organizacion.getONG);
+app.put("/API/Admin/ONG", organizacion.updateOrganizacion);
+
 app.get("/API/Admin/Participantes",participacion.getParticipantes);
 app.post("/API/Admin/AprobarParticipante",participacion.aprobarParticipante);
 app.post("/API/Admin/RechazarParticipante",participacion.rechazarParticipante);
-//Imagenes
 
-//app.get("/API/Admin/Imagenes",imagenes.getImagenes);
 app.post("/API/Admin/SubirImagen",imagenes.addImagen);
-//app.delete("/API/Admin/Imagenes",imagenes.delete);
 
 
 
@@ -76,7 +78,6 @@ app.get('/Admin*', function (req, res) {
 });
 app.get('/', function (req, res) {
     res.render('index');
-    //res.redirect('https://www.facebook.com/pages/Zamka/705880659483641');
 });
 
 app.listen();

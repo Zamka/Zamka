@@ -90,3 +90,6 @@ a md-icon{
   margin-top: 12px!important;
 }
 .md-button.md-icon-button {text-align: center}
+md-input-container [ng-messages]{
+  opacity: 1!important;
+}

@@ -1,5 +1,5 @@
 <link rel="stylesheet" type="text/css" href="/css/admin/eventos.css">
-<md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="true">
+<md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-md')">
     <md-toolbar class="md-theme-indigo">
         <h1 class="md-toolbar-tools">Categorias</h1>
     </md-toolbar>
@@ -12,9 +12,13 @@
     </md-content>
 </md-sidenav>
 <md-content flex layout-padding>
-    <md-grid-list style="width: 100%" md-cols-sm="1"
-                  md-cols-md="2"
-                  md-cols-gt-md="3"
+    <div flex="100" ng-show="eventos.length==0 && !cargando">
+        <h2>No hay eventos para esta categoria, intenta con otra.</h2>
+    </div>
+    <md-grid-list style="width: 100%"
+                  md-cols="2"
+                  md-cols-sm="1"
+                  md-cols-gt-lg="3"
                   md-row-height="3:2"
                   md-gutter="12px"
                   md-gutter-gt-sm="8px">
@@ -23,7 +27,10 @@
             <md-grid-tile-footer layout="column" layout-align="start center">
                 <div layout="column" layout-align="start center">
                     <div layout="row" layout-align="space-between center" style="width: 100%;margin:4px">
-                        <label class="headers categoria">[[evento.nombre]]</label>
+                        <div layout="column" layout-align="start start">
+                            <label class="headers categoria">[[evento.categoria]]</label>
+                            <h2 class="md-title">[[evento.nombre]]</h2>
+                        </div>
                         <div class="headers"><i class="fa fa-calendar-o"></i> [[showDate(evento.fecha)]]</div>
                     </div>
                     <div  layout-padding>

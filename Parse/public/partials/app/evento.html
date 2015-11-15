@@ -1,14 +1,16 @@
 <div layout="column" layout-align="start start" flex="100">
-    <div class="evento-header" layout="column" layout-align="center center">
+    <section style="margin-bottom: 8px">
+        <div class="evento-header" layout="column" layout-align="center center">
             <div layout="column" layout-align="center start">
                 <label class="categoria">[[evento.categoria]]</label>
                 <h1 class="evento-titulo">[[evento.nombre]]</h1>
             </div>
-    </div>
-    <br>
-    <div layout="row" layout-align="space-around start" style="width:100%;">
-        <div flex="70" layout="row" layout-align="space-around start" layout-wrap>
-            <div flex="30">
+        </div>
+    </section>
+
+    <section>
+        <div layout="row" layout="start center" layout-wrap>
+            <div flex-gt-lg="25" flex="40">
                 <div layout="column" layout-align="space-around center">
                     <label class="orgLbl">ORGANIZACION</label>
                     <hr class="orgHr center">
@@ -29,53 +31,62 @@
                 </div>
 
             </div>
-            <div flex="70">
+            <div flex-gt-lg="45" flex="60">
                 <div class="width-90 center">
-                   <p>[[evento.contenido]]</p>
+                    <p>[[evento.contenido]]</p>
                 </div>
             </div>
-            <div flex="100">
-                <br>
-                <md-grid-list style="width: 80%;margin-right: auto;margin-left: auto"
-                              md-cols-sm="1"
-                              md-cols-md="2"
-                              md-cols-gt-md="3"
-                              md-row-height="1:1"
-                              md-gutter="12px"
-                              md-gutter-gt-sm="8px">
-                    <md-grid-tile class="md-whiteframe-1dp" ng-repeat="foto in evento.fotos"
-                                  style="background-image:url('[[foto]]');"  ng-style="stagger($index)" class="animated zoomInDown">
-                    </md-grid-tile>
-                </md-grid-list>
-                <div layout="column" layout-align="start center" class="width-80">
-                    <div class="fullwidth">
-                        <label>COMENTARIOS</label>
-                        <hr>
+            <div flex-gt-lg="30" flex="100">
+                <time-date-picker class="md-whiteframe-z1 center" ng-model="evento.fecha" orientation="true" ></time-date-picker>
+                <md-button class="md-raised participar center" ng-click="confirmarParticipacion()">Participar</md-button>
+            </div>
+
+        </div>
+    </section>
+    <section>
+        <md-grid-list style="width: 80%;margin-right: auto;margin-left: auto"
+                      md-cols-sm="1"
+                      md-cols-md="2"
+                      md-cols-gt-md="3"
+                      md-row-height="1:1"
+                      md-gutter="12px"
+                      md-gutter-gt-sm="8px">
+            <md-grid-tile class="md-whiteframe-1dp" ng-repeat="foto in evento.fotos"
+                          style="background-image:url('[[foto]]');"  ng-style="stagger($index)" class="animated zoomInDown">
+            </md-grid-tile>
+        </md-grid-list>
+    </section>
+    <section>
+        <div layout="column" layout-align="start center" class="width-80">
+            <div style="margin-bottom: 18px" class="width-80 whiteBackground md-whiteframe-1dp" layout layout-align="center center" layout-padding>
+                <md-input-container flex>
+                    <label>Deje un Comentario</label>
+                    <textarea ng-model="comentario" columns="1" md-maxlength="350"></textarea>
+                </md-input-container>
+                <md-button class="md-primary md-raised" ng-click="dejarComentario()">Aceptar</md-button>
+            </div>
+            <div class="fullwidth">
+                <label>COMENTARIOS</label>
+                <hr>
+            </div>
+
+            <div flex="100" ng-show="evento.comentarios.length==0">
+                <h2>Todabia no hay ningun comentario en este evento. Se el primero en dejar uno.</h2>
+            </div>
+            <div ng-repeat="comentario in evento.comentarios" layout="row" layout-align="space-around center" ng-style="stagger($index)" class="fullwidth animated zoomInDown" layout-wrap layout-padding>
+                <div flex="30" layout="row" layout-align="center center">
+                    <a href="/App/Perfil/[[comentario.usuario.id]]"><img class="circlePhoto md-whiteframe-z1" ng-src="[[comentario.usuario.foto]]"></a>
+                </div>
+                <div flex="70" layout="column" layout-align="start start" class="whiteBackground md-whiteframe-1dp" layout-padding>
+                    <div class="fullWidth" layout="row" layout-align="space-between"><label class="nombreLbl" >[[comentario.usuario.nombre]] </label></span><div><i class="fa fa-calendar-o"></i> [[timeSince(comentario.fecha)]]</div></div>
+                    <div>
+                        <p>[[comentario.comentario]]</p>
                     </div>
-                    <div ng-repeat="comentario in evento.comentarios" layout="row" layout-align="space-around center" class="fullwidth" layout-wrap>
-                        <div flex="30" layout="row" layout-align="center center">
-                            <a href="/App/Perfil/[[comentario.usuario.id]]"><img class="circlePhoto md-whiteframe-z1" ng-src="[[comentario.usuario.foto]]"></a>
-                        </div>
-                        <div flex="70" layout="column" layout-align="start start">
-                            <p><label class="nombreLbl" >[[comentario.usuario.nombre]] </label><i class="fa fa-calendar-o"></i> [[timeSince(comentario.fecha)]]</p>
-                            <div>
-                                <p>[[comentario.comentario]]</p>
-                            </div>
-                        </div>
-                        <div flex="100">
-                            <br><hr class="width-80 center">
-                        </div>
-                    </div>
+                </div>
+                <div flex="100">
+                    <br><hr class="width-80 center">
                 </div>
             </div>
         </div>
-
-        <div flex="30">
-            <time-date-picker class="md-whiteframe-z1 center" ng-model="evento.fecha" orientation="true" ></time-date-picker>
-            <md-button class="md-raised participar center" ng-click="confirmarParticipacion()">Participar</md-button>
-        </div>
-    </div>
-<br>
-
-
+    </section>
 </div>

@@ -4,9 +4,12 @@ console.warn = function (message) {
         console.realWarn.apply(console, arguments);
     }
 };
+//GRID list compatibility MOz
+
 var timenow = Date.now();
 angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','ngStorage','ngMessages','ngImgCrop'])
     .config(function($mdThemingProvider,$routeProvider,$interpolateProvider,$locationProvider) {
+        $routeProvider.caseInsensitiveMatch = true;
         $routeProvider
             .when('/Admin', {
                 templateUrl: '/partials/admin/index.html',
@@ -53,7 +56,25 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','ngStorage','ngMessages','n
         $interpolateProvider.endSymbol(']]');
         $locationProvider.html5Mode(true);
     })
-    .controller('AppCtrl',function($scope, $mdSidenav,$http,$log,$location,$localStorage,$mdToast){
+    .controller('AppCtrl',function($scope, $mdSidenav,$http,$log,$location,$localStorage,$mdToast,$timeout){
+        $scope.fixGrids = function(){
+            $timeout(function(){
+                var grids =document.getElementsByTagName("md-grid-list");
+                for(var key in grids){
+                    try {
+                        var grid = grids[key];
+                        var newHeight = grid.scrollHeight;
+                        grid.style.height = newHeight + "px";
+                    }catch(e){}
+                }
+            },1000);
+
+        };
+        window.onresize = function(){
+            $scope.fixGrids();
+        };
+
+
         $scope.sideNavOpen = false;
         $scope.organizacion = {};
         if($localStorage.organizacion != null)
@@ -65,8 +86,10 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','ngStorage','ngMessages','n
             return timenow;
         };
         $scope.login = function(usuario,password,noGo){
+            $scope.cargando = true;
             $http.post("/API/Admin/Login",{usuario:usuario,password:password})
                 .success(function(data){
+                    $scope.cargando = false;
                     $log.log(data);
                     $scope.organizacion = data;
                     $scope.organizacion.usuario = usuario;
@@ -80,6 +103,7 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','ngStorage','ngMessages','n
 
                 })
                 .error(function(error){
+                    $scope.cargando =false;
                     $log.log(error);
                 });
         };
@@ -95,30 +119,39 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','ngStorage','ngMessages','n
                 });
         };
         $scope.getComentariosOng = function(idONG){
-            $scope.eventos = [];
+            $scope.cargando =true;
             $http.get("/API/ComentariosOng?idONG="+idONG)
                 .success(function(data){
+
+                    $scope.eventos = [];
+                    $scope.cargando =false;
                     $log.log(data);
                     $scope.organizacion.comentarios = data;
                 })
                 .error(function(error){
+                    $scope.cargando =false;
                     $log.log(error)
                 });
         };
         $scope.subirFoto = function(foto,idONG,callback){
+            $log.log(foto);
+            $scope.cargando =true;
             $http.post("/API/Admin/SubirImagen",{
                 imagen:{base64:foto},
                 idONG:idONG
             }).success(function(data){
-                    $log.log(data);
-                    callback(data);
+                $scope.cargando =false;
+                $log.log(data);
+                callback(data);
             })
-            .error(function(error){
-                $log.log(error);
+                .error(function(error){
+                    $log.log(error);
+                    $scope.cargando =false;
                     callback();
-            });
+                });
         };
         $scope.crearEvento = function(nombre,descripcion,fecha,contenido,foto,categorias,fotos){
+            $scope.cargando =true;
             $http.post("/API/Admin/CrearEvento",{
                 nombre:nombre,
                 descripcion:descripcion,
@@ -130,14 +163,18 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','ngStorage','ngMessages','n
                 idONG:$scope.organizacion.objectId
             })
                 .success(function(data){
+                    $scope.cargando =false;
                     $log.log(data);
+                    $location.url("/Admin/Eventos");
                 })
                 .error(function(error){
+                    $scope.cargando =false;
                     $log.log(error);
                 });
         };
         $scope.editarEvento = function(nombre,descripcion,fecha,contenido,foto,categorias,fotos,idEvento){
             $log.log(fotos);
+            $scope.cargando =true;
             $http.put("/API/Admin/Evento",{
                 nombre:nombre,
                 descripcion:descripcion,
@@ -149,7 +186,9 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','ngStorage','ngMessages','n
                 idEvento:idEvento
             })
                 .success(function(data){
-                    $log.log(data);
+                    $log.log("respuesta",data);
+                    $scope.cargando =false;
+                    $scope.scrollTop();
                     $mdToast.show(
                         $mdToast.simple()
                             .content('Se Guardaron sus cambios con exito')
@@ -159,6 +198,8 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','ngStorage','ngMessages','n
                 })
                 .error(function(error){
                     $log.log(error);
+                    $scope.cargando =false;
+                    $scope.scrollTop();
                     $mdToast.show(
                         $mdToast.simple()
                             .content('Ocurrio un error Guardando los cambios de su Evento, por favor intente denuevo')
@@ -186,7 +227,9 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','ngStorage','ngMessages','n
                 aprobados:[],
                 rechazados:[]
             };
+            $scope.cargando =true;
             $http.get("/API/Admin/Participantes?idEvento="+idEvento).success(function(data){
+                $scope.cargando =false;
                 $log.log(data);
                 for (var key in data){
                     switch (data[key].estado){
@@ -202,12 +245,15 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','ngStorage','ngMessages','n
                     }
                 }
             }).error(function(err){
+                $scope.cargando =false;
                 $log.log(err);
             });
         };
 
         $scope.aprobarParticipante = function(idParticipacion){
+            $scope.cargando =true;
             $http.post("/API/Admin/AprobarParticipante",{idParticipacion:idParticipacion}).success(function(data){
+                $scope.cargando =false;
                 $log.log(data);
                 for(key in $scope.participantes.pendientes){
                     if ($scope.participantes.pendientes[key].idPeticion == idParticipacion){
@@ -217,11 +263,14 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','ngStorage','ngMessages','n
                     }
                 }
             }).error(function(err){
+                $scope.cargando =false;
                 $log.log(err);
             });
         };
         $scope.rechazarParticipante = function(idParticipacion){
+            $scope.cargando =true;
             $http.post("/API/Admin/RechazarParticipante",{idParticipacion:idParticipacion}).success(function(data){
+                $scope.cargando =false;
                 $log.log(data);
                 for(key in $scope.participantes.pendientes){
                     if ($scope.participantes.pendientes[key].idPeticion == idParticipacion){
@@ -230,6 +279,7 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','ngStorage','ngMessages','n
                     }
                 }
             }).error(function(err){
+                $scope.cargando =false;
                 $log.log(err);
             });
         };
@@ -243,14 +293,55 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','ngStorage','ngMessages','n
                 confirmButtonText: "Si, Borrar",
                 closeOnConfirm: false
             }, function(){
+                $scope.cargando =true;
                 $http.post("/API/Admin/BorrarEvento",{idEvento:idEvento}).success(function(){
+                    $scope.cargando =false;
                     swal("Evento Borrado", "Este evento fue borrado con exito", "success");
                     $scope.getEventos($scope.organizacion.idOrganizacion);
                 }).error(function(error){
                     $log.error(error);
+                    $scope.cargando =false;
                 });
 
             });
+        }
+        $scope.editarOrganizacion = function(nombre,descripcion,resumen,newFoto){
+            $scope.cargando = true;
+            $http.put("/API/Admin/ONG",{
+                idONG:$scope.organizacion.idOrganizacion,
+                nombre:nombre,
+                descripcion:descripcion,
+                resumen:resumen,
+                newFoto:newFoto
+            }).success(function(data){
+                $scope.organizacion.Contenido = data.Contenido;
+                $scope.organizacion.Descripcion = data.Descripcion;
+                $scope.organizacion.Nombre = data.Nombre;
+                $scope.organizacion.Foto = data.Foto.url;
+                $localStorage.organizacion = $scope.organizacion;
+                $log.log("respuesta",data);
+                $scope.cargando = false;
+                $scope.scrollTop();
+                $mdToast.show(
+                    $mdToast.simple()
+                        .content('Cambios Efectuados con exito')
+                        .position('top')
+                        .hideDelay(3000)
+                );
+
+                $location.url("/Admin/Eventos");
+
+            }).error(function(error){ $scope.cargando = false;
+                $log.error(error);
+                $mdToast.show(
+                    $mdToast.simple()
+                        .content('Ocurrio un error, por favor intenta denuevo')
+                        .position('top')
+                        .hideDelay(3000)
+                );
+
+            });
+
         }
 
         // UTILITIES
@@ -267,13 +358,19 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','ngStorage','ngMessages','n
         $scope.stagger = function(i){
             return {
                 '-webkit-animation-delay': (i*0.05)+'s',
-            'animation-delay': (i*0.05)+'s'
+                'animation-delay': (i*0.05)+'s'
             }
         }
+        $scope.scrollTop = function(){
+            $("html, body").animate({ scrollTop: 0 }, "slow");
+        };
     })
     .controller('indexCtrl',function($scope,$mdToast,$timeout){
+        $scope.fixGrids();
         $scope.lala = "lala";
         $timeout(function(){
+
+            $scope.scrollTop();
             $mdToast.show(
                 $mdToast.simple()
                     .content('Por favor Ingrese con su cuenta de Zamka ONG')
@@ -310,7 +407,15 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','ngStorage','ngMessages','n
             return {
                 'background-image':'url(' + $scope.ong.logo + ')'
             }
-        }
+        };
+
+        $scope.guardar = function(){
+            $scope.editarOrganizacion($scope.ong.nombre,
+                $scope.ong.descripcion,
+                $scope.ong.contenido,
+                $scope.newFoto);
+
+        };
 
 
         $scope.showAdvanced = function(ev) {
@@ -323,6 +428,7 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','ngStorage','ngMessages','n
             })
                 .then(function (answer) {
                     $log.log(answer);
+                    $scope.newFoto=answer.substr(22,answer.length);
                     $scope.ong.logo=answer;
                 }, function () {
                     $scope.status = 'You cancelled the dialog.';
@@ -358,7 +464,8 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','ngStorage','ngMessages','n
             };
         }
     })
-    .controller('crearEventoCtrl',function($scope, $routeParams,$log,$mdDialog,$timeout){
+    .controller('crearEventoCtrl',function($scope, $routeParams,$log,$mdDialog,$timeout,$mdToast){
+        $scope.fixGrids();
         $scope.getCategorias();
         $scope.minDate = new Date();
         $scope.evento={};
@@ -403,10 +510,11 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','ngStorage','ngMessages','n
                 .then(function (answer) {
                     $scope.loadingFoto = true;
                     $scope.subirFoto(answer,$scope.myCroppedImage,function(foto){
-                        $log.log(foto);
                         if(foto){
                             $scope.evento.fotos.push(foto);
                         }else{
+
+                            $scope.scrollTop();
                             $mdToast.show(
                                 $mdToast.simple()
                                     .content('Ocurrio un error subiendo su foto, por favor intente denuevo')
@@ -463,6 +571,7 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','ngStorage','ngMessages','n
 
     })
     .controller('editarEventoCtrl',function($scope, $routeParams,$log,$mdDialog,$timeout,$http,$mdToast,$window){
+        $scope.fixGrids();
         $scope.getCategorias();
         $scope.evento={};
         $scope.loadingFoto = false;
@@ -482,7 +591,7 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','ngStorage','ngMessages','n
                     org:{
                         nombre:data.Organizacion.Nombre,
                         id:data.Organizacion.objectId,
-                        foto:data.Organizacion.Foto.url
+                        foto:data.Organizacion.foto["_url"]
                     }
                 };
                 for(key in data.Fotos){
@@ -494,11 +603,23 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','ngStorage','ngMessages','n
         };
 
         $scope.getEvento($routeParams.id);
+
         $scope.evento.fotos=[];
         $scope.showCropped = function(){
             $scope.evento.fotos.push($scope.myCroppedImage);
             $log.log($scope.myCroppedImage);
         }
+        $scope.guardar = function(){
+            $scope.editarEvento(
+                $scope.evento.nombre,
+                $scope.evento.descripcion,
+                $scope.evento.fecha,
+                $scope.evento.contenido,
+                $scope.evento.fotos[0],
+                [$scope.categoria],
+                $scope.evento.fotos,
+                $scope.evento.id);
+        };
 
         $scope.fistFoto = function(){
             if($scope.evento.fotos[0] == undefined){
@@ -534,10 +655,11 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','ngStorage','ngMessages','n
                 .then(function (answer) {
                     $scope.loadingFoto = true;
                     $scope.subirFoto(answer,$scope.myCroppedImage,function(foto){
-                        $log.log(foto);
                         if(foto){
                             $scope.evento.fotos.push(foto);
                         }else{
+
+                            $scope.scrollTop();
                             $mdToast.show(
                                 $mdToast.simple()
                                     .content('Ocurrio un error subiendo su foto, por favor intente denuevo')
@@ -552,17 +674,7 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','ngStorage','ngMessages','n
                 });
         };
 
-        $scope.guardar = function(){
-            $scope.editarEvento(
-                $scope.evento.nombre,
-                $scope.evento.descripcion,
-                $scope.evento.fecha,
-                $scope.evento.contenido,
-                $scope.evento.fotos[0],
-                [$scope.categoria],
-                $scope.evento.fotos,
-                $scope.evento.id);
-        };
+
         function DialogController($scope, $mdDialog,$timeout,$log) {
 
             $scope.myImage='';
@@ -595,6 +707,7 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','ngStorage','ngMessages','n
 
     })
     .controller('perfilCtrl',function($scope){
+        $scope.fixGrids();
         $scope.$parent.sideNavOpen = true;
         $scope.getEventos($scope.organizacion.idOrganizacion);
         $scope.getComentariosOng($scope.organizacion.idOrganizacion);
@@ -602,6 +715,7 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','ngStorage','ngMessages','n
 
     })
     .controller('eventoStatCtrl',function($scope,$http,$log,$routeParams){
+        $scope.fixGrids();
         $log.log($routeParams);
         $scope.getParticipantes($routeParams.id);
 

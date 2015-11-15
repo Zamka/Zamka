@@ -1,33 +1,46 @@
-<div layout="column" layout-align="start center" flex="100">
+<div layout="column" layout-align="start start" flex="100">
+    <section style="margin-bottom: 15px">
     <div class="evento-header" layout="column" layout-align="center center">
         <div layout="column" layout-align="center start">
-            <label class="categoria">Mi Cuenta</label>
+            <label class="categoria">Mi Bandeja</label>
             <h1 class="evento-titulo">Mis Peticiones y Participaciones</h1>
             <h2 class="evento-desc">Aca puedo ver el estado actual de mis peticiones para participar de voluntariados</h2>
         </div>
     </div>
-
-    <br>
-    <div layout="row" layout-align="start start" layout-wrap class="width-95 center">
-
-        <div flex="25" ng-repeat="peticion in peticiones">
-        <md-card class="evento-card" ng-click="irEvento()">
-            <img src="/img/Picture1.jpg" class="md-card-image" alt="Washed Out">
-            <md-card-content>
-                <div layout="row" layout-align="start center">
-                    <label class="headers categoria">[[peticion.evento.categoria]]</label>
-                    <div class="headers"><i class="fa fa-calendar-o"></i> [[showDate(peticion.evento.fecha)]]</div>
-                    <div flex layout="row" layout-align="center center">
-                        <i class="fa [[getEstado(peticion.estado)]]"></i></div>
-                </div>
-                <h2 class="md-title">[[peticion.evento.nombre]]</h2>
-                <p>
-                    [[peticion.evento.descripcion]]
-                </p>
-            </md-card-content>
-        </md-card>
-        </div>
-
+    </section>
+    <div class="fullWidth" ng-show="peticiones.length==0" layout-padding>
+        <h2>Aun no tienes peticiones pendientes.</h2>
     </div>
+
+    <section>
+        <md-grid-list style="width: 90%;margin-right: auto;margin-left: auto" md-cols-sm="1"
+                      md-cols-md="2"
+                      md-cols-gt-md="3"
+                      md-row-height="3:2"
+                      md-gutter="12px"
+                      md-gutter-gt-sm="8px">
+            <md-grid-tile ng-repeat="peticion in peticiones"
+                          style="background-image:url('[[peticion.evento.foto]]')" ng-click="irEvento(peticion.evento.id)">
+                <md-grid-tile-footer layout="column" layout-align="start center">
+                    <div layout="column" layout-align="start center">
+                        <div layout="row" layout-align="space-between center" style="width: 100%;margin:4px">
+                            <i class="fa [[getEstado(peticion.estado)]]"></i>
+                            <div layout="column" layout-align="start start">
+                                <label class="headers categoria">[[peticion.evento.categoria]]</label>
+                                <h2 class="md-title">[[peticion.evento.nombre]]</h2>
+                            </div>
+                            <div class="headers"><i class="fa fa-calendar-o"></i> [[showDate(peticion.evento.fecha)]]</div>
+                        </div>
+                        <div  layout-padding>
+                            <p class="descripcion">
+                                [[peticion.evento.descripcion]]
+                            </p>
+                        </div>
+                    </div>
+                </md-grid-tile-footer>
+            </md-grid-tile>
+        </md-grid-list>
+    </section>
+
 
 </div>

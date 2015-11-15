@@ -1,42 +1,46 @@
 <link rel="stylesheet" type="text/css" href="/css/admin/eventos.css?v=[[timestamp()]]">
 <md-content flex layout-padding>
 
-    <md-grid-list md-cols-sm="1"
-                  md-cols-md="2"
-                  md-cols-gt-md="3"
-                  md-row-height="3:2"
+    <md-grid-list md-cols="2"
+                  md-cols-sm="1"
+                  md-cols-gt-lg="3"
                   md-gutter="12px"
+                  md-row-height="3:2"
                   md-gutter-gt-sm="8px">
         <md-grid-tile ng-repeat="evento in eventos"
-                style="background-image:url('[[evento.foto]]')"  ng-style="stagger($index)" class="animated zoomInDown">
+                      style="background-image:url('[[evento.foto]]')"  ng-style="stagger($index)" class="animated zoomInDown">
             <md-grid-tile-footer layout="column" layout-align="start center">
                 <div layout="column" layout-align="start center">
-                <div layout="row" layout-align="space-between center" style="width: 100%;margin:4px">
-                    <label class="headers categoria">[[evento.nombre]]</label>
-                    <div class="headers"><i class="fa fa-calendar-o"></i> [[showDate(evento.fecha)]]</div>
-                </div>
-                <div layout-padding>
-                    <p class="descripcion">
-                        [[evento.descripcion]]
-                    </p>
-                </div>
-                <div felx layout="row" layout-align="space-around center" style="width: 100%">
-                    <md-button class="md-fab md-mini md-primary" href="/App/Evento/[[evento.id]]" target="_blank">
-                        <md-icon style="margin-top: 8px!important;" md-font-icon="fa-eye" class="fa d24"></md-icon>
-                    </md-button>
-                    <md-button class="md-fab md-mini md-primary" ng-click="goTo('/Admin/EditarEvento/'+evento.id)">
-                        <md-icon md-font-icon="fa-pencil-square-o" class="fa d24"></md-icon>
-                    </md-button>
-                    <md-button class="md-fab md-mini md-primary" ng-click="goTo('/Admin/EventoLista/'+evento.id)">
-                        <md-icon md-font-icon="fa-users" class="fa d24"></md-icon>
-                    </md-button>
-                    <md-button class="md-fab md-mini md-warn" ng-click="borrarEvento(evento.id)">
-                        <md-icon md-font-icon="fa-times" class="fa d24"></md-icon>
-                    </md-button>
-                </div>
+                    <div layout="row" layout-align="space-between center" style="width: 100%;margin:4px">
+                        <div layout="column" layout-align="start start">
+                            <label class="headers categoria">[[evento.categoria]]</label>
+                            <h2 class="md-title">[[evento.nombre]]</h2>
+                        </div>
+                        <div class="headers"><i class="fa fa-calendar-o"></i> [[showDate(evento.fecha)]]</div>
+                    </div>
+                    <div felx layout="row" layout-align="space-around center" style="width: 100%">
+                        <md-button class="md-fab md-mini md-primary" href="/App/Evento/[[evento.id]]" target="_blank">
+                            <md-icon style="margin-top: 8px!important;" md-font-icon="fa-eye" class="fa d24"></md-icon>
+                        </md-button>
+                        <md-button class="md-fab md-mini md-primary" ng-click="goTo('/Admin/EditarEvento/'+evento.id)">
+                            <md-icon md-font-icon="fa-pencil-square-o" class="fa d24"></md-icon>
+                        </md-button>
+                        <md-button class="md-fab md-mini md-primary" ng-click="goTo('/Admin/EventoLista/'+evento.id)">
+                            <md-icon md-font-icon="fa-users" class="fa d24"></md-icon>
+                        </md-button>
+                        <md-button class="md-fab md-mini md-warn" ng-click="borrarEvento(evento.id)">
+                            <md-icon md-font-icon="fa-times" class="fa d24"></md-icon>
+                        </md-button>
+                    </div>
+
+                    <div layout-padding>
+                        <p class="descripcion">
+                            [[evento.descripcion]]
+                        </p>
+                    </div>
                 </div>
             </md-grid-tile-footer>
         </md-grid-tile>
-        </md-grid-list>
+    </md-grid-list>
 
 </md-content>

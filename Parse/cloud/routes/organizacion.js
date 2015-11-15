@@ -3,7 +3,6 @@ var ComentarioOrganizacion = Parse.Object.extend("ComentarioOrganizacion");
 var Evento = Parse.Object.extend("Evento");
 
 exports.getONG = function (req, res) {
-
     var id = req.query.idONG;
     var query = new Parse.Query(ONG);
     var query2 = new Parse.Query(ComentarioOrganizacion);
@@ -13,16 +12,17 @@ exports.getONG = function (req, res) {
     var comentariosrespuesta = [];
     query.get(id, function (organizacion) {
         query2.equalTo("Organizacion", organizacion);
+        query2.descending('createdAt');
         query2.find().then(function (comentarios) {
-            var i = 0;
-            comentarios.forEach(function (comentario) {
-                comentariosrespuesta[i] = {};
-                comentariosrespuesta[i].idUsuario = comentario.get("Usuario").id;
-                comentariosrespuesta[i].Nombre = comentario.get("Usuario").get("name");
-                comentariosrespuesta[i].Foto = comentario.get("Usuario").get("image");
-                comentariosrespuesta[i].Fecha = comentario.createdAt;
-                comentariosrespuesta[i++].Comentario = comentario.get("Comentario");
-            });
+            for(var key in comentarios){
+                var comentario = comentarios[key];
+                comentariosrespuesta[key] = {};
+                comentariosrespuesta[key].Fecha = comentario.createdAt;
+                comentariosrespuesta[key].idUsuario = comentario.get("Usuario").id;
+                comentariosrespuesta[key].Nombre = comentario.get("Usuario").get("name");
+                comentariosrespuesta[key].Foto = comentario.get("Usuario").get("image");
+                comentariosrespuesta[key].Comentario = comentario.get("Comentario");
+            }
             respuesta.Comentarios = comentariosrespuesta;
             respuesta.Nombre = organizacion.get("Nombre");
             respuesta.Descripcion = organizacion.get("Descripcion");
@@ -71,4 +71,51 @@ exports.getONG = function (req, res) {
             res.json(error);
         });
     });
+};
+exports.updateOrganizacion = function(req,res,next){
+    var id = req.body.idONG;
+    var nombre = req.body.nombre;
+    var descripcion = req.body.descripcion;
+    var resumen = req.body.resumen;
+    var newFoto  = req.body.newFoto;
+
+
+
+    console.log("Editar ONG - " + id);
+    var query = new Parse.Query(ONG);
+    query.get(id).then(function(ong){
+        console.log("ONG encontrada");
+        ong.set("Nombre",nombre);
+        ong.set("Descripcion",descripcion);
+        ong.set("Contenido",resumen);
+        if(newFoto){
+            console.log("con foto");
+            var file = new Parse.File("img.jpg", {base64:newFoto}, "image/jpeg");
+            file.save().then(function(){
+                console.log("guardando foto");
+                ong.set("Foto", file);
+                ong.save(null, {
+                    success: function (ong) {
+                        res.json(ong);
+                    },
+                    error: function (error) {
+                        return next(error);
+                    }
+                });
+            },function(error){return next(error);});
+        }else{
+            console.log("sin foto");
+            ong.save(null, {
+                success: function (ong) {
+                    res.json(ong);
+                },
+                error: function (error) {
+                    return next(error);
+                }
+            });
+        }
+    },function(error){
+        return next(error)
+    });
+
 };

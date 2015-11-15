@@ -15,7 +15,7 @@ exports.participar = function (req, res, next) {
     query.equalTo("Evento", evento);
     query.equalTo("Usuario", usuario);
     query.include("Usuario");
-    query.find().then(function(data){
+    query.first().then(function(data){
         if(data){
             return next("Usted ya tiene una peticion en este evento");
         }else{
@@ -53,7 +53,8 @@ exports.getParticipaciones = function (req, res) {
     query.limit(100);
     query.equalTo("Usuario", usuario);
     query.select("Evento", "Estado", "Asistencia");
-    query.include(["Evento.Organizacion"]);
+    query.include("Evento");
+    query.include("Evento.Imagen");
     query.descending('createdAt');
     query.find().then(function (participaciones) {
         var respuesta = [];
@@ -63,6 +64,7 @@ exports.getParticipaciones = function (req, res) {
             temp.evento = partic.get("Evento");
             temp.asistencia = partic.get("Asistencia");
             temp.estado = partic.get("Estado");
+            temp.foto = partic.get("Evento").get("Imagen");
             respuesta[numero++] = temp;
         });
 

@@ -20,7 +20,8 @@ exports.buscar = function (req, res) {
                 nombre:eventos[key].get("Nombre"),
                 descripcion:eventos[key].get("Descripcion"),
                 foto:eventos[key].get("Imagen").get("Archivo")["_url"],
-                fecha:eventos[key].get("Fecha")
+                fecha:eventos[key].get("Fecha"),
+                categoria:eventos[key].get("Categorias")[0]
             });
         }
         console.log(eventosFormatted);
@@ -44,7 +45,8 @@ exports.porCategoria = function (req, res) {
                 nombre:eventos[key].get("Nombre"),
                 descripcion:eventos[key].get("Descripcion"),
                 foto:eventos[key].get("Imagen").get("Archivo")["_url"],
-                fecha:eventos[key].get("Fecha")
+                fecha:eventos[key].get("Fecha"),
+                categoria:eventos[key].get("Categorias")[0]
             });
         }
         console.log(eventosFormatted);
@@ -69,7 +71,8 @@ exports.eventosONG = function (req, res) {
                 nombre:eventos[key].get("Nombre"),
                 descripcion:eventos[key].get("Descripcion"),
                 foto:eventos[key].get("Imagen").get("Archivo")["_url"],
-                fecha:eventos[key].get("Fecha")
+                fecha:eventos[key].get("Fecha"),
+                categoria:eventos[key].get("Categorias")[0]
             });
         }
         console.log(eventosFormatted);
@@ -104,19 +107,20 @@ exports.evento = function (req, res,next) {
             respuesta.Imagen = data.get("Imagen");
             var relation = data.relation("Fotos");
             query2.equalTo("Evento", data);
+            query2.descending('createdAt');
             query2.find().then(function (comentarios) {
-                var i = 0;
-                comentarios.forEach(function (comentario) {
-                    comentariosrespuesta[i] = {};
-                    comentariosrespuesta[i].idUsuario = comentario.get("Usuario").id;
-                    comentariosrespuesta[i].Nombre = comentario.get("Usuario").get("name");
-                    comentariosrespuesta[i].Foto = comentario.get("Usuario").get("image");
-                    comentariosrespuesta[i].Fecha = comentario.createdAt;
-                    comentariosrespuesta[i++].Comentario = comentario.get("Comentario");
-                });
+                for(var key in comentarios){
+                    var comentario = comentarios[key];
+                    comentariosrespuesta[key] = {};
+                    comentariosrespuesta[key].Fecha = comentario.createdAt;
+                    comentariosrespuesta[key].idUsuario = comentario.get("Usuario").id;
+                    comentariosrespuesta[key].Nombre = comentario.get("Usuario").get("name");
+                    comentariosrespuesta[key].Foto = comentario.get("Usuario").get("image");
+                    comentariosrespuesta[key].Comentario = comentario.get("Comentario");
+                }
+
                 respuesta.Comentarios = comentariosrespuesta;
                 var query3 = relation.query();
-                query3.ascending('createdAt');
                 query3.find({
                     success: function (fotos) {
                         respuesta.Fotos = fotos;

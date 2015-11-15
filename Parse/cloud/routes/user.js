@@ -23,7 +23,6 @@ exports.inscripcion = function (req, res) {
 
 };
 exports.login = function (req, res,next) {
-    console.log(req.body);
     var correo = req.body.correo;
     var password = req.body.password;
     var fbId = req.body.fbid;
@@ -139,16 +138,27 @@ exports.registro = function (req, res) {
     user.set("bio", biografia);
     user.set("Gustos", gustos);
 
-    user.signUp(null, {
-        success: function (user) {
-            res.json(user);
-        },
-        error: function (user, error) {
-            res.json(error);
-        }
-    });
 
 
+    Parse.Cloud.httpRequest({
+        url:"http://www.zamka.org/img/profile.png",
+        method: 'GET',
+        followRedirects:true
+    }).then(function(httpResponse){
+        var imageBuffer = httpResponse.buffer;
+        var file = new Parse.File("img.jpg", {base64:imageBuffer.toString('base64')}, "image/jpeg");
+        file.save().then(function(){
+            user.set("image", file);
+            user.signUp(null, {
+                success: function (user) {
+                    res.json(user);
+                },
+                error: function (user, error) {
+                    res.json(error);
+                }
+            });
+        },function(error){return next(error);});
+    },function(error){return next(error);});
 };
 
 exports.loginOrganizacion = function (req, res) {
@@ -222,4 +232,56 @@ exports.getUser = function (req, res) {
             res.json(error);
         });
     });
+};
+
+exports.updateUser = function(req,res,next){
+    var id = req.body.idUsuario;
+    var foto = req.body.foto;
+    var nombre = req.body.nombre;
+    var sexo = req.body.sexo;
+    var email = req.body.email;
+    var gustos = req.body.categorias;
+    var notif = req.body.notif;
+    var newPass = req.body.newPass;
+
+    Parse.Cloud.useMasterKey();
+    var query = new Parse.Query(User);
+    query.get(id).then(function(usuario){
+        usuario.set("username",email);
+        usuario.set("email",email);
+        usuario.set("gender",sexo);
+        usuario.set("name",nombre);
+        usuario.set("Gustos",gustos);
+        usuario.set("Notificaciones",notif);
+        if(newPass){
+            usuario.set("password",newPass);
+        }
+        if(foto){
+            var file = new Parse.File("img.jpg", {base64:foto}, "image/jpeg");
+            file.save().then(function(){
+                usuario.set("image", file);
+                usuario.save(null, {
+                    success: function (user) {
+                        res.json(user);
+                    },
+                    error: function (error) {
+                        return next(error);
+                    }
+                });
+            },function(error){return next(error);});
+        }else{
+            usuario.save(null, {
+                success: function (user) {
+                    res.json(user);
+                },
+                error: function (error) {
+                    return next(error);
+                }
+            });
+        }
+    },function(error){
+        return next(error)
+    });
+
+
 };

@@ -7,6 +7,8 @@
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.0/sweetalert.min.css">
     <link rel="stylesheet" type="text/css" href="/css/md-date-time.css">
     <link rel="stylesheet" type="text/css" href="/css/app.css">
+
+    <link rel="stylesheet" href="/css/ng-img-crop.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/locale/es.js"></script>
     <title>Zamka | Voluntarios</title>
@@ -14,6 +16,9 @@
 <body ng-controller="AppCtrl">
 <md-toolbar>
     <div class="md-toolbar-tools">
+        <button ng-click="toggleSidenav('left')" hide-gt-md class="menuBtn">
+            <span class="visually-hidden"></span>
+        </button>
         <a href="/App"><img style="height: 70px" src="/img/logow.png"></a>
         <span flex></span>
 
@@ -23,24 +28,39 @@
             </md-tooltip>
             <i class="fa fa-sign-in"></i>
         </md-button>
-        <md-button ng-show="usuario" class="md-icon-button" aria-label="More" ng-click="goToMiPerfil()">
-            <md-tooltip md-direction="down">
-                Mi Perfil
-            </md-tooltip>
-            <i class="fa fa-users"></i>
-        </md-button>
-        <md-button ng-show="usuario" class="md-icon-button" aria-label="More" ng-click="goToMiCuenta()">
+
+        <md-button ng-show="usuario" class="md-icon-button" ng-click="goToMiCuenta()">
             <md-tooltip md-direction="down">
                 Mi Cuenta
             </md-tooltip>
             <i class="fa fa-inbox"></i>
         </md-button>
-        <md-button ng-show="usuario" class="md-icon-button" aria-label="Salir" ng-click="logout()">
-            <md-tooltip md-direction="down">
-                Salir
-            </md-tooltip>
-            <i class="fa fa-sign-out"></i>
-        </md-button>
+
+        <md-menu md-offset="-10 65">
+            <md-button ng-show="usuario" class="md-icon-button" ng-click="$mdOpenMenu($event)">
+                <md-tooltip md-direction="down">
+                    Configuracion
+                </md-tooltip>
+                <i class="fa fa-cog"></i>
+            </md-button>
+            <md-menu-content width="2" class="logMenu">
+                <md-menu-item>
+                    <md-button ng-click="goToMiPerfil()">
+                        Ver Perfil
+                    </md-button>
+                </md-menu-item>
+                <md-menu-item>
+                    <md-button ng-click="goToEditarPerfil()">
+                        Editar Perfil
+                    </md-button>
+                </md-menu-item>
+                <md-menu-item>
+                    <md-button ng-click="logout()">
+                        Salir
+                    </md-button>
+                </md-menu-item>
+            </md-menu-content>
+        </md-menu>
     </div>
 </md-toolbar>
 <div class="loadingBack" layout="row" layout-align="center center" ng-show="cargando">
@@ -60,6 +80,7 @@
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.0/sweetalert.min.js"></script>
 <script src="/js/md-date-time.js"></script>
+<script src="/js/ng-img-crop.js"></script>
 <script src="/js/app.js"></script>
 </body>
 </html>
