@@ -38,7 +38,7 @@
             </div>
             <div flex-gt-lg="30" flex="100">
                 <time-date-picker class="md-whiteframe-z1 center" ng-model="evento.fecha" orientation="true" ></time-date-picker>
-                <md-button class="md-raised participar center" ng-click="confirmarParticipacion()" ng-disabled="expiredEvent(evento.fecha)">Participar</md-button>
+                <md-button class="md-raised participar center" ng-click="confirmarParticipacion()" ng-disabled="disabledEvent(evento.fecha)">Participar</md-button>
             </div>
 
         </div>

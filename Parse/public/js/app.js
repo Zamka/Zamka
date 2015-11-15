@@ -411,7 +411,18 @@ angular.module('ZamkaAdmin', ['ngMaterial','ngRoute','mdDateTime','ngImgCrop'])
             return moment(iso).fromNow();
         }
         $scope.expiredEvent = function(time){
-            return (moment().isAfter(time))?0.7:1;
+            if(moment().isAfter(time)){
+                return 0.5;
+            }else{
+                return 1;
+            }
+        }
+        $scope.disabledEvent = function(time){
+            if(moment().isAfter(time)){
+                return true;
+            }else{
+                return false;
+            }
         }
         $scope.verFecha = function(){
             $log.log("fecha:",$scope.fechafecha);
