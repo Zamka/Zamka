@@ -37,6 +37,7 @@ exports.getONG = function (req, res) {
                     var query4 = new Parse.Query(Evento);
 
                     query4.include("Imagen");
+                    query4.descending('Fecha');
                     query4.equalTo("Organizacion", organizacion);
                     query4.find().then(function (eventos) {
 

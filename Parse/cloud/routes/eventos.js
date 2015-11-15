@@ -10,7 +10,9 @@ exports.buscar = function (req, res) {
     query.limit(100);
     query.include("Imagen");
     query.contains("Nombre", busqueda);
-    query.descending('createdAt');
+    query.descending('Fecha');
+    var todaysDate = new Date();
+    query.greaterThanOrEqualTo( "Fecha", todaysDate );
     query.find().then(function (eventos) {
         var eventosFormatted = [];
         for (var key in eventos){
@@ -35,6 +37,8 @@ exports.porCategoria = function (req, res) {
     query.limit(100);
     query.include("Imagen");
     query.descending('createdAt');
+    var todaysDate = new Date();
+    query.greaterThanOrEqualTo( "Fecha", todaysDate );
     query.equalTo("Categorias", categoria);
     query.find().then(function (eventos) {
         var eventosFormatted = [];
@@ -219,10 +223,11 @@ exports.editarEvento = function (req, res) {
                 evento.set("categorias", categorias);
             if(fecha)
                 evento.set("Fecha", new Date(fecha));
-            if(foto)
+            if(foto){
                 var imagen = new Imagen();
-            imagen.id = foto.objectId;
-            evento.set("Imagen", imagen);
+                imagen.id = foto.objectId;
+                evento.set("Imagen", imagen);
+            }
             if(fotos){
                 var relation = evento.relation("Fotos");
                 relation.query().find({

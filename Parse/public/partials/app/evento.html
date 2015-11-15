@@ -33,12 +33,12 @@
             </div>
             <div flex-gt-lg="45" flex="60">
                 <div class="width-90 center">
-                    <p style="white-space: pre;">[[evento.contenido]]</p>
+                    <p style="white-space: pre-wrap;">[[evento.contenido]]</p>
                 </div>
             </div>
             <div flex-gt-lg="30" flex="100">
                 <time-date-picker class="md-whiteframe-z1 center" ng-model="evento.fecha" orientation="true" ></time-date-picker>
-                <md-button class="md-raised participar center" ng-click="confirmarParticipacion()">Participar</md-button>
+                <md-button class="md-raised participar center" ng-click="confirmarParticipacion()" ng-disabled="expiredEvent(evento.fecha)">Participar</md-button>
             </div>
 
         </div>
@@ -80,7 +80,7 @@
                 <div flex="70" layout="column" layout-align="start start" class="whiteBackground md-whiteframe-1dp" layout-padding>
                     <div class="fullWidth" layout="row" layout-align="space-between"><label class="nombreLbl" >[[comentario.usuario.nombre]] </label></span><div><i class="fa fa-calendar-o"></i> [[timeSince(comentario.fecha)]]</div></div>
                     <div>
-                        <p style="white-space: pre;">[[comentario.comentario]]</p>
+                        <p style="white-space: pre-wrap;">[[comentario.comentario]]</p>
                     </div>
                 </div>
                 <div flex="100">

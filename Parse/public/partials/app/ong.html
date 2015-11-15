@@ -25,7 +25,7 @@
                       md-gutter="12px"
                       md-gutter-gt-sm="8px">
             <md-grid-tile ng-repeat="evento in ong.eventos"
-                          style="background-image:url('[[evento.foto]]')">
+                          style="background-image:url('[[evento.foto]]');opacity: [[expiredEvent(evento.fecha)]]" ng-click="irEvento(evento.id)">
                 <md-grid-tile-footer layout="column" layout-align="start center">
                     <div layout="column" layout-align="start center">
                         <div layout="row" layout-align="space-between center" style="width: 100%;margin:4px">
@@ -36,7 +36,7 @@
                             <div class="headers"><i class="fa fa-calendar-o"></i> [[showDate(evento.fecha)]]</div>
                         </div>
                         <div  layout-padding>
-                            <p style="white-space: pre;" class="descripcion">
+                            <p class="descripcion">
                                 [[evento.descripcion]]
                             </p>
                         </div>
@@ -68,7 +68,7 @@
                 <div flex="70" layout="column" layout-align="start start" class="whiteBackground md-whiteframe-1dp" layout-padding>
                     <div class="fullWidth" layout="row" layout-align="space-between"><label class="nombreLbl" >[[comentario.usuario.nombre]] </label></span><div><i class="fa fa-calendar-o"></i> [[timeSince(comentario.fecha)]]</div></div>
                     <div>
-                        <p style="white-space: pre;">[[comentario.comentario]]</p>
+                        <p style="white-space: pre-wrap;">[[comentario.comentario]]</p>
                     </div>
                 </div>
                 <div flex="100">
