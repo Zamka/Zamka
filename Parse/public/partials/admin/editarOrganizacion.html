@@ -1,0 +1,71 @@
+<link rel="stylesheet" type="text/css" href="/css/admin/eventos.css?v=[[timestamp()]]">
+<div class="md-whiteframe-1dp whiteBackground">
+    <form name="eventoForm">
+        <section>
+            <md-subheader class="md-primary"><h2>Describe tu Evento lo mejor posible</h2></md-subheader>
+            <md-list layout-padding>
+                <md-list-item layout="row" layout-align="start center">
+                    <md-input-container flex>
+                        <label>Nombre</label>
+                        <input ng-model="ong.nombre" name="titulo" required>
+                        <div ng-messages="eventoForm.titulo.$error">
+                            <div ng-message="required">Campo Obligatorio</div>
+                        </div>
+                    </md-input-container>
+                </md-list-item>
+                <md-list-item layout="row" layout-align="start center">
+                    <md-input-container flex>
+                        <label>Descripción Corta</label>
+                        <input ng-model="ong.descripcion" required name="descripcion" md-maxlength="250">
+                        <div ng-messages="eventoForm.descripcion.$error">
+                            <div ng-message="required">Campo Obligatorio</div>
+                            <div ng-message="md-maxlength">La descripcion corta no puede tener más de 250 caracteres</div>
+                        </div>
+                    </md-input-container>
+                </md-list-item>
+                <md-list-item>
+                    <md-input-container flex>
+                        <label>Resumen de la Organizacion</label>
+                        <textarea ng-model="ong.contenido" name="resumen" columns="1" md-maxlength="1000"></textarea>
+                        <div ng-messages="eventoForm.resumen.$error">
+                            <div ng-message="md-maxlength">El resumen no puede tener más de 1000 caracteres</div>
+                        </div>
+                    </md-input-container>
+                </md-list-item>
+            </md-list>
+        </section>
+    </form>
+    <section>
+        <md-subheader class="md-primary" layout="row" layout-align="start start">
+            <h2 style="margin: 0px">Logo
+                <md-button ng-click="loadImage()" class="md-primary md-fab md-mini" ng-disabled="loadingFoto">
+                    <md-icon md-font-icon="fa-camera-retro" class="fa d24">
+                    </md-icon>
+                </md-button>
+                <md-progress-circular md-diameter="40" style="display: block;float: left;margin-top: -25px;" md-mode="indeterminate" ng-show="loadingFoto" ></md-progress-circular></h2>
+
+        </md-subheader>
+
+        <br>
+        <md-grid-list style="width: 80%;margin-right: auto;margin-left: auto"
+                      md-cols-sm="1"
+                      md-cols-md="2"
+                      md-cols-gt-md="3"
+                      md-row-height="1:1"
+                      md-gutter="12px"
+                      md-gutter-gt-sm="8px">
+            <md-grid-tile class="md-whiteframe-1dp"
+                          ng-style="getBg()"class="animated zoomInDown">
+            </md-grid-tile>
+        </md-grid-list>
+        <div layout="column" layout-align="center center">
+            <div style="width: 0px;height: 0px;overflow: hidden">
+                <form id="formFile">
+                    <input type="file" id="fileInput" accept="image/*" />
+                </form>
+            </div>
+            <md-button ng-click="guardar()" class="md-primary md-raised">Guardar Cambios</md-button>
+        </div>
+    </section>
+
+</div>

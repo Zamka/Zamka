@@ -1,0 +1,24 @@
+<md-dialog>
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>Cambiar Foto del Perfil</h2>
+        </div>
+    </md-toolbar>
+    <md-content class="sticky-container">
+        <div class="dialog-content">
+            <div layout="row" layout-align="space-around center">
+                <div class="cropArea">
+                    <img-crop image="myImage" result-image="myCroppedImage" area-type="circle" result-image-size='250'></img-crop>
+                </div>
+            </div>
+        </div>
+    </md-content>
+    <div class="md-actions" layout="row">
+        <md-button ng-click="cancel()" class="md-raised">
+            Cancelar
+        </md-button>
+        <md-button ng-click="ok()" class="md-primary md-raised">
+            Cambiar Foto
+        </md-button>
+    </div>
+</md-dialog>

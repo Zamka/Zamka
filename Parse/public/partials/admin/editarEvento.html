@@ -1,0 +1,125 @@
+<link rel="stylesheet" type="text/css" href="/css/admin/eventos.css?v=[[timestamp()]]">
+<div class="md-whiteframe-1dp whiteBackground" layout="column" layout-align="start center">
+    <form name="eventoForm">
+        <section>
+            <md-subheader class="md-primary"><h2>Describe tu Evento lo mejor posible</h2></md-subheader>
+            <md-list layout-padding>
+                <md-list-item layout="row" layout-align="start center">
+                    <md-input-container flex>
+                        <label>Titulo</label>
+                        <input ng-model="evento.nombre" name="titulo" required>
+                        <div ng-messages="eventoForm.titulo.$error">
+                            <div ng-message="required">Campo Obligatorio</div>
+                        </div>
+                    </md-input-container>
+                </md-list-item>
+                <md-list-item layout="row" layout-align="start center">
+                    <md-input-container flex>
+                        <label>Descripción Corta</label>
+                        <input ng-model="evento.descripcion" required name="descripcion" md-maxlength="250">
+                        <div ng-messages="eventoForm.descripcion.$error">
+                            <div ng-message="required">Campo Obligatorio</div>
+                            <div ng-message="md-maxlength">La descripcion corta no puede tener más de 250 caracteres</div>
+                        </div>
+                    </md-input-container>
+                </md-list-item>
+                <md-list-item layout="column" layout-align="start start">
+                    <md-datepicker ng-model="evento.fecha" md-placeholder="Fecha"
+                                   md-min-date="minDate" required name="fecha"></md-datepicker>
+                    <md-input-container flex>
+                        <div ng-messages="eventoForm.fecha.$error">
+                            <div ng-message="required">Campo Obligatorio</div>
+                        </div>
+                    </md-input-container>
+                </md-list-item>
+                <md-list-item>
+                    <md-input-container flex>
+                        <label>Resumen del Evento</label>
+                        <textarea ng-model="evento.contenido" name="resumen" columns="1" md-maxlength="1000"></textarea>
+                        <div ng-messages="eventoForm.resumen.$error">
+                            <div ng-message="md-maxlength">El resumen no puede tener más de 1000 caracteres</div>
+                        </div>
+                    </md-input-container>
+                </md-list-item>
+                <md-list-item>
+                    <p>Marca la categoria a la cual pertenece el Evento</p>
+                </md-list-item>
+                <md-list-item>
+                    <md-radio-group ng-model="categoria" layout="row" layout-wrap>
+                        <md-radio-button class="md-primary" value="[[categoria]]" flex="20" ng-repeat="categoria in categorias">[[categoria]]</md-radio-button>
+                    </md-radio-group>
+                </md-list-item>
+            </md-list>
+        </section>
+    </form><section>
+    <md-subheader class="md-primary" layout="row" layout-align="start start">
+        <h2 style="margin: 0px">Fotos
+            <md-button ng-click="loadImage()" class="md-primary md-fab md-mini" ng-disabled="loadingFoto">
+                <md-icon md-font-icon="fa-camera-retro" class="fa d24">
+                </md-icon>
+            </md-button>
+            <md-progress-circular md-diameter="40" style="display: block;float: left;margin-top: -25px;" md-mode="indeterminate" ng-show="loadingFoto" ></md-progress-circular></h2>
+
+    </md-subheader>
+
+    <br>
+    <md-grid-list style="width: 80%;margin-right: auto;margin-left: auto"
+                  md-cols-sm="1"
+                  md-cols-md="2"
+                  md-cols-gt-md="3"
+                  md-row-height="1:1"
+                  md-gutter="12px"
+                  md-gutter-gt-sm="8px">
+        <md-grid-tile class="md-whiteframe-1dp" ng-repeat="foto in evento.fotos"
+                      style="background-image:url('[[foto.Archivo.url]]');"  ng-style="stagger($index)" class="animated zoomInDown">
+            <md-button class="md-fab md-mini md-warn removeBtn" ng-click="removeFoto($index)">
+                <md-icon md-font-icon="fa-times" class="fa d24"></md-icon>
+            </md-button>
+        </md-grid-tile>
+    </md-grid-list>
+
+</section>
+    <section>
+        <div layout="column" layout-align="start center" layout-padding>
+            <div style="width: 0px;height: 0px;overflow: hidden;padding: 0px">
+                <form id="formFile">
+                    <input type="file" id="fileInput" accept="image/*" />
+                </form>
+            </div>
+            <hr style="width: 80%;margin-right: auto;margin-left: auto">
+            <h2 class="md-primary">Vista Previa del Evento</h2>
+        </div>
+    </section>
+    <section>
+        <md-grid-list style="margin: 8px" id="listGrid" style="width: 80%" md-cols-sm="1"
+                      md-cols-md="2"
+                      md-cols-gt-md="2"
+                      md-row-height="3:2"
+                      md-gutter="12px"
+                      md-gutter-gt-sm="8px">
+            <md-grid-tile
+                    ng-style="getBg()">
+                <md-grid-tile-footer layout="column" layout-align="start center">
+                    <div layout="column" layout-align="start center">
+                        <div layout="row" layout-align="space-between center" style="width: 100%;margin:4px">
+                            <div layout="column" layout-align="start start">
+                                <label class="headers categoria">[[categoria]]</label>
+                                <h2 class="md-title">[[evento.nombre]]</h2>
+                            </div>
+                            <div class="headers"><i class="fa fa-calendar-o"></i> [[showDate(evento.fecha)]]</div>
+                        </div>
+                        <div  layout-padding>
+                            <p class="descripcion">
+                                [[evento.descripcion]]
+                            </p>
+                        </div>
+                    </div>
+                </md-grid-tile-footer>
+            </md-grid-tile>
+        </md-grid-list>
+    </section>
+    <section>
+        <md-button ng-click="guardar()" class="md-primary md-raised">Guardar Cambios</md-button>
+    </section>
+
+</div>

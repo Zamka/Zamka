@@ -1,0 +1,67 @@
+<div class="backgroundReserva" layout="column" layout-align="start center" layout-padding>
+    <img style="margin: 15px;cursor: pointer" class="circlePhotoPerfil md-whiteframe-z1" ng-src="[[usuario.foto]]" ng-click="loadImage()">
+    <div style="width: 0px;height: 0px;overflow: hidden;padding: 0px!important">
+        <form id="formFile">
+            <input type="file" id="fileInput" accept="image/*" />
+        </form>
+    </div>
+    <md-whiteframe style="width: 80%;padding: 15px" class="whiteBackground md-whiteframe-1dp" layout="column"  layout-align="start center">
+        <md-input-container class="md-icon-float md-accent" style="width: 100%">
+            <label>Nombre</label>
+            <md-icon md-font-icon="fa-user" class="fa d24 notifIcon"></md-icon>
+            <input ng-model="usuario.nombre" type="text">
+        </md-input-container>
+        <md-input-container class="md-icon-float md-accent" style="width: 100%">
+            <label>Contraseña</label>
+            <md-icon md-font-icon="fa-lock" class="fa d24 notifIcon"></md-icon>
+            <input ng-model="usuario.newPassword" type="password">
+        </md-input-container>
+        <md-input-container class="md-icon-float" style="width: 100%">
+            <label>Sexo</label>
+            <md-icon md-font-icon="fa-venus-mars" class="fa d24 notifIcon"></md-icon>
+            <md-select ng-model="usuario.sexo">
+                <md-option value="male">Hombre</md-option>
+                <md-option value="female">Mujer</md-option>
+            </md-select>
+        </md-input-container>
+        <md-input-container class="md-icon-float" style="width: 100%">
+            <label>Email</label>
+            <md-icon md-font-icon="fa-envelope-o" class="fa d24 notifIcon"></md-icon>
+            <input ng-model="usuario.email" type="text">
+        </md-input-container>
+        <div style="width: 100%">
+            <h3>Intereses</h3>
+            <div layout="row" layout-wrap>
+                <div flex="50" ng-repeat="item in categorias">
+                    <md-checkbox ng-checked="exists(item)" ng-click="toggle(item)">
+                        [[item]]
+                    </md-checkbox>
+                </div>
+            </div>
+        </div>
+        <div layout="row" layout-align="space-around center" layout-padding layout-wrap>
+            <h1 flex="100" style="text-align: center;margin: 5px" class="textoRojo">Vincula tus Redes Sociales</h1>
+            <div layout="row" layout-align="space-around center">
+                <md-button class="md-fab social-fab" ng-click="showToast('Proximamente')">
+                    <i class="fa fa-facebook"></i>
+                </md-button>
+                <md-button class="md-fab social-fab" ng-click="showToast('Proximamente')">
+                    <i class="fa fa-twitter"></i>
+                </md-button>
+                <md-button class="md-fab social-fab" ng-click="showToast('Proximamente')">
+                    <i class="fa fa-google-plus"></i>
+                </md-button>
+            </div>
+        </div>
+        <div layout="column" layout="start start">
+            <md-checkbox ng-model="usuario.notif">
+                Recibir notificaciones por correo de Zamka
+            </md-checkbox>
+        </div>
+        <md-button style="width: 80%;margin: auto;display: block" class="md-accent md-raised" ng-click="guardarPerfil()">GUARDAR</md-button>
+
+
+
+    </md-whiteframe>
+
+</div>
